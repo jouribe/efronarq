@@ -19,8 +19,8 @@ class CreateProjectParkingLotsTable extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('floor');
             $table->string('parking_lot');
-            $table->decimal('roofed_area', 10, 2);
-            $table->decimal('free_area', 10, 2);
+            $table->decimal('roofed_area', 10);
+            $table->decimal('free_area', 10);
             $table->enum('type', ['Simple', 'Doble']);
             $table->enum('availability', ['Disponible', 'Reservado', 'Separado', 'Vendido']);
             $table->unsignedBigInteger('address_id');

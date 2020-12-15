@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
+use App\Models\Bank;
+use App\Models\District;
+use App\Models\Project;
+use App\Models\ProjectAddress;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -27,29 +33,64 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        // project status
+        $projectStatus = [
+            'Preregistrado' => 'Preregistrado',
+            'Preventa' => 'Preventa',
+            'En construcción' => 'En construcción',
+            'Entrega' => 'Entrega',
+            'Finalizado' => 'Finalizado'
+        ];
+
+        // districts
+        $districts = District::all()->pluck("name", "id");
+
+        // Banks
+        $banks = Bank::whereIsActive(true)->pluck('description', 'id');
+
+        return view('projects.create')
+            ->with([
+                'projectStatus' => $projectStatus,
+                'districts' => $districts,
+                'banks' => $banks
+            ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param StoreProjectRequest $request
+     *
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request): RedirectResponse
     {
-        //
+        // Add project.
+        $project = Project::create($request->except(["address", "district_id"]));
+
+        // Add Address
+        ProjectAddress::create([
+            'project_id' => $project->id,
+            'district_id' => $request->get('district_id'),
+            'type' => 'Principal',
+            'address' => $request->get('address')
+        ]);
+
+        // Return to show view.
+        return redirect()->route('projects.show', $project->id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param int $id
+     * @return Application|Factory|View|Response
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        return view('projects.show')->with([
+            'project' => Project::whereId($id)->firstOrFail()
+        ]);
     }
 
     /**

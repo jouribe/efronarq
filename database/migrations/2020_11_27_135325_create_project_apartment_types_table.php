@@ -18,11 +18,11 @@ class CreateProjectApartmentTypesTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('type_name');
-            $table->decimal('roofed area', 10, 2);
-            $table->decimal('free area', 10, 2);
+            $table->decimal('roofed_area', 10);
+            $table->decimal('free_area', 10);
             $table->integer('bedroom');
             $table->integer('bathroom');
-            $table->string('vista')->nullable();
+            $table->string('view')->nullable();
             $table->string('blueprint')->nullable();
             $table->boolean('service_room')->default(false);
             $table->timestamps();

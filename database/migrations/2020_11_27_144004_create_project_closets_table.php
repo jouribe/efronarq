@@ -19,7 +19,7 @@ class CreateProjectClosetsTable extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('floor');
             $table->string('closet');
-            $table->decimal('roofed_area', 10, 2);
+            $table->decimal('roofed_area', 10);
             $table->enum('availability', ['Disponible', 'Reservado', 'Separado', 'Vendido']);
             $table->string('blueprint');
             $table->timestamps();

@@ -15,11 +15,7 @@ class CreateProjectPriceClosetsTable extends Migration
     {
         Schema::create('project_price_closets', function (Blueprint $table) {
             $table->id();
-             $table->unsignedBigInteger('project_price_id');
-            $table->foreign('project_price_id')->references('id')->on('project_prices')->onDelete('cascade');
-            $table->unsignedBigInteger('project_apartment_type_id');
-            $table->foreign('project_apartment_type_id')->references('id')->on('project_apartment_types')->onDelete('cascade');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 10);
             $table->timestamps();
         });
     }

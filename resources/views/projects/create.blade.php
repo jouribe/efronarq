@@ -11,28 +11,66 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <x-jet-validation-errors class="mb-4"/>
 
-                <form method="POST" action="{{ route('projects.store') }}" class="flex">
+                <form method="POST" action="{{ route('projects.store') }}">
 
                     @csrf
 
-                    <div class="p-4 w-1/2">
-                        <x-jet-label for="name" value="{{ __('Name') }}"/>
-                        <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus/>
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="name" value="{{ __('Name') }}"/>
+                            <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus/>
+                        </div>
+
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="status" value="{{ __('Project status') }}"/>
+                            <x-dropdown-list id="status" name="status" :items="$projectStatus"/>
+                        </div>
                     </div>
 
-                    <div class="p-4 w-1/2">
-                        <x-jet-label for="status" value="{{ __('Status') }}"/>
-                        <select id="status" name="status" class="form-select block w-full mt-1">
-                            <option selected value="">{{ __('Select') }}</option>
-                            <option value="Preregistrado">Preregistrado</option>
-                            <option value="Preventa">Preventa</option>
-                            <option value="En construcción">En construcción</option>
-                            <option value="Entrega">Entrega</option>
-                            <option value="Finalizado">Finalizado</option>
-                        </select>
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="district_id" value="{{ __('District') }}"/>
+                            <x-dropdown-list id="district_id" name="district_id" :items="$districts"/>
+                        </div>
+
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="status" value="{{ __('Main address') }}"/>
+                            <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')"/>
+                        </div>
+                    </div>
+
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="bank_id" value="{{ __('Financing bank') }}"/>
+                            <x-dropdown-list id="bank_id" name="bank_id" :items="$banks"/>
+                        </div>
+
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="logo" value="{{ __('Logo') }}"/>
+                            <x-jet-input id="logo" class="block mt-1 w-full" type="text" name="logo" :value="old('logo')"/>
+                        </div>
+                    </div>
+
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="description" value="{{ __('Description') }}"/>
+                            <textarea id="description" name="description"></textarea>
+                        </div>
+
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="legal" value="{{ __('Legal listing') }}" />
+                            <textarea id="legal" name="legal" class="form-textarea w-full" rows="7"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <div class="p-4">
+                            <x-jet-button>{{ __('Save') }}</x-jet-button>
+                        </div>
                     </div>
 
                 </form>
+
             </div>
 
         </div>

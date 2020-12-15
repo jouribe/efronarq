@@ -21,7 +21,7 @@ class CreateProjectPricesTable extends Migration
             $table->integer('discount_presale')->default(0);
             $table->integer('delivery_increment')->default(0);
             $table->integer('parking_discount')->default(0);
-            $table->enum('currency', ['PEN', 'USD'])->default('PEN');
+            $table->enum('currency', ['PEN', 'USD'])->default('USD');
             $table->timestamps();
         });
     }

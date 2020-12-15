@@ -22,8 +22,7 @@ class CreateProjectsTable extends Migration
             $table->enum('status', ['Preregistrado', 'Preventa', 'En construcción', 'Entrega', 'Finalizado'])->default('Preregistrado');
             $table->unsignedBigInteger('bank_id');
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('cascade');
-            $table->unsignedBigInteger('district_id');
-            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+            $table->boolean("is_active")->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

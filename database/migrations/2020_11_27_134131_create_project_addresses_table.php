@@ -17,6 +17,8 @@ class CreateProjectAddressesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->unsignedBigInteger('district_id');
+            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->enum('type', ['Principal', 'Estacionamiento']);
             $table->string('address');
             $table->timestamps();

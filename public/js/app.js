@@ -19343,6 +19343,12 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+tinymce.init({
+  selector: '#description',
+  toolbar: 'undo redo  | bold italic underline |  removeformat',
+  menubar: false
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
