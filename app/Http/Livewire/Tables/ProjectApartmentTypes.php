@@ -40,7 +40,17 @@ class ProjectApartmentTypes extends LivewireDatatable
                 ->label(__('Bathroom')),
 
             Column::callback('blueprint', function ($blueprint) {
-                return '<a href="javascript:">VER</a>';
+                if ($blueprint === null || $blueprint === '') {
+                    return '<svg class="h-5 w-5 stroke-current text-red-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>';
+                }
+
+                return '<a href="/storage/' . $blueprint . '" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-5 w-5 stroke-current text-green-600 hover:text-green-900 mx-auto">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>';
             })
                 ->label(__('Blueprint')),
 

@@ -82,6 +82,16 @@ class Project extends Model
     }
 
     /**
+     * Project apartments
+     *
+     * @return HasMany
+     */
+    public function apartments(): HasMany
+    {
+        return $this->hasMany(ProjectApartment::class);
+    }
+
+    /**
      * Project parking lots price.
      *
      * @return HasMany
@@ -92,6 +102,36 @@ class Project extends Model
     }
 
     /**
+     * Parking lots
+     *
+     * @return HasMany
+     */
+    public function parkingLots(): HasMany
+    {
+        return $this->hasMany(ProjectParkingLot::class);
+    }
+
+    /**
+     * Project closets.
+     *
+     * @return HasMany
+     */
+    public function closets(): HasMany
+    {
+        return $this->hasMany(ProjectCloset::class);
+    }
+
+    /**
+     * Project documents.
+     *
+     * @return HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(ProjectDocument::class);
+    }
+
+    /**
      * Bank
      *
      * @return BelongsTo
@@ -99,5 +139,15 @@ class Project extends Model
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    /**
+     * Visits
+     *
+     * @return HasMany
+     */
+    public function visits(): HasMany
+    {
+        return $this->hasMany(Visit::class);
     }
 }

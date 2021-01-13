@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectPrice;
+use Exception;
 use Livewire\Component;
 
 class Prices extends Component
@@ -49,9 +50,9 @@ class Prices extends Component
     public $isOpen = false;
 
     /**
-     * @var string[] $currencyTypes
+     * @var string[] $currencyTypesList
      */
-    public $currencyTypes = [
+    public $currencyTypesList = [
         'USD'=> 'Dólares',
         'PEN' => 'Soles'
     ];
@@ -168,7 +169,7 @@ class Prices extends Component
             ProjectPrice::findOrFail($id)->delete();
 
             $this->emit('refreshLivewireDatatable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }

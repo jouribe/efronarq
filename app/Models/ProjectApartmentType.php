@@ -59,4 +59,14 @@ class ProjectApartmentType extends Model
     {
         return $this->hasMany(ProjectPriceApartment::class);
     }
+
+    /**
+     * Project apartment.
+     *
+     * @return HasMany
+     */
+    public function apartments(): HasMany
+    {
+        return $this->hasMany(ProjectApartment::class);
+    }
 }

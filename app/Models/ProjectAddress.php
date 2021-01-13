@@ -54,4 +54,14 @@ class ProjectAddress extends Model
     {
         return $this->belongsTo(District::class);
     }
+
+    /**
+     * Parking lots
+     *
+     * @return HasMany
+     */
+    public function parkingLots()
+    {
+        return $this->hasMany(ProjectParkingLot::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Projects;
 use App\Models\District;
 use App\Models\Project;
 use App\Models\ProjectAddress;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -135,6 +136,8 @@ class Addresses extends Component
                 'address' => $this->address
             ]);
 
+        session()->flash('message', $this->project_address_id ? __('Address updated successfully.') : __('Address created successfully.'));
+
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
@@ -161,13 +164,15 @@ class Addresses extends Component
      *
      * @param $id
      */
-    public function delete($id) : void
+    public function delete($id): void
     {
         try {
             ProjectAddress::findOrFail($id)->delete();
 
+            session()->flash('message', __('Address deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }

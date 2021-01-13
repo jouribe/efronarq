@@ -11,55 +11,81 @@
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog"
              aria-modal="true" aria-labelledby="modal-headline">
 
-            <form>
+            <form wire:submit.prevent="store" autocomplete="off">
                 <div class="flex-row">
                     <div class="p-4">
-                        <x-jet-label for="type_name">{{ __('Name') }}</x-jet-label>
-                        <x-jet-input id="type_name" class="w-full" required wire:model="type_name"/>
+                        <x-jet-label for="type_name">{{ __('Type name') }}</x-jet-label>
+                        <x-jet-input id="type_name" class="w-full" wire:model="type_name"/>
+                        @error('type_name') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="roofed_area">{{ __('Roofed area') }}</x-jet-label>
-                            <x-jet-input id="roofed_area" class="w-full" required wire:model="roofed_area"/>
+                            <x-jet-input id="roofed_area" class="w-full" wire:model="roofed_area"/>
+                            @error('roofed_area') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="free_area">{{ __('Free area') }}</x-jet-label>
-                            <x-jet-input id="free_area" class="w-full" required wire:model="free_area"/>
+                            <x-jet-input id="free_area" class="w-full" wire:model="free_area"/>
+                            @error('free_area') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="bedroom">{{ __('Bedroom') }}</x-jet-label>
-                            <x-jet-input id="bedroom" class="w-full" required wire:model="bedroom"/>
+                            <x-jet-input id="bedroom" class="w-full" wire:model="bedroom"/>
+                            @error('bedroom') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="bathroom">{{ __('Bathroom') }}</x-jet-label>
-                            <x-jet-input id="bathroom" class="w-full" required wire:model="bathroom"/>
+                            <x-jet-input id="bathroom" class="w-full" wire:model="bathroom"/>
+                            @error('bathroom') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="p-4">
                         <x-jet-label for="view">{{ __('View') }}</x-jet-label>
-                        <x-jet-input id="view" class="w-full" required wire:model="view"/>
+                        <x-jet-input id="view" class="w-full" wire:model="view"/>
+                        @error('view') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="p-4">
+                    <div class="p-4" x-data="{ isUploading: false, progress: 0 }"
+                         x-on:livewire-upload-start="isUploading = true"
+                         x-on:livewire-upload-finish="isUploading = false"
+                         x-on:livewire-upload-error="isUploading = false"
+                         x-on:livewire-upload-progress="progress = $event.detail.progress">
                         <x-jet-label for="blueprint">{{ __('Blueprint') }}</x-jet-label>
-                        <x-jet-input id="blueprint" class="w-full" required wire:model="blueprint"/>
+                        <label
+                            class="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-900 hover:text-white">
+                            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"/>
+                            </svg>
+                            <span class="mt-2 text-base leading-normal">{{ __('Select a file') }}</span>
+                            <input type="file" class="hidden" wire:model="blueprint"/>
+                            <input type="hidden" wire:model="current_blueprint">
+                        </label>
+
+                        @error('blueprint') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+
+                        <!-- Progress Bar -->
+                        <div x-show="isUploading" class="mt-1 flex">
+                            <progress max="100" x-bind:value="progress" class="w-full h-1"></progress>
+                        </div>
                     </div>
 
                     <div class="p-4">
                         <x-jet-label for="service_room">{{ __('Service room') }}</x-jet-label>
-                        <x-dropdown-list :items="$isServiceRoom" id="service_room" required wire:model="service_room" />
+                        <x-dropdown-list :items="$isServiceRoom" id="service_room" wire:model="service_room"/>
+                        @error('service_room') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                        <x-jet-button type="button" class="bg-blue-900 hover:bg-blue-700" wire:click="store()">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700">{{ __('Save') }}</x-jet-button>
                     </div>
                 </div>
             </form>

@@ -20,4 +20,14 @@ class District extends Model
     {
         return $this->hasMany(ProjectAddress::class);
     }
+
+    /**
+     * Customers
+     *
+     * @return HasMany
+     */
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class);
+    }
 }

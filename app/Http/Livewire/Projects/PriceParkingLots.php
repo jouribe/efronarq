@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectPriceParkingLot;
+use Exception;
 use Livewire\Component;
 
 class PriceParkingLots extends Component
@@ -163,7 +164,7 @@ class PriceParkingLots extends Component
             ProjectPriceParkingLot::findOrFail($id)->delete();
 
             $this->emit('refreshLivewireDatatable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }

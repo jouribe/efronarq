@@ -11,29 +11,32 @@
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog"
              aria-modal="true" aria-labelledby="modal-headline">
 
-            <form>
+            <form wire:submit.prevent="store" autocomplete="off">
 
                 <div class="flex-row">
                     <div class="flex">
                         <div class="pl-4 px-1 py-4 w-1/3">
                             <x-jet-label for="floor">{{ __('Floor') }}</x-jet-label>
-                            <x-dropdown-list id="floor" required wire:model="floor" :items="$floorList" />
+                            <x-dropdown-list id="floor" wire:model="floor" :items="$floorList" />
+                            @error('floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="px-1 py-4 w-1/3">
                             <x-jet-label for="type">{{ __('Type') }}</x-jet-label>
-                            <x-dropdown-list id="type" required wire:model="type" :items="$typeList" />
+                            <x-dropdown-list id="type" wire:model="type" :items="$typeList" />
+                            @error('type') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="pr-4 px-1 py-4 w-1/3">
                             <x-jet-label for="price">{{ __('Price') }}</x-jet-label>
                             <x-jet-input id="price" class="form-input w-full" required wire:model="price"/>
+                            @error('price') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                        <x-jet-button type="button" class="bg-blue-900 hover:bg-blue-700" wire:click="store()">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700">{{ __('Save') }}</x-jet-button>
                     </div>
                 </div>
 

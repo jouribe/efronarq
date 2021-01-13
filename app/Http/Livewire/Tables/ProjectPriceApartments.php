@@ -29,10 +29,10 @@ class ProjectPriceApartments extends LivewireDatatable
                 ->label(__('Start floor')),
 
             Column::name('end_floor')
-                ->label(__('Start floor')),
+                ->label(__('End floor')),
 
             Column::callback('price_area', function ($price_area) {
-                return '<code>US$ ' . number_format($price_area, 2) . ' m<sup>2</sup></code>';
+                return '<code>US$ ' . number_format($price_area, 2) . ' x M<sup>2</sup></code>';
             })
                 ->label(__('Price area')),
 

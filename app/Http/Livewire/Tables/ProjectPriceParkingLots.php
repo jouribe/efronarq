@@ -22,7 +22,7 @@ class ProjectPriceParkingLots extends LivewireDatatable
                 ->label(__('Type')),
 
             Column::callback('price', function ($price) {
-                return '<pre>US$ ' . number_format($price) . '</pre>';
+                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Price')),
 

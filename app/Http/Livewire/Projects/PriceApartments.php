@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Projects;
 use App\Models\Project;
 use App\Models\ProjectApartmentType;
 use App\Models\ProjectPriceApartment;
+use Exception;
 use Livewire\Component;
 
 class PriceApartments extends Component
@@ -108,6 +109,7 @@ class PriceApartments extends Component
     {
         // Validation
         $this->validate([
+            'project_apartment_type_id' => 'required',
             'start_floor' => 'required|integer',
             'end_floor' => 'required|integer',
             'price_area' => 'required|numeric'
@@ -158,7 +160,7 @@ class PriceApartments extends Component
             ProjectPriceApartment::findOrFail($id)->delete();
 
             $this->emit('refreshLivewireDatatable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerOfferParkingLotsTable extends Migration
+class CreateVisitParkingLotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCustomerOfferParkingLotsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_offer_parking_lots', function (Blueprint $table) {
+        Schema::create('visit_parking_lots', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_offer_id');
-            $table->foreign('customer_offer_id')->references('id')->on('customer_offers')->onDelete('cascade');
+            $table->unsignedBigInteger('visit_id');
+            $table->foreign('visit_id')->references('id')->on('visits')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('project_parking_lot_id');
-            $table->foreign('project_parking_lot_id')->references('id')->on('project_parking_lots')->onDelete('cascade');
+            $table->foreign('project_parking_lot_id')->references('id')->on('project_parking_lots')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCustomerOfferParkingLotsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_offer_parking_lots');
+        Schema::dropIfExists('visit_parking_lots');
     }
 }

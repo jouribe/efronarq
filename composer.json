@@ -19,9 +19,10 @@
         "laravel/tinker": "^2.5",
         "laraveles/spanish": "^1.5",
         "livewire/livewire": "^2.0",
-        "mediconesystems/livewire-datatables": "^0.4.2"
+        "mediconesystems/livewire-datatables": "^0.4.3"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.2",

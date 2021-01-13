@@ -11,41 +11,46 @@
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog"
              aria-modal="true" aria-labelledby="modal-headline">
 
-            <form>
+            <form wire:submit.prevent="store" autocomplete="off">
                 <div class="flex-row">
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="free_area">Factor {{ __('Free area') }}</x-jet-label>
-                            <x-jet-input id="free_area" class="w-full" required wire:model="free_area"/>
+                            <x-jet-input id="free_area" class="w-full" wire:model="free_area"/>
+                            @error('free_area') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="discount_presale">Factor {{ __('Discount presale') }}</x-jet-label>
-                            <x-jet-input id="discount_presale" class="w-full" required wire:model="discount_presale"/>
+                            <x-jet-input id="discount_presale" class="w-full" wire:model="discount_presale"/>
+                            @error('discount_presale') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="delivery_increment">Factor {{ __('Delivery increment') }}</x-jet-label>
-                            <x-jet-input id="delivery_increment" class="w-full" required wire:model="delivery_increment"/>
+                            <x-jet-input id="delivery_increment" class="w-full" wire:model="delivery_increment"/>
+                            @error('delivery_increment') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="parking_discount">{{ __('Parking discount') }}</x-jet-label>
-                            <x-jet-input id="parking_discount" class="w-full" required wire:model="parking_discount"/>
+                            <x-jet-input id="parking_discount" class="w-full" wire:model="parking_discount"/>
+                            @error('parking_discount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="p-4">
                         <x-jet-label for="currency">{{ __('Currency') }}</x-jet-label>
-                        <x-dropdown-list :items="$currencyTypes" id="currency" required wire:model="currency" />
+                        <x-dropdown-list :items="$currencyTypesList" id="currency" wire:model="currency" />
+                        @error('currency') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                        <x-jet-button type="button" class="bg-blue-900 hover:bg-blue-700" wire:click="store()">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700">{{ __('Save') }}</x-jet-button>
                     </div>
                 </div>
             </form>

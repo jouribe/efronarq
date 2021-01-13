@@ -73,6 +73,16 @@
         </div>
     </div>
 
+    @if(session()->has('message'))
+        <div class="py-6 bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 shadow-md" role="alert">
+            <div class="flex">
+                <div>
+                    <p class="text-sm">{{ session('message') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="pb-12">
         <livewire:projects.addresses :project="$project"/>
     </div>
@@ -86,10 +96,30 @@
     </div>
 
     <div class="pb-12">
-        <livewire:projects.price-apartments :project="$project" />
+        <livewire:projects.price-apartments :project="$project"/>
     </div>
 
     <div class="pb-12">
-        <livewire:projects.price-parking-lots :project="$project" />
+        <livewire:projects.price-parking-lots :project="$project"/>
+    </div>
+
+    <div class="pb-12">
+        <livewire:projects.price-closets :project="$project"/>
+    </div>
+
+    <div class="pb-12">
+        <livewire:projects.apartments :project="$project"/>
+    </div>
+
+    <div class="pb-12">
+        <livewire:projects.parking-lots :project="$project"/>
+    </div>
+
+    <div class="pb-12">
+        <livewire:projects.closets :project="$project"/>
+    </div>
+
+    <div class="pb-12">
+        <livewire:projects.documents :project="$project"/>
     </div>
 </x-app-layout>

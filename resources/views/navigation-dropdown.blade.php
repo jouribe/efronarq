@@ -20,7 +20,7 @@
                         {{ __('Projects') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="#" :active="request()->routeIs('visits')">
+                    <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create'])">
                         {{ __('Visits') }}
                     </x-jet-nav-link>
 

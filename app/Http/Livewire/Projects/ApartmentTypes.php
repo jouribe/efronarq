@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectApartmentType;
+use Exception;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ApartmentTypes extends Component
 {
+    use WithFileUploads;
+
     /**
      * @var Project $project
      */
@@ -52,6 +56,11 @@ class ApartmentTypes extends Component
      * @var string $blueprint
      */
     public $blueprint;
+
+    /**
+     * @var string $current_blueprint
+     */
+    public $current_blueprint;
 
     /**
      * @var boolean $service_room
@@ -118,8 +127,9 @@ class ApartmentTypes extends Component
         $this->bedroom = '';
         $this->bathroom = '';
         $this->view = '';
-        $this->blueprint = '';
+        $this->blueprint = null;
         $this->service_room = '';
+        $this->current_blueprint = '';
     }
 
     /**
@@ -129,12 +139,18 @@ class ApartmentTypes extends Component
     {
         // Validation
         $this->validate([
-            'type_name' => 'required',
+            'type_name' => 'required|string|min:1',
             'roofed_area' => 'required|numeric',
             'free_area' => 'required|numeric',
             'bedroom' => 'required|numeric',
-            'bathroom' => 'required|numeric'
+            'bathroom' => 'required|numeric',
+            'service_room' => 'required',
+            'blueprint' => 'nullable|file|max:10240', // 10MB Max
         ]);
+
+        if($this->blueprint !== null && $this->blueprint !== '') {
+            $this->current_blueprint = $this->blueprint->store('apartment-type-blueprints', 'public');
+        }
 
         // Save project address
         ProjectApartmentType::updateOrCreate([
@@ -148,8 +164,11 @@ class ApartmentTypes extends Component
                 'bedroom' => $this->bedroom,
                 'bathroom' => $this->bathroom,
                 'view' => $this->view,
-                'service_room' => $this->service_room
+                'service_room' => $this->service_room,
+                'blueprint' => $this->current_blueprint
             ]);
+
+        session()->flash('message', $this->project_apartment_type_id ? __('Apartment type updated successfully') : __('Apartment type created successfully'));
 
         $this->closeModal();
         $this->resetInputFields();
@@ -171,7 +190,7 @@ class ApartmentTypes extends Component
         $this->bedroom = $apartmentType->bedroom;
         $this->bathroom = $apartmentType->bathroom;
         $this->view = $apartmentType->view;
-        $this->blueprint = $apartmentType->blueprint;
+        $this->current_blueprint = $apartmentType->blueprint;
         $this->service_room = $apartmentType->service_room;
 
         $this->openModal();
@@ -187,8 +206,10 @@ class ApartmentTypes extends Component
         try {
             ProjectApartmentType::findOrFail($id)->delete();
 
+            session()->flash('message', __('Apartment type deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }

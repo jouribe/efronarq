@@ -11,34 +11,38 @@
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog"
              aria-modal="true" aria-labelledby="modal-headline">
 
-            <form>
+            <form wire:submit.prevent="store" autocomplete="off">
                 <div class="flex-row">
 
                     <div class="flex">
                         <div class="pl-4 px-1 py-4 w-1/4">
                             <x-jet-label for="project_apartment_type_id">{{ __('Type') }}</x-jet-label>
-                            <x-dropdown-list id="project_apartment_type_id" wire:model="project_apartment_type_id" :items="$apartmentTypes" />
+                            <x-dropdown-list id="project_apartment_type_id" wire:model="project_apartment_type_id" :items="$apartmentTypes"/>
+                            @error('project_apartment_type_id') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="px-1 py-4 w-1/4">
                             <x-jet-label for="start_floor">{{ __('Start floor') }}</x-jet-label>
-                            <x-jet-input id="start_floor" class="w-full" required wire:model="start_floor"/>
+                            <x-jet-input id="start_floor" class="w-full" wire:model="start_floor"/>
+                            @error('start_floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
-                         <div class="px-1 py-4 w-1/4">
+                        <div class="px-1 py-4 w-1/4">
                             <x-jet-label for="end_floor">{{ __('End floor') }}</x-jet-label>
-                            <x-jet-input id="end_floor" class="w-full" required wire:model="end_floor"/>
+                            <x-jet-input id="end_floor" class="w-full" wire:model="end_floor"/>
+                            @error('end_floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="pr-4 px-1 py-4 w-1/4">
                             <x-jet-label for="price_area">{{ __('Price area') }}</x-jet-label>
-                            <x-jet-input id="price_area" class="w-full" required wire:model="price_area"/>
+                            <x-jet-input id="price_area" class="w-full" wire:model="price_area"/>
+                            @error('price_area') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                        <x-jet-button type="button" class="bg-blue-900 hover:bg-blue-700" wire:click="store()">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700">{{ __('Save') }}</x-jet-button>
                     </div>
                 </div>
             </form>

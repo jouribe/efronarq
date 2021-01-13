@@ -22,9 +22,7 @@ class CreateCustomersTable extends Migration
             $table->string('secondary_email');
             $table->string('phone', 12);
             $table->unsignedBigInteger('district_id');
-            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
-            $table->unsignedBigInteger('origin_id');
-            $table->foreign('origin_id')->references('id')->on('origins')->onDelete('cascade');
+            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
