@@ -15,20 +15,20 @@
                 <div class="flex-row">
                     <div class="p-4">
                         <x-jet-label for="type_name">{{ __('Type name') }}</x-jet-label>
-                        <x-jet-input id="type_name" class="w-full" wire:model="type_name"/>
+                        <x-jet-input type="text" id="type_name" class="w-full" wire:model="type_name"/>
                         @error('type_name') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="roofed_area">{{ __('Roofed area') }}</x-jet-label>
-                            <x-jet-input id="roofed_area" class="w-full" wire:model="roofed_area"/>
+                            <x-jet-input type="text" id="roofed_area" class="w-full" wire:model="roofed_area"/>
                             @error('roofed_area') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="free_area">{{ __('Free area') }}</x-jet-label>
-                            <x-jet-input id="free_area" class="w-full" wire:model="free_area"/>
+                            <x-jet-input type="text" id="free_area" class="w-full" wire:model="free_area"/>
                             @error('free_area') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -36,20 +36,20 @@
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="bedroom">{{ __('Bedroom') }}</x-jet-label>
-                            <x-jet-input id="bedroom" class="w-full" wire:model="bedroom"/>
+                            <x-jet-input type="text" id="bedroom" class="w-full" wire:model="bedroom"/>
                             @error('bedroom') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="bathroom">{{ __('Bathroom') }}</x-jet-label>
-                            <x-jet-input id="bathroom" class="w-full" wire:model="bathroom"/>
+                            <x-jet-input type="text" id="bathroom" class="w-full" wire:model="bathroom"/>
                             @error('bathroom') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="p-4">
                         <x-jet-label for="view">{{ __('View') }}</x-jet-label>
-                        <x-jet-input id="view" class="w-full" wire:model="view"/>
+                        <x-jet-input type="text" id="view" class="w-full" wire:model="view"/>
                         @error('view') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 

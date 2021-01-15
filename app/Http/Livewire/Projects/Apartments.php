@@ -1,11 +1,16 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectApartment;
 use App\Models\ProjectApartmentType;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Apartments extends Component
@@ -13,32 +18,32 @@ class Apartments extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_apartment_id
+     * @var mixed $project_apartment_id
      */
     public $project_apartment_id;
 
     /**
-     * @var int $project_apartment_type_id
+     * @var mixed $project_apartment_type_id
      */
     public $project_apartment_type_id;
 
     /**
-     * @var array[] $projectApartmentTypeList
+     * @var mixed $projectApartmentTypeList
      */
     public $projectApartmentTypeList;
 
     /**
      * @var string $availability
      */
-    public $availability;
+    public string $availability;
 
     /**
      * @var string[] $availabilityList
      */
-    public $availabilityList = [
+    public array $availabilityList = [
         'Disponible' => 'Disponible',
         'Reservado' => 'Reservado',
         'Separado' => 'Separado',
@@ -46,34 +51,34 @@ class Apartments extends Component
     ];
 
     /**
-     * @var int $start_floor
+     * @var mixed $start_floor
      */
     public $start_floor;
 
     /**
-     * @var int $end_floor
+     * @var mixed $end_floor
      */
     public $end_floor;
 
     /**
-     * @var int $parking_lots
+     * @var mixed $parking_lots
      */
     public $parking_lots;
 
     /**
-     * @var int $closets
+     * @var mixed $closets
      */
     public $closets;
 
     /**
-     * @var int $order
+     * @var mixed $order
      */
     public $order;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -83,7 +88,12 @@ class Apartments extends Component
         'deleteApartments' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         // Project apartment type list
         $this->projectApartmentTypeList = ProjectApartmentType::whereProjectId($this->project->id)->pluck('type_name', 'id');
@@ -147,11 +157,9 @@ class Apartments extends Component
             'order' => 'required|integer'
         ]);
 
-        // Save project address
-        ProjectApartment::updateOrCreate([
-            'id' => $this->project_apartment_id
-        ],
-            [
+        if ($this->project_apartment_id) {
+            // Update project apartment
+            ProjectApartment::whereId($this->project_apartment_id)->update([
                 'project_id' => $this->project->id,
                 'apartment_type_id' => $this->project_apartment_type_id,
                 'availability' => $this->availability,
@@ -161,6 +169,22 @@ class Apartments extends Component
                 'closets' => $this->closets,
                 'order' => $this->order
             ]);
+        } else {
+            for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
+                ProjectApartment::create([
+                    'project_id' => $this->project->id,
+                    'apartment_type_id' => $this->project_apartment_type_id,
+                    'availability' => $this->availability,
+                    'start_floor' => $i,
+                    'end_floor' => $i,
+                    'parking_lots' => $this->parking_lots,
+                    'closets' => $this->closets,
+                    'order' => $this->order + ($i - 1)
+                ]);
+            }
+        }
+
+        session()->flash('message', $this->project_apartment_id ? __('Apartment updated successfully.') : __('Apartment created successfully.'));
 
         $this->closeModal();
         $this->resetInputFields();
@@ -192,13 +216,16 @@ class Apartments extends Component
      *
      * @param $id
      */
-    public function delete($id) : void
+    public function delete($id): void
     {
         try {
             ProjectApartment::findOrFail($id)->delete();
 
+            session()->flash('message', __('Apartment deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

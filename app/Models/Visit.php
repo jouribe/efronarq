@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Visit extends Model
@@ -16,7 +17,7 @@ class Visit extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'customer_id',
@@ -27,17 +28,6 @@ class Visit extends Model
         'discount',
         'status',
         'type_financing'
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at'
     ];
 
     /**
@@ -108,5 +98,25 @@ class Visit extends Model
     public function origin(): BelongsTo
     {
         return $this->belongsTo(Origin::class);
+    }
+
+    /**
+     * Quotation
+     *
+     * @return HasOne
+     */
+    public function quotation(): HasOne
+    {
+        return $this->hasOne(VisitQuotation::class, 'visit_id', 'id');
+    }
+
+    /**
+     * Pull aparts.
+     *
+     * @return HasMany
+     */
+    public function pullAparts(): HasMany
+    {
+        return $this->hasMany(PullApart::class);
     }
 }

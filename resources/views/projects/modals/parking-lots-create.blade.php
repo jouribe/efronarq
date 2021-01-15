@@ -22,8 +22,8 @@
                         </div>
 
                         <div class="p-4 w-1/2">
-                            <x-jet-label for="parking_lot">{{ __('Parking Lot') }}</x-jet-label>
-                            <x-jet-input id="parking_lot" class="w-full" wire:model="parking_lot"/>
+                            <x-jet-label for="parking_lot">{{ __('Parking lot') }}</x-jet-label>
+                            <x-jet-input type="text" id="parking_lot" class="w-full" wire:model="parking_lot"/>
                             @error('parking_lot') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>
@@ -31,13 +31,13 @@
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="roofed_area">{{ __('Roofed area') }}</x-jet-label>
-                            <x-jet-input id="roofed_area" class="w-full" wire:model="roofed_area"/>
+                            <x-jet-input type="text" id="roofed_area" class="w-full" wire:model="roofed_area"/>
                             @error('roofed_area') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="free_area">{{ __('Free area') }}</x-jet-label>
-                            <x-jet-input id="free_area" class="w-full" wire:model="free_area"/>
+                            <x-jet-input type="text" id="free_area" class="w-full" wire:model="free_area"/>
                             @error('free_area') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\District;
@@ -9,6 +11,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Addresses extends Component
@@ -16,44 +19,44 @@ class Addresses extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var District $districts
+     * @var Collection $districts
      */
-    public $districts;
+    public Collection $districts;
 
     /**
      * @var array $type
      */
-    public $types = [
+    public array $types = [
         'Estacionamiento' => 'Estacionamiento'
     ];
 
     /**
-     * @var int $project_address_id
+     * @var mixed $project_address_id
      */
     public $project_address_id;
 
     /**
      * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
-     * @var int $district_id
+     * @var mixed $district_id
      */
     public $district_id;
 
     /**
      * @var string $address
      */
-    public $address;
+    public string $address;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -68,7 +71,7 @@ class Addresses extends Component
      *
      * @return Application|Factory|View
      */
-    public function render()
+    public function render(): Factory|View|Application
     {
         // Get districts
         $this->districts = District::all()->pluck('name', 'id');
@@ -108,7 +111,7 @@ class Addresses extends Component
     public function resetInputFields(): void
     {
         $this->project_address_id = null;
-        $this->district_id = '';
+        $this->district_id = $this->project->addresses->where('type', 'Principal')->first()->district_id;
         $this->type = 'Estacionamiento';
         $this->address = '';
     }
@@ -173,6 +176,7 @@ class Addresses extends Component
 
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

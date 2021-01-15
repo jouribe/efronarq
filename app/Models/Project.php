@@ -16,7 +16,7 @@ class Project extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'name',
@@ -26,19 +26,6 @@ class Project extends Model
         'legal',
         'status',
         'is_active'
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @deprecated Use the "casts" property
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at'
     ];
 
     /**
@@ -119,6 +106,16 @@ class Project extends Model
     public function closets(): HasMany
     {
         return $this->hasMany(ProjectCloset::class);
+    }
+
+    /**
+     * Price closet
+     *
+     * @return HasMany
+     */
+    public function closetPrices(): HasMany
+    {
+        return $this->hasMany(ProjectPriceCloset::class);
     }
 
     /**

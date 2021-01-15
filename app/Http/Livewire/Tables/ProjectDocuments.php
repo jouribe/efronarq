@@ -8,11 +8,35 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectDocuments extends LivewireDatatable
 {
-    public $model = ProjectDocument::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = 'type, name, file';
 
-    public function columns()
+    /**
+     * Query Builder
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function builder()
+    {
+        return ProjectDocument::query()->whereProjectId($this->projectId);
+    }
+
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('type')

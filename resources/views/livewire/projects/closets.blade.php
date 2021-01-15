@@ -11,5 +11,5 @@
         @include('projects.modals.closets-create')
     @endif
 
-    <livewire:tables.project-closets/>
+    <livewire:tables.project-closets :project-id="$project->id"/>
 </div>

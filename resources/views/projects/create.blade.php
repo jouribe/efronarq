@@ -11,14 +11,14 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <x-jet-validation-errors class="mb-4"/>
 
-                <form method="POST" action="{{ route('projects.store') }}">
+                <form method="POST" action="{{ route('projects.store') }}" autocomplete="off">
 
                     @csrf
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="name" value="{{ __('Name') }}"/>
-                            <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus/>
+                            <x-jet-input id="name" type="text" name="name" :value="old('name')" required autofocus/>
                         </div>
 
                         <div class="p-4 w-1/2">
@@ -35,7 +35,7 @@
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="status" value="{{ __('Main address') }}"/>
-                            <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')"/>
+                            <x-jet-input id="address" type="text" name="address" :value="old('address')"/>
                         </div>
                     </div>
 
@@ -47,19 +47,19 @@
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="logo" value="{{ __('Logo') }}"/>
-                            <x-jet-input id="logo" class="block mt-1 w-full" type="text" name="logo" :value="old('logo')"/>
+                            <x-jet-input id="logo" type="text" name="logo" :value="old('logo')"/>
                         </div>
                     </div>
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="description" value="{{ __('Description') }}"/>
-                            <textarea id="description" name="description"></textarea>
+                            <textarea class="form-textarea" id="description" name="description"></textarea>
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="legal" value="{{ __('Legal listing') }}" />
-                            <textarea id="legal" name="legal" class="form-textarea w-full" rows="7"></textarea>
+                            <textarea id="legal" name="legal" class="form-textarea" rows="7"></textarea>
                         </div>
                     </div>
 

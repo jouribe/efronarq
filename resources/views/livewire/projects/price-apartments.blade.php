@@ -11,5 +11,5 @@
         @include('projects.modals.price-apartments-create')
     @endif
 
-    <livewire:tables.project-price-apartments/>
+    <livewire:tables.project-price-apartments :project-id="$project->id"/>
 </div>

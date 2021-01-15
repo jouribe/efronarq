@@ -5,7 +5,11 @@ namespace App\Http\Livewire\Visits;
 use App\Models\Visit;
 use App\Models\VisitTracking;
 use App\Traits\Lists;
+use Carbon\Carbon;
 use DateTime;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Exception;
 
@@ -16,42 +20,42 @@ class Tracking extends Component
     /**
      * @var Visit $visit
      */
-    public $visit;
+    public Visit $visit;
 
     /**
-     * @var int $visit_tracking_id
+     * @var mixed $visit_tracking_id
      */
     public $visit_tracking_id;
 
     /**
-     * @var DateTime $actionAt
+     * @var string $actionAt
      */
-    public $action_at;
+    public string $action_at;
 
     /**
      * @var string $action
      */
-    public $action;
+    public string $action;
 
     /**
      * @var string[]
      */
-    public $actionList = [];
+    public array $actionList = [];
 
     /**
      * @var string $comments
      */
-    public $comments;
+    public string $comments;
 
     /**
      * @var string $status
      */
-    public $status;
+    public string $status;
 
     /**
      * @var string[] $statusList
      */
-    public $statusList = [
+    public array $statusList = [
         'Pendiente' => 'Pendiente',
         'Finalizado' => 'Finalizado'
     ];
@@ -59,7 +63,7 @@ class Tracking extends Component
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -69,7 +73,12 @@ class Tracking extends Component
         'deleteTracking' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         $this->actionList = $this->action();
 
@@ -130,11 +139,13 @@ class Tracking extends Component
         ],
             [
                 'visit_id' => $this->visit->id,
-                'action_at' => $this->action_at,
+                'action_at' => Carbon::parse($this->action_at)->format("Y-m-d"),
                 'action' => $this->action,
                 'comments' => $this->comments,
                 'status' => $this->status
             ]);
+
+        session()->flash('message', $this->visit_tracking_id ? __('Tracking updated successfully') : __('Tracking created successfully'));
 
         $this->closeModal();
         $this->resetInputFields();
@@ -168,8 +179,11 @@ class Tracking extends Component
         try {
             VisitTracking::findOrFail($id)->delete();
 
+            session()->flash('message', __('Tracking deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

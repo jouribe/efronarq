@@ -3,25 +3,46 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectCloset;
+use Illuminate\Database\Eloquent\Builder;
+use LaravelIdea\Helper\App\Models\_ProjectClosetQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectClosets extends LivewireDatatable
 {
-    public $model = ProjectCloset::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = 'project_closets.floor, project_closets.closet, project_closets.availability';
 
-    public function builder()
+    /**
+     * Query builder
+     *
+     * @return Builder|_ProjectClosetQueryBuilder
+     */
+    public function builder(): Builder|_ProjectClosetQueryBuilder
     {
         return ProjectCloset::query()
             ->leftJoin('projects', 'projects.id', 'project_closets.project_id')
             ->leftJoin('project_price_closets', 'project_price_closets.project_id', 'projects.id')
+            ->where('project_closets.project_id', $this->projectId)
             ->groupBy('project_closets.id', 'project_closets.floor', 'project_closets.closet', 'project_closets.roofed_area', 'project_closets.availability', 'project_closets.blueprint',
                 'project_price_closets.price');
     }
 
-    public function columns()
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('project_closets.floor')

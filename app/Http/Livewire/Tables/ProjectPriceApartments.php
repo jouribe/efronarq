@@ -8,18 +8,38 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectPriceApartments extends LivewireDatatable
 {
-    public $model = ProjectPriceApartment::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = 'project_apartment_types.type_name';
 
+    /**
+     * Query Builder
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
     public function builder()
     {
         return ProjectPriceApartment::query()
             ->leftJoin('project_apartment_types', 'project_apartment_types.id', 'project_price_apartments.project_apartment_type_id')
+            ->where('project_price_apartments.project_id', $this->projectId)
             ->groupBy('start_floor', 'end_floor', 'price_area', 'project_apartment_types.type_name', 'project_price_apartments.id');
     }
 
-    public function columns()
+    /**
+     * Table columns.
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('project_apartment_types.type_name')

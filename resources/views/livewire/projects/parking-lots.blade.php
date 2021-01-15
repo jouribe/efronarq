@@ -11,5 +11,5 @@
         @include('projects.modals.parking-lots-create')
     @endif
 
-    <livewire:tables.project-parking-lots/>
+    <livewire:tables.project-parking-lots :project-id="$project->id"/>
 </div>

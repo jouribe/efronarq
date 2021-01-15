@@ -1,9 +1,14 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectCloset;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Exception;
 use Livewire\WithFileUploads;
@@ -15,22 +20,22 @@ class Closets extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_closet_id
+     * @var mixed $project_closet_id
      */
     public $project_closet_id;
 
     /**
      * @var string $floor
      */
-    public $floor;
+    public string $floor;
 
     /**
      * @var string[] $floorList
      */
-    public $floorList = [
+    public array $floorList = [
         'Sótano 5' => 'Sótano 5',
         'Sótano 4' => 'Sótano 4',
         'Sótano 3' => 'Sótano 3',
@@ -43,22 +48,22 @@ class Closets extends Component
     /**
      * @var string $closet
      */
-    public $closet;
+    public string $closet;
 
     /**
-     * @var boolean $roofed_area
+     * @var mixed $roofed_area
      */
     public $roofed_area;
 
     /**
      * @var string $availability
      */
-    public $availability;
+    public string $availability;
 
     /**
      * @var string[] $availabilityList
      */
-    public $availabilityList = [
+    public array $availabilityList = [
         'Disponible' => 'Disponible',
         'Reservado' => 'Reservado',
         'Separado' => 'Separado',
@@ -66,19 +71,19 @@ class Closets extends Component
     ];
 
     /**
-     * @var string $blueprint
+     * @var mixed $blueprint
      */
     public $blueprint;
 
     /**
-     * @var string $current_blueprint
+     * @var mixed $current_blueprint
      */
     public $current_blueprint;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -88,7 +93,12 @@ class Closets extends Component
         'deleteClosets' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.closets');
     }
@@ -202,6 +212,7 @@ class Closets extends Component
 
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

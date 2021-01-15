@@ -8,15 +8,19 @@ use App\Models\CustomerDetail;
 use App\Models\District;
 use App\Models\Origin;
 use App\Models\Project;
+use App\Models\ProjectPriceCloset;
+use App\Models\ProjectPriceParkingLot;
 use App\Models\Visit;
 use App\Models\VisitCloset;
 use App\Models\VisitParkingLot;
+use App\Models\VisitQuotation;
 use App\Traits\Lists;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class VisitController extends Controller
 {
@@ -27,7 +31,7 @@ class VisitController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function index()
+    public function index(): Factory|View|Response|Application
     {
         return view('visits.index');
     }
@@ -37,7 +41,7 @@ class VisitController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function create()
+    public function create(): Factory|View|Response|Application
     {
         // Get all districts
         $districts = District::all()->pluck('name', 'id');
@@ -70,7 +74,7 @@ class VisitController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function store(StoreVisitRequest $request)
+    public function store(StoreVisitRequest $request): Factory|View|Response|Application
     {
         // Create customer
         $customer = Customer::create([
@@ -133,7 +137,7 @@ class VisitController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function show(int $id)
+    public function show(int $id): Factory|View|Response|Application
     {
         return view('visits.show')->with([
             'visit' => Visit::whereId($id)->firstOrFail()
@@ -144,11 +148,12 @@ class VisitController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     *
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(int $id): Factory|View|Application
     {
-        //
+        return view('visits.quote')->with('visit', Visit::find($id));
     }
 
     /**
@@ -172,5 +177,63 @@ class VisitController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Generates the quote for the visit.
+     *
+     * @param $id
+     *
+     * @return BinaryFileResponse
+     */
+    public function generate($id): BinaryFileResponse
+    {
+        $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType',
+            'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank')
+            ->find($id);
+
+        $quotation = VisitQuotation::whereVisitId($visit->id)->first();
+
+        if (is_null($quotation)) {
+
+            $parkingLotPrices = [];
+
+            foreach (VisitParkingLot::whereVisitId($id)->get() as $parking) {
+                $priceParkingLot = ProjectPriceParkingLot::whereProjectId($visit->project_id)
+                    ->where('type', $parking->parkingLot->type)
+                    ->where('floor', $parking->parkingLot->floor)->first()->toArray();
+
+                $parkingLotPrices[] = [
+                    'parking' => $parking->toArray(),
+                    'price' => $priceParkingLot
+                ];
+            }
+
+            $data = [
+                'visit' => $visit->toArray(),
+                'parking_lot' => $parkingLotPrices,
+                'closet_price' => ProjectPriceCloset::whereProjectId($visit->id)->first()->toArray(),
+                'discount' => 0,
+                'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id
+            ];
+
+            $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';
+
+            $pdf = \PDF::loadView('visits.quote', $data)
+                ->save(storage_path('app/public/quotation/' . $fileName));
+
+            VisitQuotation::create([
+                'visit_id' => $visit->id,
+                'file' => "quotation/{$fileName}"
+            ]);
+
+            // Update visit status to 'Cotización'
+            $visit->status = 'Cotización';
+            $visit->save();
+
+            return $pdf->stream($fileName);
+        }
+
+        return response()->file('storage/' . $quotation->file);
     }
 }

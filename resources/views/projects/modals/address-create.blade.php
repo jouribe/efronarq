@@ -26,7 +26,7 @@
 
                     <div class="p-4">
                         <x-jet-label for="address">{{ __('Address') }}</x-jet-label>
-                        <x-jet-input class="w-full" required wire:model="address"/>
+                        <x-jet-input type="text" required wire:model="address"/>
                         @error('address') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                     </div>
 

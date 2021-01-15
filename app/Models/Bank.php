@@ -36,4 +36,14 @@ class Bank extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    /**
+     * Pull aparts
+     *
+     * @return HasMany
+     */
+    public function pullAparts(): HasMany
+    {
+        return $this->hasMany(PullApart::class);
+    }
 }

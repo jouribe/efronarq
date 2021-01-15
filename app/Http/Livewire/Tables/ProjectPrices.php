@@ -8,9 +8,30 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectPrices extends LivewireDatatable
 {
-    public $model = ProjectPrice::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
-    public function columns()
+    /**
+     * Query builder.
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function builder()
+    {
+        return ProjectPrice::query()->whereProjectId($this->projectId);
+    }
+
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::callback('free_area', function ($free_area) {
@@ -38,7 +59,7 @@ class ProjectPrices extends LivewireDatatable
                     ? '<span>Dólares</span>'
                     : '<span>Soles</span>';
             })
-            ->label(__('Currency')),
+                ->label(__('Currency')),
 
             Column::name('id')
                 ->label(__('Actions'))

@@ -15,7 +15,7 @@
 
                 <div class="flex-row p-4">
                     <x-jet-label for="price">{{ __('Price') }}</x-jet-label>
-                    <x-jet-input id="price" class="form-input w-full" wire:model="price"/>
+                    <x-jet-input type="text" id="price" class="form-input w-full" wire:model="price"/>
                     @error('price') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                 </div>
 

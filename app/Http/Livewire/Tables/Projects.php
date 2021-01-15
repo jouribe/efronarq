@@ -13,26 +13,43 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 class Projects extends LivewireDatatable
 {
     /**
-     * @var string $model
+     * @var mixed $model
      */
     public $model = Project::class;
 
     /**
-     * @var string $searchable
+     * @var mixed $searchable
      */
     public $searchable = "name";
 
     /**
-     * @var bool $exportable
+     * @var mixed $exportable
      */
     public $exportable = true;
 
     /**
-     * @var string $sort
+     * @var mixed $sort
      */
     public $sort = "name|asc";
 
-    public function columns()
+    /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add';
+
+    /**
+     * @var mixed
+     */
+    public $route;
+
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             NumberColumn::name('id')
@@ -63,5 +80,17 @@ class Projects extends LivewireDatatable
                 ->label(__('Actions'))
                 ->view('components.table-actions')
         ];
+    }
+
+    /**
+     * Update project status
+     *
+     * @param $id
+     */
+    public function active($id): void
+    {
+        Project::whereId($id)->update([
+            'is_active' => true
+        ]);
     }
 }

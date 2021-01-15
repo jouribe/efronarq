@@ -15,7 +15,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
-                            <input wire:model.debounce.500ms="search" class="form-input block bg-white w-full rounded-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                            <input type="text" wire:model.debounce.500ms="search" class="form-input h-10 pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                                    placeholder="{{ __('Search in') }} {{ $this->searchableColumns()->map->label->join(', ') }}"/>
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <button wire:click="$set('search', null)" class="text-gray-300 hover:text-red-600 focus:outline-none">
@@ -42,6 +42,15 @@
                     </div>
                 @endif
 
+                @if($hideable === 'add')
+                    <a class="flex items-center space-x-2 px-3 border border-blue-400 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-200 focus:outline-none" href="{{ $route }}">
+                        <svg class="h-5 w-5 stroke-current m-2 ml-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        {{ __('Add') }}
+                    </a>
+                @endif
+
                 @if($hideable === 'select')
                     @include('datatables::hide-column-multiselect')
                 @endif
@@ -59,7 +68,7 @@
             </div>
         @endif
 
-        <div class="rounded-lg shadow-lg bg-white max-w-screen">
+        <div class="rounded-lg shadow-lg bg-white max-w-screen overflow-auto">
             <div class="rounded-lg @unless($this->hidePagination) rounded-b-none @endif">
                 <div class="table align-middle min-w-full">
                     @unless($this->hideHeader)

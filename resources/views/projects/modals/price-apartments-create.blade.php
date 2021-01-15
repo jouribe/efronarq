@@ -23,19 +23,19 @@
 
                         <div class="px-1 py-4 w-1/4">
                             <x-jet-label for="start_floor">{{ __('Start floor') }}</x-jet-label>
-                            <x-jet-input id="start_floor" class="w-full" wire:model="start_floor"/>
+                            <x-jet-input type="text" id="start_floor" class="w-full" wire:model="start_floor"/>
                             @error('start_floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="px-1 py-4 w-1/4">
                             <x-jet-label for="end_floor">{{ __('End floor') }}</x-jet-label>
-                            <x-jet-input id="end_floor" class="w-full" wire:model="end_floor"/>
+                            <x-jet-input type="text" id="end_floor" class="w-full" wire:model="end_floor"/>
                             @error('end_floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 
                         <div class="pr-4 px-1 py-4 w-1/4">
                             <x-jet-label for="price_area">{{ __('Price area') }}</x-jet-label>
-                            <x-jet-input id="price_area" class="w-full" wire:model="price_area"/>
+                            <x-jet-input type="text" id="price_area" class="w-full" wire:model="price_area"/>
                             @error('price_area') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>

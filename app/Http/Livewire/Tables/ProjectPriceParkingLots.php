@@ -8,11 +8,36 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectPriceParkingLots extends LivewireDatatable
 {
-    public $model = ProjectPriceParkingLot::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = 'type';
 
-    public function columns()
+    /**
+     * Query Builder.
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function builder()
+    {
+        return ProjectPriceParkingLot::query()->whereProjectId($this->projectId);
+    }
+
+
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('floor')

@@ -11,12 +11,12 @@
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog"
              aria-modal="true" aria-labelledby="modal-headline">
 
-            <form>
+            <form wire:submit.prevent="store" autocomplete="off">
 
                 <div class="flex">
                     <div class="p-4 w-1/2">
                         <x-jet-label for="action_at">{{ __('Action at') }}</x-jet-label>
-                        <x-jet-input id="action_at" class="w-full" required wire:model="action_at"/>
+                        <x-jet-input type="date" id="action_at" class="w-full" required wire:model="action_at"/>
                     </div>
 
                     <div class="p-4 w-1/2">
@@ -28,12 +28,12 @@
                 <div class="flex">
                     <div class="p-4 w-full">
                         <x-jet-label for="comments">{{ __('Comments') }}</x-jet-label>
-                        <textarea class="form-textarea w-full" id="comments" wire:model="comments"></textarea>
+                        <textarea class="form-textarea w-full" id="comments" wire:model="comments" rows="3"></textarea>
                     </div>
                 </div>
 
                 <div class="flex">
-                    <div class="p-4 w-1/2">
+                    <div class="p-4 w-full">
                         <x-jet-label for="status">{{ __('Status') }}</x-jet-label>
                         <x-dropdown-list :items="$statusList" id="status" required wire:model="status"/>
                     </div>
@@ -41,7 +41,7 @@
 
                 <div class="flex justify-between p-4">
                     <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                    <x-jet-button type="button" class="bg-blue-900 hover:bg-blue-700" wire:click="store()">{{ __('Save') }}</x-jet-button>
+                    <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700">{{ __('Save') }}</x-jet-button>
                 </div>
 
             </form>

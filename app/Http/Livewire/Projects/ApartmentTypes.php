@@ -1,10 +1,15 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectApartmentType;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -15,64 +20,67 @@ class ApartmentTypes extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_apartment_type_id
+     * @var mixed $project_apartment_type_id
      */
     public $project_apartment_type_id;
 
     /**
      * @var string $type_name
      */
-    public $type_name;
+    public string $type_name;
 
     /**
-     * @var float $roofed_area
+     * @var mixed $roofed_area
      */
     public $roofed_area;
 
     /**
-     * @var float $free_area
+     * @var mixed $free_area
      */
     public $free_area;
 
     /**
-     * @var int $bedroom
+     * @var mixed $bedroom
      */
     public $bedroom;
 
     /**
-     * @var int $bathroom
+     * @var mixed $bathroom
      */
     public $bathroom;
 
     /**
-     * @var string $view
+     * @var mixed $view
      */
     public $view;
 
     /**
-     * @var string $blueprint
+     * @var mixed $blueprint
      */
     public $blueprint;
 
     /**
-     * @var string $current_blueprint
+     * @var mixed $current_blueprint
      */
     public $current_blueprint;
 
     /**
-     * @var boolean $service_room
+     * @var mixed $service_room
      */
     public $service_room;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
-    public $isServiceRoom = [
+    /**
+     * @var array|string[] $isServiceRoom
+     */
+    public array $isServiceRoom = [
         0 => 'No',
         1 => 'Si'
     ];
@@ -85,7 +93,12 @@ class ApartmentTypes extends Component
         'deleteApartmentType' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.apartment-types');
     }
@@ -210,6 +223,7 @@ class ApartmentTypes extends Component
 
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

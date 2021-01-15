@@ -22,24 +22,24 @@
                         <div class="flex">
                             <div class="p-4 w-1/2">
                                 <x-jet-label for="first_name">{{ __('First name') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="first_name" id="first_name" value="{{ old('first_name') }}" required/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="first_name" id="first_name" value="{{ old('first_name') }}" required/>
                             </div>
 
                             <div class="p-4 w-1/2">
                                 <x-jet-label for="last_name">{{ __('Last name') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="last_name" id="last_name" value="{{ old('last_name') }}" required/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="last_name" id="last_name" value="{{ old('last_name') }}" required/>
                             </div>
                         </div>
 
                         <div class="flex">
                             <div class="p-4 w-1/3">
                                 <x-jet-label for="dni">{{ __('DNI') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="dni" id="dni" value="{{ old('dni') }}" required maxlength="8" minlength="8"/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="dni" id="dni" value="{{ old('dni') }}" required maxlength="8" minlength="8"/>
                             </div>
 
                             <div class="p-4 w-1/3">
                                 <x-jet-label for="phone">{{ __('Phone') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="phone" id="phone" value="{{ old('phone') }}" required/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="phone" id="phone" value="{{ old('phone') }}" required/>
                             </div>
 
                             <div class="p-4 w-1/3">
@@ -81,12 +81,12 @@
 
                             <div class="p-4 w-1/5">
                                 <x-jet-label for="bedroom">{{ __('Bedroom') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="bedroom" id="bedroom" value="{{ old('bedroom') }}" type="numeric"/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="bedroom" id="bedroom" value="{{ old('bedroom') }}"/>
                             </div>
 
                             <div class="p-4 w-1/5">
                                 <x-jet-label for="bathroom">{{ __('Bathroom') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="bathroom" id="bathroom" value="{{ old('bathroom') }}" type="numeric"/>
+                                <x-jet-input type="text" class="form-input mt-1 w-full" name="bathroom" id="bathroom" value="{{ old('bathroom') }}"/>
                             </div>
 
                             <div class="p-4 w-1/5">

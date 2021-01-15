@@ -11,6 +11,6 @@
         @include('projects.modals.apartment-type-create')
     @endif
 
-    <livewire:tables.project-apartment-types/>
+    <livewire:tables.project-apartment-types :project-id="$project->id"/>
 
 </div>

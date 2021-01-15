@@ -11,5 +11,5 @@
         @include('projects.modals.documents-create')
     @endif
 
-    <livewire:tables.project-documents/>
+    <livewire:tables.project-documents :project-id="$project->id"/>
 </div>

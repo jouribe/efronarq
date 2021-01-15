@@ -25,19 +25,12 @@ class Customer extends Model
         'email',
         'secondary_email',
         'phone',
-        'district_id'
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @deprecated Use the "casts" property
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at'
+        'district_id',
+        'company_id',
+        'address',
+        'customer_type',
+        'position',
+        'single'
     ];
 
     /**
@@ -68,5 +61,25 @@ class Customer extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    /**
+     * Company
+     *
+     * @return BelongsTo
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Related.
+     *
+     * @return HasMany
+     */
+    public function related(): HasMany
+    {
+        return $this->hasMany(CustomerRelated::class);
     }
 }

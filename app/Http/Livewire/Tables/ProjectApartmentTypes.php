@@ -10,11 +10,34 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 
 class ProjectApartmentTypes extends LivewireDatatable
 {
-    public $model = ProjectApartmentType::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = "type_name";
 
-    public function columns()
+    /**
+     * Query builder.
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function builder()
+    {
+        return ProjectApartmentType::query()
+            ->whereProjectId($this->projectId);
+    }
+
+    /**
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('type_name')

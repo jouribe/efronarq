@@ -14,7 +14,7 @@ class AppLayout extends Component
      *
      * @return Application|Factory|View|\Illuminate\View\View
      */
-    public function render()
+    public function render(): View|Factory|\Illuminate\View\View|Application
     {
         return view('layouts.app');
     }

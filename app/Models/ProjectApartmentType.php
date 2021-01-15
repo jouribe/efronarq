@@ -14,7 +14,7 @@ class ProjectApartmentType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'project_id',
@@ -26,18 +26,6 @@ class ProjectApartmentType extends Model
         'view',
         'blueprint',
         'service_room'
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @deprecated Use the "casts" property
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at'
     ];
 
     /**

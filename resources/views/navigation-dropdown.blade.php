@@ -20,12 +20,12 @@
                         {{ __('Projects') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create'])">
+                    <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create', 'visits.show'])">
                         {{ __('Visits') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="#" :active="request()->routeIs('separations')">
-                        {{ __('Separations') }}
+                    <x-jet-nav-link href="{{ route('pull-apart.index') }}" :active="request()->routeIs(['pull-apart.index'])">
+                        {{ __('Pull apart') }}
                     </x-jet-nav-link>
 
                     <x-jet-nav-link href="#" :active="request()->routeIs('sales')">

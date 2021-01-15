@@ -11,5 +11,5 @@
         @include('projects.modals.address-create')
     @endif
 
-    <livewire:tables.project-addresses/>
+    <livewire:tables.project-addresses :project-id="$project->id"/>
 </div>

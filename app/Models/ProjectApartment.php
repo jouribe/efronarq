@@ -14,11 +14,12 @@ class ProjectApartment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'project_id',
         'apartment_type_id',
+        'name',
         'availability',
         'start_floor',
         'end_floor',
@@ -28,16 +29,24 @@ class ProjectApartment extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * Bootstrap the model and its traits.
      *
-     * @deprecated Use the "casts" property
+     * @return void
      *
-     * @var array
+     * @noinspection ReturnTypeCanBeDeclaredInspection
      */
-    protected $dates = [
-        'created_at',
-        'updated_at'
-    ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->name = $model->start_floor . $model->apartmentType->type_name;
+        });
+
+        static::updating(function ($model) {
+            $model->name = $model->start_floor . $model->apartmentType->type_name;
+        });
+    }
 
     /**
      * Projects

@@ -1,10 +1,15 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectPriceParkingLot;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class PriceParkingLots extends Component
@@ -12,17 +17,17 @@ class PriceParkingLots extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_price_parking_lot_id
+     * @var mixed $project_price_parking_lot_id
      */
     public $project_price_parking_lot_id;
 
     /**
      * @var string[] $floorTypes
      */
-    public $floorList = [
+    public array $floorList = [
         'Sótano 5' => 'Sótano 5',
         'Sótano 4' => 'Sótano 4',
         'Sótano 3' => 'Sótano 3',
@@ -35,12 +40,12 @@ class PriceParkingLots extends Component
     /**
      * @var string $floor
      */
-    public $floor;
+    public string $floor;
 
     /**
      * @var string[] $typeList
      */
-    public $typeList = [
+    public array $typeList = [
         'Simple' => 'Simple',
         'Doble' => 'Doble'
     ];
@@ -48,17 +53,17 @@ class PriceParkingLots extends Component
     /**
      * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
-     * @var float $price
+     * @var mixed $price
      */
     public $price;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -68,7 +73,12 @@ class PriceParkingLots extends Component
         'deletePriceParkingLot' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render action.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.price-parking-lots');
     }
@@ -132,6 +142,8 @@ class PriceParkingLots extends Component
                 'price' => $this->price
             ]);
 
+        session()->flash('message', $this->project_price_parking_lot_id ? __('Price parking lot updated successfully') : __('Price parking lot created successfully'));
+
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
@@ -163,8 +175,11 @@ class PriceParkingLots extends Component
         try {
             ProjectPriceParkingLot::findOrFail($id)->delete();
 
+            session()->flash('message', __('Price parking lot deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

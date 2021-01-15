@@ -1,11 +1,18 @@
 <?php
 
+/** @noinspection UnknownInspectionInspection */
+/** @noinspection PhpUnused */
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectAddress;
 use App\Models\ProjectParkingLot;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -16,22 +23,22 @@ class ParkingLots extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_parking_lot_id
+     * @var mixed $project_parking_lot_id
      */
     public $project_parking_lot_id;
 
     /**
      * @var string $floor
      */
-    public $floor;
+    public string $floor;
 
     /**
      * @var string[] $floorList
      */
-    public $floorList = [
+    public array $floorList = [
         'Sótano 5' => 'Sótano 5',
         'Sótano 4' => 'Sótano 4',
         'Sótano 3' => 'Sótano 3',
@@ -42,29 +49,29 @@ class ParkingLots extends Component
     ];
 
     /**
-     * @var string $parking_lot
+     * @var mixed $parking_lot
      */
     public $parking_lot;
 
     /**
-     * @var float $roofed_area
+     * @var mixed $roofed_area
      */
     public $roofed_area;
 
     /**
-     * @var float $free_area
+     * @var mixed $free_area
      */
     public $free_area;
 
     /**
-     * @var string $type
+     * @var mixed $type
      */
     public $type;
 
     /**
      * @var string[] $typeList
      */
-    public $typeList = [
+    public array $typeList = [
         'Simple' => 'Simple',
         'Doble' => 'Doble'
     ];
@@ -72,12 +79,12 @@ class ParkingLots extends Component
     /**
      * @var string $availability
      */
-    public $availability;
+    public string $availability;
 
     /**
      * @var string[] $availabilityList
      */
-    public $availabilityList = [
+    public array $availabilityList = [
         'Disponible' => 'Disponible',
         'Reservado' => 'Reservado',
         'Separado' => 'Separado',
@@ -85,55 +92,55 @@ class ParkingLots extends Component
     ];
 
     /**
-     * @var int $address_id
+     * @var mixed $address_id
      */
     public $address_id;
 
     /**
-     * @var bool $discount
+     * @var mixed $discount
      */
     public $discount;
 
     /**
      * @var string[] $discountList
      */
-    public $discountList = [
+    public array $discountList = [
         1 => 'Si',
         0 => 'No'
     ];
 
     /**
-     * @var boolean $closet
+     * @var mixed $closet
      */
     public $closet;
 
     /**
      * @var string[] $closetList
      */
-    public $closetList = [
+    public array $closetList = [
         1 => 'Si',
         0 => 'No'
     ];
 
     /**
-     * @var string $blueprint
+     * @var mixed $blueprint
      */
     public $blueprint;
 
     /**
-     * @var string $current_blueprint
+     * @var mixed $current_blueprint
      */
     public $current_blueprint;
 
     /**
-     * @var array[] $projectAddressesList
+     * @var mixed $projectAddressesList
      */
     public $projectAddressesList;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -143,7 +150,12 @@ class ParkingLots extends Component
         'deleteParkingLots' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         // Project addresses
         $this->projectAddressesList = ProjectAddress::whereProjectId($this->project->id)->pluck('address', 'id');
@@ -279,6 +291,7 @@ class ParkingLots extends Component
 
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

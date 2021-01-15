@@ -13,23 +13,11 @@ class ProjectPriceCloset extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'project_id',
         'price'
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @deprecated Use the "casts" property
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at'
     ];
 
     /**

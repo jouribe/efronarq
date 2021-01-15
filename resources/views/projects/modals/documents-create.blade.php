@@ -23,7 +23,7 @@
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="name">{{ __('Name') }}</x-jet-label>
-                            <x-jet-input id="name" class="w-full" wire:model="name"/>
+                            <x-jet-input type="text" id="name" class="w-full" wire:model="name"/>
                             @error('name') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>

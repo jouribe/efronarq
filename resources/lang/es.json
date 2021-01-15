@@ -129,5 +129,17 @@
     "Type name": "Nombre de tipo",
     "Select a file": "Seleccionar un archivo",
     "required": "requerido",
-    "File": "Archivo"
+    "File": "Archivo",
+    "Generate Quote": "Generar Cotización",
+    "Next action": "Siguiente acción",
+    "Action status": "Estado acción",
+    "View Quote": "Ver cotización",
+    "Quote summary": "Resumen cotización",
+    "Blueprints": "Planos",
+    "Documents": "Documentos",
+    "Pull apart": "Separaciones",
+    "Amount": "Monto",
+    "Pull apart updated successfully!": "Separación actualizada con éxito!",
+    "Pull apart created successfully!": "Separación generada con éxito!",
+    "Buyer Type": "Tipo de comprador"
 }

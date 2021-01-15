@@ -31,18 +31,6 @@ class ProjectParkingLot extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @deprecated Use the "casts" property
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at'
-    ];
-
-    /**
      * Project
      *
      * @return BelongsTo

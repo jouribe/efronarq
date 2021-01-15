@@ -21,7 +21,7 @@ class ProjectController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function index()
+    public function index(): Factory|View|Response|Application
     {
         return view('projects.index');
     }
@@ -31,7 +31,7 @@ class ProjectController extends Controller
      *
      * @return Application|Factory|View|Response
      */
-    public function create()
+    public function create(): Factory|View|Response|Application
     {
         // project status
         $projectStatus = [
@@ -86,7 +86,7 @@ class ProjectController extends Controller
      * @param int $id
      * @return Application|Factory|View|Response
      */
-    public function show(int $id)
+    public function show(int $id): Factory|View|Response|Application
     {
         return view('projects.show')->with([
             'project' => Project::whereId($id)->firstOrFail()

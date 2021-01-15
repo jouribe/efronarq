@@ -55,7 +55,7 @@ class VisitsTracking extends LivewireDatatable
                         return '<span class="text-red-600 font-bold">' . $status . '</span>';
 
                     case 'Finalizado':
-                        return '<span class="text-green-600">' . $status . '</span>';
+                        return '<span class="text-green-600 font-bold">' . $status . '</span>';
 
                     default:
                         return $status;

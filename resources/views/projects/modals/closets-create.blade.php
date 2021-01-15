@@ -23,7 +23,7 @@
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="closet">{{ __('Closet') }}</x-jet-label>
-                            <x-jet-input id="closet" class="w-full" wire:model="closet"/>
+                            <x-jet-input type="text" id="closet" class="w-full" wire:model="closet"/>
                             @error('closet') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="roofed_area">{{ __('Roofed area') }}</x-jet-label>
-                            <x-jet-input id="roofed_area" class="w-full" wire:model="roofed_area"/>
+                            <x-jet-input type="text" id="roofed_area" class="w-full" wire:model="roofed_area"/>
                             @error('roofed_area') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
                         </div>
 

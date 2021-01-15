@@ -1,11 +1,16 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectApartmentType;
 use App\Models\ProjectPriceApartment;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class PriceApartments extends Component
@@ -13,42 +18,42 @@ class PriceApartments extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var ProjectApartmentType $apartmentTypes
+     * @var mixed $apartmentTypes
      */
     public $apartmentTypes;
 
     /**
-     * @var integer $project_apartment_type_id
+     * @var mixed $project_apartment_type_id
      */
     public $project_apartment_type_id;
 
     /**
-     * @var integer $project_price_apartment_id
+     * @var mixed $project_price_apartment_id
      */
     public $project_price_apartment_id;
 
     /**
-     * @var integer $start_floor
+     * @var mixed $start_floor
      */
     public $start_floor;
 
     /**
-     * @var integer $end_floor
+     * @var mixed $end_floor
      */
     public $end_floor;
 
     /**
-     * @var float $price_area
+     * @var mixed $price_area
      */
     public $price_area;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -58,7 +63,12 @@ class PriceApartments extends Component
         'deletePriceApartment' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         // Project apartment types.
         $this->apartmentTypes = ProjectApartmentType::whereProjectId($this->project->id)->pluck('type_name', 'id');
@@ -127,6 +137,8 @@ class PriceApartments extends Component
                 'price_area' => $this->price_area
             ]);
 
+        session()->flash('message', $this->project_price_apartment_id ? __('Price apartment updated successfully') : __('Price apartment created successfully'));
+
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
@@ -159,8 +171,11 @@ class PriceApartments extends Component
         try {
             ProjectPriceApartment::findOrFail($id)->delete();
 
+            session()->flash('message', __('Price apartment deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

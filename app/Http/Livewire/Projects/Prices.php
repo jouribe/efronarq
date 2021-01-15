@@ -1,10 +1,17 @@
 <?php
 
+/** @noinspection UnknownInspectionInspection */
+/** @noinspection PhpUnused */
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectPrice;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Prices extends Component
@@ -12,47 +19,47 @@ class Prices extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var integer $project_price_id
+     * @var mixed $project_price_id
      */
     public $project_price_id;
 
     /**
-     * @var integer $free_area
+     * @var mixed $free_area
      */
     public $free_area;
 
     /**
-     * @var integer $discount_presale
+     * @var mixed $discount_presale
      */
     public $discount_presale;
 
     /**
-     * @var integer $delivery_increment
+     * @var mixed $delivery_increment
      */
     public $delivery_increment;
 
     /**
-     * @var integer $parking_discount;
+     * @var mixed $parking_discount;
      */
     public $parking_discount;
 
     /**
      * @var string $currency
      */
-    public $currency;
+    public string $currency;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $currencyTypesList
      */
-    public $currencyTypesList = [
+    public array $currencyTypesList = [
         'USD'=> 'Dólares',
         'PEN' => 'Soles'
     ];
@@ -65,7 +72,12 @@ class Prices extends Component
         'deletePrice' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.prices');
     }
@@ -135,6 +147,8 @@ class Prices extends Component
                 'currency' => $this->currency
             ]);
 
+        session()->flash('message', $this->project_price_id ? __('General price updated successfully') : __('General price created successfully'));
+
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
@@ -168,8 +182,11 @@ class Prices extends Component
         try {
             ProjectPrice::findOrFail($id)->delete();
 
+            session()->flash('message', __('General price deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

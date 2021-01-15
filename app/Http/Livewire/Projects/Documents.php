@@ -1,9 +1,14 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectDocument;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Exception;
 use Livewire\WithFileUploads;
@@ -15,22 +20,22 @@ class Documents extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_document_id
+     * @var mixed $project_document_id
      */
     public $project_document_id;
 
     /**
      * @var string $type
      */
-    public $type;
+    public string $type;
 
     /**
      * @var string[] $typeList
      */
-    public $typeList = [
+    public array $typeList = [
         'Anexos para minuta' => 'Anexos para minuta',
         'Publicidad' => 'Publicidad',
         'Varios' => 'Varios'
@@ -39,22 +44,22 @@ class Documents extends Component
     /**
      * @var string $name
      */
-    public $name;
+    public string $name;
 
     /**
-     * @var string $file
+     * @var mixed $file
      */
     public $file;
 
     /**
-     * @var string $current_file
+     * @var mixed $current_file
      */
     public $current_file;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -64,7 +69,12 @@ class Documents extends Component
         'deleteDocuments' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.documents');
     }
@@ -170,6 +180,7 @@ class Documents extends Component
 
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }

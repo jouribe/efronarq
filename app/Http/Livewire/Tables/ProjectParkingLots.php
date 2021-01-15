@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectParkingLot;
 use App\Traits\Prices;
+use Illuminate\Database\Eloquent\Builder;
+use LaravelIdea\Helper\App\Models\_ProjectParkingLotQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -11,13 +13,23 @@ class ProjectParkingLots extends LivewireDatatable
 {
     use Prices;
 
-    public $model = ProjectParkingLot::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
+    /**
+     * @var mixed $searchable
+     */
     public $searchable = 'floor, type, parking_lot, availability';
 
-    public function builder()
+    /**
+     * Query Builder
+     *
+     * @return Builder|_ProjectParkingLotQueryBuilder
+     */
+    public function builder(): Builder|_ProjectParkingLotQueryBuilder
     {
-        // TODO: verificar la duplicidad de resultados, en pruebas en sql es por el campo type tanto de project_parking_lot y project_price_parking_lot
         return ProjectParkingLot::query()
             ->leftJoin('projects', 'projects.id', 'project_parking_lots.project_id')
             ->leftJoin('project_prices', 'project_prices.project_id', 'projects.id')
@@ -27,13 +39,21 @@ class ProjectParkingLots extends LivewireDatatable
                 $join->on('project_price_parking_lots.floor', '=', 'project_parking_lots.floor');
             })
             ->leftJoin('project_addresses', 'project_addresses.id', 'project_parking_lots.address_id')
+            ->where('project_parking_lots.project_id', $this->projectId)
             ->groupBy('project_parking_lots.id', 'project_parking_lots.floor', 'project_parking_lots.parking_lot', 'project_parking_lots.roofed_area', 'project_parking_lots.free_area',
                 'project_parking_lots.type', 'project_parking_lots.availability', 'project_parking_lots.discount', 'project_parking_lots.closet', 'project_price_parking_lots.type',
                 'project_price_parking_lots.floor', 'project_price_parking_lots.price', 'project_prices.free_area', 'project_prices.discount_presale', 'project_prices.delivery_increment',
                 'project_prices.parking_discount', 'project_parking_lots.blueprint');
     }
 
-    public function columns()
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::name('project_parking_lots.floor')

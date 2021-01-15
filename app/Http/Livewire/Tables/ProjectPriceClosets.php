@@ -8,9 +8,30 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class ProjectPriceClosets extends LivewireDatatable
 {
-    public $model = ProjectPriceCloset::class;
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
 
-    public function columns()
+    /**
+     * Query builder.
+     *
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function builder()
+    {
+        return ProjectPriceCloset::query()->whereProjectId($this->projectId);
+    }
+
+    /**
+     * Table columns
+     *
+     * @return array
+     *
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             Column::callback('price', function ($price) {

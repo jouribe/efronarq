@@ -1,10 +1,15 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectPriceCloset;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class PriceClosets extends Component
@@ -12,22 +17,22 @@ class PriceClosets extends Component
     /**
      * @var Project $project
      */
-    public $project;
+    public Project $project;
 
     /**
-     * @var int $project_price_closet_id
+     * @var mixed $project_price_closet_id
      */
     public $project_price_closet_id;
 
     /**
-     * @var float $price
+     * @var mixed $price
      */
     public $price;
 
     /**
      * @var boolean $isOpen
      */
-    public $isOpen = false;
+    public bool $isOpen = false;
 
     /**
      * @var string[] $listeners
@@ -37,7 +42,12 @@ class PriceClosets extends Component
         'deletePriceCloset' => 'delete'
     ];
 
-    public function render()
+    /**
+     * Render view.
+     *
+     * @return Factory|View|Application
+     */
+    public function render(): Factory|View|Application
     {
         return view('livewire.projects.price-closets');
     }
@@ -95,6 +105,8 @@ class PriceClosets extends Component
                 'price' => $this->price
             ]);
 
+        session()->flash('message', $this->project_price_closet_id ? __('Price closet updated successfully') : __('Price closet created successfully'));
+
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
@@ -124,8 +136,11 @@ class PriceClosets extends Component
         try {
             ProjectPriceCloset::findOrFail($id)->delete();
 
+            session()->flash('message', __('Price closet deleted successfully'));
+
             $this->emit('refreshLivewireDatatable');
         } catch (Exception $e) {
+            echo $e;
         }
     }
 }
