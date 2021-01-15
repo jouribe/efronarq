@@ -19,7 +19,8 @@
 
         <!-- Scripts -->
         <script src="https://cdn.tiny.cloud/1/3rce1k5oq9b6qhghrlngygpm8f22nlasx4ixv7b0wf06nxs1/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/main.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-300">
