@@ -23,7 +23,7 @@
                 Estacionamientos
             </button>
             <button data-target="panel-6" class="tab text-gray-600 py-4 px-6 block">
-                Closets / Depósitos
+                Closets / Depositos
             </button>
             <button data-target="panel-7" class="tab text-gray-600 py-4 px-6 block">
                 Documentos
@@ -33,7 +33,6 @@
             </button>
         </nav>
     </div>
-
     <div id="panels">
         <div class="panel-1 tab-content active general py-5">
             <div class="py-12">
@@ -93,6 +92,7 @@
                                 <div>{{ $project->legal }}</div>
                             </div>
                         </div>
+
                         <div class="flex justify-end">
                             <div class="p-4">
                                 <x-link color="gray" href="{{ route('projects.index') }}">
@@ -112,55 +112,55 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="pb-12">
-                    <livewire:projects.addresses :project="$project"/>
-                </div>
+            <div class="pb-12">
+                <livewire:projects.addresses :project="$project"/>
             </div>
-            <div class="panel-2 tab-content apartment-types py-5">
-                <div class="py-12">
-                    <livewire:projects.apartment-types :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-2 tab-content apartment-types py-5">
+            <div class="py-12">
+                <livewire:projects.apartment-types :project="$project"/>
             </div>
-            <div class="panel-3 tab-content prices py-5">
-                <div class="py-12">
-                    <livewire:projects.prices :project="$project"/>
-                </div>
-                <div class="pb-12">
-                    <livewire:projects.price-apartments :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-3 tab-content prices py-5">
+            <div class="py-12">
+                <livewire:projects.prices :project="$project"/>
+            </div>
+            <div class="pb-12">
+                <livewire:projects.price-apartments :project="$project"/>
+            </div>
 
-                <div class="pb-12">
-                    <livewire:projects.price-parking-lots :project="$project"/>
-                </div>
+            <div class="pb-12">
+                <livewire:projects.price-parking-lots :project="$project"/>
+            </div>
 
-                <div class="pb-12">
-                    <livewire:projects.price-closets :project="$project"/>
-                </div>
+            <div class="pb-12">
+                <livewire:projects.price-closets :project="$project"/>
             </div>
-            <div class="panel-4 tab-content apartments py-5">
-                <div class="py-12">
-                    <livewire:projects.apartments :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-4 tab-content apartments py-5">
+            <div class="py-12">
+                <livewire:projects.apartments :project="$project"/>
             </div>
-            <div class="panel-5 tab-content parking-lots py-5">
-                <div class="py-12">
-                    <livewire:projects.parking-lots :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-5 tab-content parking-lots py-5">
+            <div class="py-12">
+                <livewire:projects.parking-lots :project="$project"/>
             </div>
-            <div class="panel-6 tab-content closets py-5">
-                <div class="py-12">
-                    <livewire:projects.closets :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-6 tab-content closets py-5">
+            <div class="py-12">
+                <livewire:projects.closets :project="$project"/>
             </div>
-            <div class="panel-7 tab-content documents py-5">
-                <div class="py-12">
-                    <livewire:projects.documents :project="$project"/>
-                </div>
+        </div>
+        <div class="panel-7 tab-content documents py-5">
+            <div class="py-12">
+                <livewire:projects.documents :project="$project"/>
             </div>
-            <div class="panel-7 tab-content vendors py-5">
-                <p>Vendedores content</p>
-            </div>
+        </div>
+        <div class="panel-7 tab-content vendors py-5">
+            <p>Vendedores content</p>
         </div>
     </div>
 </x-app-layout>

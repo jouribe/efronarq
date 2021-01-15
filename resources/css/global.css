@@ -71,7 +71,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
 .text-blue-600 {
     --text-opacity: 1;
-    color: rgba(12, 91, 139, var(--text-opacity))!important;
+    color: rgba(12, 91, 139, 1) !important;
 }
 
 .text-blue-600:hover {
@@ -84,7 +84,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
 .bg-blue-700:hover,
 .bg-blue-800:hover {
-    box-shadow: 0 2px 5px 0 rgb(113, 112, 112, 81%);
+    box-shadow: 0 2px 5px 0 rgba(113, 112, 112, 0.8);
 }
 
 .text-gray-600:hover {
