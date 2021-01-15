@@ -90,7 +90,8 @@ class Closets extends Component
      */
     protected $listeners = [
         'editClosets' => 'edit',
-        'deleteClosets' => 'delete'
+        'deleteClosets' => 'delete',
+        'createClosets' => 'create'
     ];
 
     /**

@@ -5,8 +5,10 @@
         </div>
     @endif
     <div class="relative">
+
         <div class="flex justify-between items-center mb-4">
             <div class="flex-grow h-10 flex items-center">
+
                 @if($this->searchableColumns()->count())
                     <div class="w-96 flex rounded-lg shadow-sm">
                         <div class="relative flex-grow focus-within:z-10">
@@ -15,6 +17,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
+
                             <input type="text" wire:model.debounce.500ms="search" class="form-input h-10 pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                                    placeholder="{{ __('Search in') }} {{ $this->searchableColumns()->map->label->join(', ') }}"/>
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -43,12 +46,25 @@
                 @endif
 
                 @if($hideable === 'add')
-                    <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white" href="{{ $route }}">
+                    <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white"
+                       href="{{ $route }}">
                         <svg class="h-5 w-5 stroke-current m-2 ml-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                         {{ __('Add') }}
                     </a>
+                @endif
+
+                @if($hideable === 'add-modal')
+                    @if(!$hideCreate)
+                        <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white"
+                           wire:click="$emitUp('{{ $event }}')" href="javascript:">
+                            <svg class="h-5 w-5 stroke-current m-2 ml-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            {{ __('Add') }}
+                        </a>
+                    @endif
                 @endif
 
                 @if($hideable === 'select')

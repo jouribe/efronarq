@@ -39,7 +39,8 @@ class PriceClosets extends Component
      */
     protected $listeners = [
         'editPriceCloset' => 'edit',
-        'deletePriceCloset' => 'delete'
+        'deletePriceCloset' => 'delete',
+        'createPriceCloset' => 'create'
     ];
 
     /**
@@ -110,6 +111,7 @@ class PriceClosets extends Component
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
+        $this->emit('PriceClosetCreated');
     }
 
     /**
@@ -139,6 +141,7 @@ class PriceClosets extends Component
             session()->flash('message', __('Price closet deleted successfully'));
 
             $this->emit('refreshLivewireDatatable');
+            $this->emit('PriceClosetCreated');
         } catch (Exception $e) {
             echo $e;
         }

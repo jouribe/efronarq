@@ -63,7 +63,8 @@ class Addresses extends Component
      */
     protected $listeners = [
         'editAddress' => 'edit',
-        'deleteAddress' => 'delete'
+        'deleteAddress' => 'delete',
+        'createAddress' => 'create'
     ];
 
     /**

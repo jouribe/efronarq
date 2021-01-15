@@ -90,7 +90,8 @@ class ApartmentTypes extends Component
      */
     protected $listeners = [
         'editApartmentType' => 'edit',
-        'deleteApartmentType' => 'delete'
+        'deleteApartmentType' => 'delete',
+        'createApartmentType' => 'create'
     ];
 
     /**
@@ -103,7 +104,7 @@ class ApartmentTypes extends Component
         return view('livewire.projects.apartment-types');
     }
 
-     /**
+    /**
      * The attributes that are mass assignable.
      */
     public function create(): void
@@ -161,7 +162,7 @@ class ApartmentTypes extends Component
             'blueprint' => 'nullable|file|max:10240', // 10MB Max
         ]);
 
-        if($this->blueprint !== null && $this->blueprint !== '') {
+        if ($this->blueprint !== null && $this->blueprint !== '') {
             $this->current_blueprint = $this->blueprint->store('apartment-type-blueprints', 'public');
         }
 

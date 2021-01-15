@@ -60,7 +60,8 @@ class PriceApartments extends Component
      */
     protected $listeners = [
         'editPriceApartment' => 'edit',
-        'deletePriceApartment' => 'delete'
+        'deletePriceApartment' => 'delete',
+        'createPriceApartment' => 'create'
     ];
 
     /**

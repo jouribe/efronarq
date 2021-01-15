@@ -19,10 +19,24 @@ class ProjectPriceApartments extends LivewireDatatable
     public $searchable = 'project_apartment_types.type_name';
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createPriceApartment';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * Query Builder
      *
      * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
      */
     public function builder()
     {

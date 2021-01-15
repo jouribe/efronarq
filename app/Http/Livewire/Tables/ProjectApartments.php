@@ -21,6 +21,21 @@ class ProjectApartments extends LivewireDatatable
     public $searchable = 'availability, order, start_floor';
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createApartments';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * Query Builder
      *
      * @return Builder|_ProjectApartmentQueryBuilder

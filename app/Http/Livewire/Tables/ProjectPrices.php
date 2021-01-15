@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection UnknownInspectionInspection */
+
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectPrice;
@@ -12,6 +14,29 @@ class ProjectPrices extends LivewireDatatable
      * @var mixed $projectId
      */
     public $projectId;
+
+    /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createPrice';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
+     * @var mixed $listeners;
+     */
+    protected $listeners = [
+        'refreshLivewireDatatable',
+        'GeneralPriceCreated' => 'generalPriceCreated'
+    ];
 
     /**
      * Query builder.
@@ -65,5 +90,15 @@ class ProjectPrices extends LivewireDatatable
                 ->label(__('Actions'))
                 ->view('projects.actions.prices')
         ];
+    }
+
+    /**
+     * Hide create modal button
+     *
+     * @noinspection PhpUnused
+     */
+    public function generalPriceCreated(): void
+    {
+        $this->hideCreate = ! $this->hideCreate;
     }
 }

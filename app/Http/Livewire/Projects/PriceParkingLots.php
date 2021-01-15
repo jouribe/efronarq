@@ -70,7 +70,8 @@ class PriceParkingLots extends Component
      */
     protected $listeners = [
         'editPriceParkingLot' => 'edit',
-        'deletePriceParkingLot' => 'delete'
+        'deletePriceParkingLot' => 'delete',
+        'createPriceParkingLot' => 'create'
     ];
 
     /**

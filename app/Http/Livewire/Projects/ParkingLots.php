@@ -147,7 +147,8 @@ class ParkingLots extends Component
      */
     protected $listeners = [
         'editParkingLots' => 'edit',
-        'deleteParkingLots' => 'delete'
+        'deleteParkingLots' => 'delete',
+        'createParkingLots' => 'create'
     ];
 
     /**

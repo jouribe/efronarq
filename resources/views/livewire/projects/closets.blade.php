@@ -3,10 +3,6 @@
         {{ __('Closets') }}
     </h2>
 
-    <div class="flex justify-end mb-2">
-        <x-link wire:click="create()" href="javascript:">{{ __('Add') }}</x-link>
-    </div>
-
     @if($isOpen)
         @include('projects.modals.closets-create')
     @endif

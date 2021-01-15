@@ -19,6 +19,21 @@ class ProjectPriceParkingLots extends LivewireDatatable
     public $searchable = 'type';
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createPriceParkingLot';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * Query Builder.
      *
      * @noinspection PhpMissingReturnTypeInspection

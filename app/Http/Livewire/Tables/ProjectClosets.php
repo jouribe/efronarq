@@ -21,6 +21,21 @@ class ProjectClosets extends LivewireDatatable
     public $searchable = 'project_closets.floor, project_closets.closet, project_closets.availability';
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createClosets';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * Query builder
      *
      * @return Builder|_ProjectClosetQueryBuilder

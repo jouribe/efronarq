@@ -69,7 +69,8 @@ class Prices extends Component
      */
     protected $listeners = [
         'editPrice' => 'edit',
-        'deletePrice' => 'delete'
+        'deletePrice' => 'delete',
+        'createPrice' => 'create'
     ];
 
     /**
@@ -152,6 +153,7 @@ class Prices extends Component
         $this->closeModal();
         $this->resetInputFields();
         $this->emit('refreshLivewireDatatable');
+        $this->emit('GeneralPriceCreated');
     }
 
     /**
@@ -185,6 +187,7 @@ class Prices extends Component
             session()->flash('message', __('General price deleted successfully'));
 
             $this->emit('refreshLivewireDatatable');
+            $this->emit('GeneralPriceCreated');
         } catch (Exception $e) {
             echo $e;
         }

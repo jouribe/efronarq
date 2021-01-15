@@ -66,7 +66,8 @@ class Documents extends Component
      */
     protected $listeners = [
         'editDocuments' => 'edit',
-        'deleteDocuments' => 'delete'
+        'deleteDocuments' => 'delete',
+        'createDocuments' => 'create'
     ];
 
     /**

@@ -85,7 +85,8 @@ class Apartments extends Component
      */
     protected $listeners = [
         'editApartments' => 'edit',
-        'deleteApartments' => 'delete'
+        'deleteApartments' => 'delete',
+        'createApartments' => 'create',
     ];
 
     /**

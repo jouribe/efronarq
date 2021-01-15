@@ -31,6 +31,21 @@ class ProjectAddresses extends LivewireDatatable
     public $sort = 'districts.name|asc';
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createAddress';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * Query builder.
      *
      * @return Builder|_ProjectAddressQueryBuilder

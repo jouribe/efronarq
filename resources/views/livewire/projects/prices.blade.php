@@ -3,16 +3,10 @@
         {{ __('General') }}
     </h2>
 
-    @if($project->prices->count() === 0)
-        <div class="flex justify-end mb-2">
-            <x-link wire:click="create()" href="javascript:">{{ __('Add') }}</x-link>
-        </div>
-    @endif
-
     @if($isOpen)
         @include('projects.modals.prices-create')
     @endif
 
-    <livewire:tables.project-prices :project-id="$project->id"/>
+    <livewire:tables.project-prices :project-id="$project->id" :hide-create="$project->prices->count() > 0"/>
 
 </div>
