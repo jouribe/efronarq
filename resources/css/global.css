@@ -62,35 +62,3 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin: 0 auto 1.5rem;
     font-size: 22px;
 }
-
-.bg-blue-800 {
-    --bg-opacity: 1;
-    background-color: rgb(12, 91, 139)!important;
-    background-color: rgba(12, 91, 139, var(--bg-opacity))!important;
-}
-
-.text-blue-600 {
-    --text-opacity: 1;
-    color: rgba(12, 91, 139, 1) !important;
-}
-
-.text-blue-600:hover {
-    --text-opacity: 1;
-    color: #ffffff!important;
-    color: rgba(255, 255, 255, var(--text-opacity))!important;
-    --bg-opacity: 1;
-    background-color: rgb(12, 91, 139, var(--bg-opacity))!important;
-}
-
-.bg-blue-700:hover,
-.bg-blue-800:hover {
-    box-shadow: 0 2px 5px 0 rgba(113, 112, 112, 0.8);
-}
-
-.text-gray-600:hover {
-    font-weight: 600;
-}
-
-.text-gray-600 {
-    font-size: 0.9rem;
-}
