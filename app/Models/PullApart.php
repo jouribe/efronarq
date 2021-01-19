@@ -37,7 +37,9 @@ class PullApart extends Model
         'mortgage_credit_at',
         'mortgage_credit_milestone',
         'separation_agreement_at',
-        'signature_minute_at'
+        'signature_minute_at',
+        'comment',
+        'status'
     ];
 
     /**

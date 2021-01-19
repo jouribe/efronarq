@@ -17,13 +17,13 @@
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="availability">{{ __('Availability') }}</x-jet-label>
-                            <x-dropdown-list :items="$availabilityList" id="availability" wire:model="availability" />
+                            <x-dropdown-list :items="$availabilityList" id="availability" wire:model="availability"/>
                             @error('availability') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="project_apartment_type_id">{{ __('Type') }}</x-jet-label>
-                            <x-dropdown-list :items="$projectApartmentTypeList" id="project_apartment_type_id" wire:model="project_apartment_type_id" />
+                            <x-dropdown-list :items="$projectApartmentTypeList" id="project_apartment_type_id" wire:model="project_apartment_type_id"/>
                             @error('project_apartment_type_id') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -35,10 +35,11 @@
                             @error('start_floor') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
-                         <div class="p-4 w-1/2">
+                        <div class="p-4 w-1/2">
                             <x-jet-label for="end_floor">{{ __('End floor') }}</x-jet-label>
-                            <x-jet-input type="text" id="end_floor" class="w-full" wire:model="end_floor"/>
-                             @error('end_floor') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            <x-jet-input type="text" id="end_floor" class="w-full" wire:model="end_floor" wire:keydown="clearErrorMessage"/>
+                            @error('end_floor') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            @if(!is_null($errorMessage)) <span class="text-red-600 text-xs font-bold">{{ $errorMessage }}</span> @endif
                         </div>
                     </div>
 

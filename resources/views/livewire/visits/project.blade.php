@@ -17,7 +17,7 @@
                 <x-jet-label for="project_parking_lot_id.0">{{ __('Parking lot') }}</x-jet-label>
                 <div class="flex">
                     <div class="w-full pr-2">
-                        <x-dropdown-list :items="$parkingLotList" id="project_parking_lot_id.0" name="project_parking_lot_id[]" wire:model="project_parking_lot_id.0" required/>
+                        <x-dropdown-list :items="$parkingLotList" id="project_parking_lot_id.0" name="project_parking_lot_id[]" wire:model="project_parking_lot_id.0"/>
                     </div>
                     <button wire:click.prevent="addParkingLot({{$i}})" class="border px-4 rounded-lg bg-blue-600 text-xl font-bold text-white">+</button>
                 </div>
@@ -28,8 +28,7 @@
                     <x-jet-label for="project_parking_lot_id.{{$value}}">{{ __('Parking lot') }}</x-jet-label>
                     <div class="flex">
                         <div class="w-full pr-2">
-                            <x-dropdown-list :items="$parkingLotList" id="project_parking_lot_id.{{$value}}" name="project_parking_lot_id[]" wire:model="project_parking_lot_id.{{$value}}"
-                                             required/>
+                            <x-dropdown-list :items="$parkingLotList" id="project_parking_lot_id.{{$value}}" name="project_parking_lot_id[]" wire:model="project_parking_lot_id.{{$value}}"/>
                         </div>
                         <button wire:click.prevent="removeParkingLot({{$key}})" class="border px-4 rounded-lg bg-red-700 text-xl font-bold text-white">-</button>
                     </div>
@@ -43,7 +42,7 @@
                 <x-jet-label for="project_closet_id.0">{{ __('Closet') }}</x-jet-label>
                 <div class="flex">
                     <div class="w-full pr-2">
-                        <x-dropdown-list :items="$closetList" id="project_closet_id.0" name="project_closet_id[]" wire:model="project_closet_id.0" required/>
+                        <x-dropdown-list :items="$closetList" id="project_closet_id.0" name="project_closet_id[]" wire:model="project_closet_id.0"/>
                     </div>
                     <button wire:click.prevent="addCloset({{$j}})" class="border px-4 rounded-lg bg-blue-600 text-xl font-bold text-white">+</button>
                 </div>
@@ -54,7 +53,7 @@
                     <x-jet-label for="project_closet_id.{{$value}}">{{ __('Closet') }}</x-jet-label>
                     <div class="flex">
                         <div class="w-full pr-2">
-                            <x-dropdown-list :items="$closetList" id="project_closet_id.{{$value}}" name="project_closet_id[]" wire:model="project_closet_id.{{$value}}" required/>
+                            <x-dropdown-list :items="$closetList" id="project_closet_id.{{$value}}" name="project_closet_id[]" wire:model="project_closet_id.{{$value}}"/>
                         </div>
                         <button wire:click.prevent="removeCloset({{$key}})" class="border px-4 rounded-lg bg-red-700 text-xl font-bold text-white">-</button>
                     </div>

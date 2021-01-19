@@ -18,7 +18,7 @@ class ProjectApartments extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'availability, order, start_floor';
+    public $searchable = 'availability, order, start_floor, project_apartments.name';
 
     /**
      * @var mixed $hideable
@@ -45,8 +45,7 @@ class ProjectApartments extends LivewireDatatable
         return ProjectApartment::query()
             ->leftJoin('project_apartment_types', 'project_apartment_types.id', 'project_apartments.apartment_type_id')
             ->leftJoin('project_price_apartments', function ($join) {
-                $join->on('project_price_apartments.project_apartment_type_id', 'project_apartment_types.id')
-                    ->on('project_apartments.start_floor', 'project_price_apartments.start_floor');
+                $join->on('project_price_apartments.project_apartment_type_id', 'project_apartment_types.id');
             })
             ->where('project_apartments.project_id', $this->projectId)
             ->groupBy('availability', 'project_apartment_types.type_name', 'start_floor', 'project_apartment_types.roofed_area', 'project_apartment_types.free_area',

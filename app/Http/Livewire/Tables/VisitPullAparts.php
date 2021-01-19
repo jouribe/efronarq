@@ -32,7 +32,8 @@ class VisitPullAparts extends LivewireDatatable
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.last_name', 'project_apartment_types.type_name');
+            ->where('visits.status', 'Cotización')
+            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.last_name', 'project_apartments.name');
     }
 
     /**
@@ -56,7 +57,7 @@ class VisitPullAparts extends LivewireDatatable
             })
                 ->label(__('Customer')),
 
-            Column::name('project_apartment_types.type_name')
+            Column::name('project_apartments.name')
                 ->label(__('Apartment')),
 
             Column::callback('visits.id', function ($id) {

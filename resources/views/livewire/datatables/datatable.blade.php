@@ -45,10 +45,20 @@
                     </div>
                 @endif
 
+                @if($hideable === 'add-pull-apart')
+                    <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white modal-open"
+                       href="javascript:">
+                        <svg class="h-5 w-5 stroke-current my-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        {{ __('Add') }}
+                    </a>
+                @endif
+
                 @if($hideable === 'add')
                     <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white"
                        href="{{ $route }}">
-                        <svg class="h-5 w-5 stroke-current m-2 ml-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-5 w-5 stroke-current my-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                         {{ __('Add') }}
@@ -59,7 +69,7 @@
                     @if(!$hideCreate)
                         <a class="flex items-center space-x-2 px-3 border border-blue-500 rounded-md bg-white text-blue-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-blue-500 focus:outline-none hover:text-white"
                            wire:click="$emitUp('{{ $event }}')" href="javascript:">
-                            <svg class="h-5 w-5 stroke-current m-2 ml-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="h-5 w-5 stroke-current my-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
                             {{ __('Add') }}

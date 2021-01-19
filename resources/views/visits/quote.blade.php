@@ -100,12 +100,15 @@
         </tr>
     @endif
 
+    @php
+        $total_parking_price = 0
+    @endphp
+
     @if(!is_null($parking_lot))
         @foreach($parking_lot as $key => $value)
 
             @php
 
-                $total_parking_price = 0;
                 $total_parking_price += $value['price']['price'];
 
             @endphp
@@ -124,12 +127,15 @@
         @endforeach
     @endif
 
+    @php
+        $total_closet_price = 0
+    @endphp
+
     @if(!is_null($visit['closets']))
         @foreach($visit['closets'] as $key => $value)
 
             @php
 
-                $total_closet_price = 0;
                 $total_closet_price += $closet_price['price'] * $value['closet']['roofed_area'];
 
             @endphp

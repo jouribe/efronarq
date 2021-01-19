@@ -90,6 +90,11 @@ class Apartments extends Component
     ];
 
     /**
+     * @var mixed $errorMessage
+     */
+    public $errorMessage;
+
+    /**
      * Render view.
      *
      * @return Factory|View|Application
@@ -158,38 +163,47 @@ class Apartments extends Component
             'order' => 'required|integer'
         ]);
 
-        if ($this->project_apartment_id) {
-            // Update project apartment
-            ProjectApartment::whereId($this->project_apartment_id)->update([
-                'project_id' => $this->project->id,
-                'apartment_type_id' => $this->project_apartment_type_id,
-                'availability' => $this->availability,
-                'start_floor' => $this->start_floor,
-                'end_floor' => $this->end_floor,
-                'parking_lots' => $this->parking_lots,
-                'closets' => $this->closets,
-                'order' => $this->order
-            ]);
+        $apartmentPrice = ProjectApartmentType::whereId($this->project_apartment_type_id)
+            ->first()
+            ->priceApartments
+            ->first();
+
+        if ($this->end_floor > $apartmentPrice->end_floor) {
+            $this->errorMessage =  'Este valor no concuerda con la lista de precios por tipo de departamento.';
         } else {
-            for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
-                ProjectApartment::create([
+            if ($this->project_apartment_id) {
+                // Update project apartment
+                ProjectApartment::whereId($this->project_apartment_id)->update([
                     'project_id' => $this->project->id,
                     'apartment_type_id' => $this->project_apartment_type_id,
                     'availability' => $this->availability,
-                    'start_floor' => $i,
-                    'end_floor' => $i,
+                    'start_floor' => $this->start_floor,
+                    'end_floor' => $this->end_floor,
                     'parking_lots' => $this->parking_lots,
                     'closets' => $this->closets,
-                    'order' => $this->order + ($i - 1)
+                    'order' => $this->order
                 ]);
+            } else {
+                for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
+                    ProjectApartment::create([
+                        'project_id' => $this->project->id,
+                        'apartment_type_id' => $this->project_apartment_type_id,
+                        'availability' => $this->availability,
+                        'start_floor' => $i,
+                        'end_floor' => $i,
+                        'parking_lots' => $this->parking_lots,
+                        'closets' => $this->closets,
+                        'order' => $this->order + ($i - 1)
+                    ]);
+                }
             }
+
+            session()->flash('message', $this->project_apartment_id ? __('Apartment updated successfully.') : __('Apartment created successfully.'));
+
+            $this->closeModal();
+            $this->resetInputFields();
+            $this->emit('refreshLivewireDatatable');
         }
-
-        session()->flash('message', $this->project_apartment_id ? __('Apartment updated successfully.') : __('Apartment created successfully.'));
-
-        $this->closeModal();
-        $this->resetInputFields();
-        $this->emit('refreshLivewireDatatable');
     }
 
     /**
@@ -228,5 +242,13 @@ class Apartments extends Component
         } catch (Exception $e) {
             echo $e;
         }
+    }
+
+    /**
+     * Clear error message.
+     */
+    public function clearErrorMessage(): void
+    {
+        $this->errorMessage = null;
     }
 }

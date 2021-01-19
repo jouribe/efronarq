@@ -47,14 +47,14 @@ class Visits extends LivewireDatatable
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
-            ->leftJoin('project_apartments', 'projects.id', 'project_apartments.project_id')
+            ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
             ->leftJoin('visit_tracking', function ($join) {
                 $join->on('visits.id', '=', 'visit_tracking.visit_id')
                     ->where('visit_tracking.action_at', '>=', now()->format('Y-m-d'));
             })
             ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.first_name', 'customers.last_name', 'origins.name', 'visits.interested', 'visits.status',
-                'project_apartment_types.type_name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');
+                'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');
     }
 
     /**
@@ -86,7 +86,7 @@ class Visits extends LivewireDatatable
             Column::name('origins.name')
                 ->label(__('Origin')),
 
-            Column::name('project_apartment_types.type_name')
+            Column::name('project_apartments.name')
                 ->label(__('Apartment')),
 
             Column::callback('visits.interested', function ($interested) {

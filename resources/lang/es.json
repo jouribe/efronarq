@@ -141,5 +141,19 @@
     "Amount": "Monto",
     "Pull apart updated successfully!": "Separación actualizada con éxito!",
     "Pull apart created successfully!": "Separación generada con éxito!",
-    "Buyer Type": "Tipo de comprador"
+    "Buyer Type": "Tipo de comprador",
+    "Customer updated successfully" : "Cliente actualizado exitosamente",
+    "Payment type": "Forma de pago",
+    "Amount pull apart": "Monto de separación",
+    "Amount at": "Fecha",
+    "Milestone": "Hito",
+    "Balance": "Saldo",
+    "Fee": "Cuotas",
+    "Fee Nro.": "Cuota Nro.",
+    "Date": "Fecha",
+    "Generate": "Generar",
+    "Separation agreement at": "Fecha max. pago convenio de separación",
+    "Signature minute at": "Fecha firma minuta",
+    "Send to approve": "Enviar para aprobación",
+    "Pull apart submitted for approval successfully": "Separación enviada para aprobación exitosamente!"
 }

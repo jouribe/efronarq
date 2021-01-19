@@ -76,29 +76,36 @@ class VisitController extends Controller
      */
     public function store(StoreVisitRequest $request): Factory|View|Response|Application
     {
-        // Create customer
-        $customer = Customer::create([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
-            'dni' => $request->get('dni'),
-            'phone' => $request->get('phone'),
-            'district_id' => $request->get('district_id'),
-            'email' => $request->get('email'),
-            'secondary_email' => $request->get('secondary_email')
-        ]);
+        // Verify if user exists
+        $exist = Customer::whereDni($request->get('dni'))->first();
 
-        // Create customer detail
-        CustomerDetail::create([
-            'customer_id' => $customer->id,
-            'area_range' => $request->get('area_range'),
-            'bedroom' => $request->get('bedroom'),
-            'bathroom' => $request->get('bathroom'),
-            'service_room' => $request->get('service_room') !== null
-        ]);
+        if (!$exist) {
+            // Create customer
+            $customer = Customer::create([
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->get('last_name'),
+                'dni' => $request->get('dni'),
+                'phone' => $request->get('phone'),
+                'district_id' => $request->get('district_id'),
+                'email' => $request->get('email'),
+                'secondary_email' => $request->get('secondary_email')
+            ]);
+
+            // Create customer detail
+            CustomerDetail::create([
+                'customer_id' => $customer->id,
+                'area_range' => $request->get('area_range'),
+                'bedroom' => $request->get('bedroom'),
+                'bathroom' => $request->get('bathroom'),
+                'service_room' => $request->get('service_room') !== null
+            ]);
+
+            $exist = $customer;
+        }
 
         // Create visit
         $visit = Visit::create([
-            'customer_id' => $customer->id,
+            'customer_id' => $exist->id,
             'project_id' => $request->get('project_id'),
             'project_apartment_id' => $request->get('project_apartment_id'),
             'origin_id' => $request->get('origin_id'),
@@ -107,26 +114,25 @@ class VisitController extends Controller
             'type_financing' => $request->get('type_financing')
         ]);
 
-        // Create visit parking lot
-        if ($request->get('project_parking_lot_id') !== null) {
-            foreach ($request->get('project_parking_lot_id') as $project_parking_lot_id) {
+        // Create visit parking lot;
+        foreach ($request->get('project_parking_lot_id') as $parking) {
+            if (!is_null($parking)) {
                 VisitParkingLot::create([
                     'visit_id' => $visit->id,
-                    'project_parking_lot_id' => $project_parking_lot_id
+                    'project_parking_lot_id' => $parking
                 ]);
             }
         }
 
         // Create visit closet.
-        if ($request->get('project_closet_id') !== null) {
-            foreach ($request->get('project_closet_id') as $project_closet_id) {
+        foreach ($request->get('project_closet_id') as $closet) {
+            if (!is_null($closet)) {
                 VisitCloset::create([
                     'visit_id' => $visit->id,
-                    'project_closet_id' => $project_closet_id
+                    'project_closet_id' => $closet
                 ]);
             }
         }
-
         return view('visits.index');
     }
 
@@ -184,9 +190,9 @@ class VisitController extends Controller
      *
      * @param $id
      *
-     * @return BinaryFileResponse
+     * @return mixed
      */
-    public function generate($id): BinaryFileResponse
+    public function generate($id): mixed
     {
         $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType',
             'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank')
@@ -196,23 +202,25 @@ class VisitController extends Controller
 
         if (is_null($quotation)) {
 
-            $parkingLotPrices = [];
+            if ($visit->parkingLots->count() > 0) {
+                $parkingLotPrices = [];
 
-            foreach (VisitParkingLot::whereVisitId($id)->get() as $parking) {
-                $priceParkingLot = ProjectPriceParkingLot::whereProjectId($visit->project_id)
-                    ->where('type', $parking->parkingLot->type)
-                    ->where('floor', $parking->parkingLot->floor)->first()->toArray();
+                foreach (VisitParkingLot::whereVisitId($id)->get() as $parking) {
+                    $priceParkingLot = ProjectPriceParkingLot::whereProjectId($visit->project_id)
+                        ->where('type', $parking->parkingLot->type)
+                        ->where('floor', $parking->parkingLot->floor)->first()->toArray();
 
-                $parkingLotPrices[] = [
-                    'parking' => $parking->toArray(),
-                    'price' => $priceParkingLot
-                ];
+                    $parkingLotPrices[] = [
+                        'parking' => $parking->toArray(),
+                        'price' => $priceParkingLot
+                    ];
+                }
             }
 
             $data = [
                 'visit' => $visit->toArray(),
-                'parking_lot' => $parkingLotPrices,
-                'closet_price' => ProjectPriceCloset::whereProjectId($visit->id)->first()->toArray(),
+                'parking_lot' => $parkingLotPrices ?? null,
+                'closet_price' => $visit->closets->count() > 0 ? ProjectPriceCloset::whereProjectId($visit->id)->first()->toArray() : null,
                 'discount' => 0,
                 'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id
             ];
