@@ -231,65 +231,145 @@
                         </div>
                     </div>
 
-                    <div class="flex">
-                        <div class="p-4 w-1/3">
-                            <x-jet-label for="amount">{{ __('Amount pull apart') }}</x-jet-label>
-                            <x-jet-input type="text" id="amount" class="w-full" required wire:model="amount"/>
-                            @error('amount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
-                        </div>
-
-                        <div class="p-4 w-1/3">
-                            <x-jet-label for="amountAt">{{ __('Amount at') }}</x-jet-label>
-                            <x-jet-input type="date" id="amountAt" class="w-full" required wire:model="amountAt"/>
-                            @error('amountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
-                        </div>
-
-                        <div class="p-4 w-1/3">
-                            <x-jet-label for="milestone">{{ __('Milestone') }}</x-jet-label>
-                            <x-jet-input type="text" id="milestone" class="w-full" wire:model="milestone"/>
-                            @error('milestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <div class="p-4 w-1/3">
-                            <x-jet-label for="balance">{{ __('Balance') }}</x-jet-label>
-                            <x-jet-input type="text" id="balance" class="w-full" readonly wire:model="balance"/>
-                            @error('balance') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
-
-                    <div class="flex">
-                        <div class="p-4">
-                            <x-jet-label for="feeCount">{{ __('Fee') }}</x-jet-label>
-                            <div class="flex">
-                                <x-jet-input type="number" id="feeCount" class="w-full" wire:model="feeCount" min="0"/>
-                                <x-jet-button type="button" class="bg-blue-500 mt-1 ml-2" wire:click="generateFeeInputs">{{ __('Generate') }}</x-jet-button>
-                            </div>
-                        </div>
-                    </div>
-
-                    @foreach($inputs as $key => $value)
+                    @if($paymentType === 'Hipotecario' || $paymentType === 'Mixto')
                         <div class="flex">
                             <div class="p-4 w-1/3">
-                                <x-jet-label>{{ __('Fee Nro.') }} {{ $key + 1 }}</x-jet-label>
-                                <x-jet-input type="text" class="w-full" required wire:model="fee.{{ $value }}"/>
+                                <x-jet-label for="bankId">{{ __('Bank') }}</x-jet-label>
+                                <x-dropdown-list :items="$bankList" id="bankId" required wire:model="bankId"/>
+                                @error('bankId') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($paymentType !== '')
+                        <div class="flex">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="amount">{{ __('Amount pull apart') }}</x-jet-label>
+                                <x-jet-input type="text" id="amount" class="w-full" required wire:model="amount"/>
                                 @error('amount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="p-4 w-1/3">
-                                <x-jet-label>{{ __('Date') }}</x-jet-label>
-                                <x-jet-input type="date" class="w-full" required wire:model="feeAt.{{ $value }}"/>
+                                <x-jet-label for="amountAt">{{ __('Amount at') }}</x-jet-label>
+                                <x-jet-input type="date" id="amountAt" class="w-full" required wire:model="amountAt"/>
                                 @error('amountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="p-4 w-1/3">
-                                <x-jet-label>{{ __('Milestone') }}</x-jet-label>
-                                <x-jet-input type="text" class="w-full" wire:model="feeMilestone.{{ $value }}"/>
+                                <x-jet-label for="milestone">{{ __('Milestone') }}</x-jet-label>
+                                <x-jet-input type="text" id="milestone" class="w-full" wire:model="milestone"/>
                                 @error('milestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                    @endforeach
+                    @endif
+
+                    {{-- Directo --}}
+                    @if($paymentType === 'Directo')
+                        <div class="flex justify-end">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="balance">{{ __('Balance') }}</x-jet-label>
+                                <x-jet-input type="text" id="balance" class="w-full" readonly wire:model="balance"/>
+                                @error('balance') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Hipotecario --}}
+                    @if($paymentType === 'Hipotecario' || $paymentType === 'Mixto')
+                        <div class="flex">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="afpAmount">{{ __('AFP amount') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" required wire:model="afpAmount"/>
+                                @error('afpAmount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="afpAmountAt">{{ __('Date') }}</x-jet-label>
+                                <x-jet-input type="date" class="w-full" required wire:model="afpAmountAt"/>
+                                @error('afpAmountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="afpAmountMilestone">{{ __('Milestone') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" wire:model="afpAmountMilestone"/>
+                                @error('afpAmountMilestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="creditAmount">{{ __('Credit amount') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" required wire:model="creditAmount"/>
+                                @error('creditAmount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="creditAmountAt">{{ __('Date') }}</x-jet-label>
+                                <x-jet-input type="date" class="w-full" required wire:model="creditAmountAt"/>
+                                @error('creditAmountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="creditAmountMilestone">{{ __('Milestone') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" wire:model="creditAmountMilestone"/>
+                                @error('creditAmountMilestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="feeBalance">{{ __('Fee balance') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" required wire:model="feeBalance"/>
+                                @error('feeBalance') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="feeBalanceAt">{{ __('Date') }}</x-jet-label>
+                                <x-jet-input type="date" class="w-full" required wire:model="feeBalanceAt"/>
+                                @error('feeBalanceAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="feeBalanceMilestone">{{ __('Milestone') }}</x-jet-label>
+                                <x-jet-input type="text" class="w-full" wire:model="feeBalanceMilestone"/>
+                                @error('feeBalanceMilestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($paymentType === 'Directo' || $paymentType === 'Mixto')
+                        <div class="flex">
+                            <div class="p-4">
+                                <x-jet-label for="feeCount">{{ __('Fee') }}</x-jet-label>
+                                <div class="flex">
+                                    <x-jet-input type="number" id="feeCount" class="w-full" wire:model="feeCount" min="0"/>
+                                    <x-jet-button type="button" class="bg-blue-500 mt-1 ml-2" wire:click="generateFeeInputs">{{ __('Generate') }}</x-jet-button>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach($inputs as $key => $value)
+                            <div class="flex">
+                                <div class="p-4 w-1/3">
+                                    <x-jet-label>{{ __('Fee Nro.') }} {{ $key + 1 }}</x-jet-label>
+                                    <x-jet-input type="text" class="w-full" required wire:model="fee.{{ $value }}"/>
+                                    @error('amount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="p-4 w-1/3">
+                                    <x-jet-label>{{ __('Date') }}</x-jet-label>
+                                    <x-jet-input type="date" class="w-full" required wire:model="feeAt.{{ $value }}"/>
+                                    @error('amountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="p-4 w-1/3">
+                                    <x-jet-label>{{ __('Milestone') }}</x-jet-label>
+                                    <x-jet-input type="text" class="w-full" wire:model="feeMilestone.{{ $value }}"/>
+                                    @error('milestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
 
                 <div class="flex justify-end">
