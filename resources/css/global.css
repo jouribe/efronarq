@@ -62,3 +62,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin: 0 auto 1.5rem;
     font-size: 22px;
 }
+.px-6 {
+    padding-left: 0.9rem!important;
+    padding-right: 0.9rem!important;
+}

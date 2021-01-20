@@ -11,9 +11,11 @@
             </div>
         @endif
 
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+            {{ __('Unidades del Proyecto') }}
+        </h2>
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-
-            <form wire:submit.prevent="storeGeneralPrice" autocomplete="off">
+          <form wire:submit.prevent="storeGeneralPrice" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
                         <div class="p-4 w-1/2">
@@ -89,7 +91,9 @@
             </form>
 
         </div>
-
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+            {{ __('Datos del Propietario') }}
+        </h2>
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             <form wire:submit.prevent="storeOwner" autocomplete="off">
                 <div class="flex-col">
@@ -153,7 +157,7 @@
 
                     @if($buyerType !== 'Soltero(a)')
                         <div class="flex-row w-1/2">
-                            <h2 class="px-4 font-bold">De la {{ $buyerType }}</h2>
+                            <h2 class="px-4 font-bold">Del {{ $buyerType }}</h2>
 
                             <div class="flex">
                                 <div class="p-4 w-1/2">
@@ -211,7 +215,9 @@
                 </div>
             </form>
         </div>
-
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+            {{ __('Forma de Pago') }}
+        </h2>
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             <form wire:submit.prevent="storePullApartFee" autocomplete="off">
                 <div class="flex-row">
@@ -299,7 +305,9 @@
                 </div>
             </form>
         </div>
-
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+            {{ __('Fechas') }}
+        </h2>
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             <form wire:submit.prevent="storeAgreementAndSignMinute" autocomplete="off">
                 <div class="flex-row">
