@@ -6,6 +6,7 @@
 
 namespace App\Http\Livewire\PullAparts;
 
+use App\Models\Bank;
 use App\Models\Customer;
 use App\Models\PullApart;
 use App\Models\PullApartFee;
@@ -32,6 +33,16 @@ class Create extends Component
      * @var mixed $pullApart
      */
     public $pullApart;
+
+    /**
+     * @var mixed $bankList
+     */
+    public $bankList;
+
+    /**
+     * @var mixed $bankId
+     */
+    public $bankId;
 
     /**
      * @var mixed $apartmentNro
@@ -92,9 +103,9 @@ class Create extends Component
     ];
 
     /**
-     * @var string $paymentType
+     * @var mixed $paymentType
      */
-    public string $paymentType = 'Directo';
+    public $paymentType;
 
     /**
      * @var array|string[] $paymentTypeList
@@ -208,6 +219,51 @@ class Create extends Component
     public $comment;
 
     /**
+     * @var mixed $feeBalance
+     */
+    public $feeBalance;
+
+    /**
+     * @var mixed $feeBalanceAt
+     */
+    public $feeBalanceAt;
+
+    /**
+     * @var mixed $feeBalanceMilestone
+     */
+    public $feeBalanceMilestone;
+
+    /**
+     * @var mixed $afpAmount
+     */
+    public $afpAmount;
+
+    /**
+     * @var mixed $afpAmountAt
+     */
+    public $afpAmountAt;
+
+    /**
+     * @var mixed $afpAmountMilestone
+     */
+    public $afpAmountMilestone;
+
+    /**
+     * @var mixed $creditAmount
+     */
+    public $creditAmount;
+
+    /**
+     * @var mixed $creditAmountAt
+     */
+    public $creditAmountAt;
+
+    /**
+     * @var mixed $creditAmountMilestone
+     */
+    public $creditAmountMilestone;
+
+    /**
      * Component mount.
      */
     public function mount(): void
@@ -220,6 +276,8 @@ class Create extends Component
         $this->setClosetPrice();
         $this->settingDateAgreementAndSignMinute();
         $this->settingFees();
+        $this->settingPaymentType();
+
     }
 
     /**
@@ -229,9 +287,25 @@ class Create extends Component
      */
     public function render(): Factory|View|Application
     {
+        $this->bankList = Bank::whereIsActive(true)->pluck('name', 'id');
+
         $this->updateBalance();
 
+        if (!is_null($this->pullApart)) {
+            $this->resetPaymentFees();
+        }
+
         return view('livewire.pull-aparts.create');
+    }
+
+    /**
+     * Setting payment type.
+     */
+    public function settingPaymentType(): void
+    {
+        if (!is_null($this->pullApart)) {
+            $this->paymentType = $this->pullApart->payment_type;
+        }
     }
 
     /**
@@ -254,6 +328,17 @@ class Create extends Component
             $this->amount = $this->pullApart->amount;
             $this->amountAt = $this->pullApart->amount_at;
             $this->milestone = $this->pullApart->milestone;
+
+            if ($this->pullApart->payment_type === 'Hipotecario' || $this->pullApart->payment_type === 'Mixto') {
+                $this->afpAmount = $this->pullApart->afp_amount;
+                $this->afpAmountAt = $this->pullApart->afp_amount_at;
+                $this->afpAmountMilestone = $this->pullApart->afp_amount_milestone;
+                $this->creditAmount = $this->pullApart->mortgage_credit;
+                $this->creditAmountAt = $this->pullApart->mortgage_credit_at;
+                $this->creditAmountMilestone = $this->pullApart->mortgage_credit_milestone;
+                $this->feeBalanceAt = $this->pullApart->fee_balance_at;
+                $this->bankId = $this->pullApart->bank_id;
+            }
 
             $fees = PullApartFee::wherePullApartId($this->pullApart->id)->get();
 
@@ -294,7 +379,15 @@ class Create extends Component
             $this->amount = 0;
         }
 
-        $this->balance = 'US$ ' . number_format($this->priceTotal - $this->amount, 2);
+        if ($this->afpAmount === '') {
+            $this->afpAmount = 0;
+        }
+
+        if ($this->creditAmount === '') {
+            $this->creditAmount = 0;
+        }
+
+        $this->balance = $this->feeBalance = 'US$ ' . number_format($this->priceTotal - ($this->amount + $this->afpAmount + $this->creditAmount), 2);
     }
 
     /**
@@ -430,16 +523,15 @@ class Create extends Component
      */
     public function generateFeeInputs(): void
     {
-        unset($this->inputs);
-
         $this->inputs = [];
+        $this->fee = [];
 
         if ((int)$this->feeCount > 0) {
             for ($i = 0; $i < (int)$this->feeCount; $i++) {
                 $this->inputs[] = $i;
             }
 
-            $feeAmount = ($this->priceTotal - $this->amount) / $this->feeCount;
+            $feeAmount = ($this->priceTotal - ($this->amount + $this->afpAmount + $this->creditAmount)) / $this->feeCount;
 
             foreach ($this->inputs as $key => $value) {
                 $this->fee[$key] = 'US$ ' . number_format($feeAmount, 2);
@@ -456,29 +548,51 @@ class Create extends Component
      */
     public function storePullApartFee(): void
     {
+        $feeBalance = null;
+
+        if ($this->feeBalance !== '') {
+            $feeBalance = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $this->feeBalance));
+        }
+
         PullApart::whereId($this->pullApart->id)->update([
+            'payment_type' => $this->paymentType,
+            'bank_id' => $this->bankId,
             'amount' => $this->amount,
             'amount_at' => $this->amountAt,
             'milestone' => $this->milestone === '' ? null : $this->milestone,
+            'fee_balance' => $feeBalance,
+            'fee_balance_at' => $this->feeBalanceAt,
+            'fee_balance_milestone' => $this->feeBalanceMilestone,
+            'afp_amount' => $this->afpAmount,
+            'afp_amount_at' => $this->afpAmountAt,
+            'afp_amount_milestone' => $this->afpAmountMilestone,
+            'mortgage_credit' => $this->creditAmount,
+            'mortgage_credit_at' => $this->creditAmountAt,
+            'mortgage_credit_milestone' => $this->creditAmountMilestone
         ]);
 
-        // Search fee for this pull apart.
-        $fees = PullApartFee::wherePullApartId($this->pullApart->id)->get();
+        $this->removeFeesIfExist();
 
-        // Remove all fees to register the new ones.
-        foreach ($fees as $fee) {
-            PullApartFee::whereId($fee->id)->delete();
+        // Remove fees inputs if payment type is Hipotecario.
+        if ($this->paymentType === 'Hipotecario') {
+            $this->fee = [];
         }
 
-        // register all fees.
+        // register all fees only if payment type not is Hipotecario.
         foreach ($this->fee as $key => $value) {
             $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+
+            $milestone = null;
+
+            if (!is_null($this->feeMilestone) && isset($this->feeMilestone[$key])) {
+                $milestone = $this->feeMilestone[$key];
+            }
 
             PullApartFee::create([
                 'pull_apart_id' => $this->pullApart->id,
                 'fee' => $fee,
                 'fee_at' => $this->feeAt[$key],
-                'milestone' => is_null($this->feeMilestone) ? null : $this->feeMilestone[$key]
+                'milestone' => $milestone
             ]);
         }
     }
@@ -506,6 +620,54 @@ class Create extends Component
             ]);
 
             session()->flash('sendToApprove', __('Pull apart submitted for approval successfully'));
+        }
+    }
+
+    /**
+     * Remove pull apart fees if exist.
+     *
+     * @return void
+     */
+    public function removeFeesIfExist(): void
+    {
+        // Search fee for this pull apart.
+        $fees = PullApartFee::wherePullApartId($this->pullApart->id)->get();
+
+        // Remove all fees to register the new ones.
+        foreach ($fees as $fee) {
+            PullApartFee::whereId($fee->id)->delete();
+        }
+    }
+
+    public function resetPaymentFees(): void
+    {
+        if ($this->paymentType !== $this->pullApart->payment_type) {
+            $this->amount = '';
+            $this->amountAt = null;
+            $this->milestone = '';
+            $this->creditAmount = '';
+            $this->afpAmount = '';
+
+            $this->updateBalance();
+
+            PullApart::whereId($this->pullApart->id)->update([
+                'payment_type' => $this->paymentType,
+                'bank_id' => null,
+                'amount' => 0,
+                'amount_at' => null,
+                'milestone' => null,
+                'fee_balance' => null,
+                'fee_balance_at' => null,
+                'fee_balance_milestone' => null,
+                'afp_amount' => null,
+                'afp_amount_at' => null,
+                'afp_amount_milestone' => null,
+                'mortgage_credit' => null,
+                'mortgage_credit_at' => null,
+                'mortgage_credit_milestone' => null,
+            ]);
+
+            $this->removeFeesIfExist();
         }
     }
 }
