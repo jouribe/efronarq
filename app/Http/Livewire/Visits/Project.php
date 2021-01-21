@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection UnknownInspectionInspection */
+
 namespace App\Http\Livewire\Visits;
 
 use App\Models\ProjectApartment;
@@ -84,14 +86,10 @@ class Project extends Component
      */
     public function render(): Factory|View|Application
     {
-        if (!empty($this->project_id)) {
-            $this->apartmentList = ProjectApartment::leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-                ->where('project_apartments.project_id', '=', $this->project_id)
-                ->pluck('project_apartment_types.type_name', 'project_apartments.id');
-
-            $this->parkingLotList = ProjectParkingLot::whereProjectId($this->project_id)->pluck('floor', 'id');
-
-            $this->closetList = ProjectCloset::whereProjectId($this->project_id)->pluck('closet', 'id');
+        if (!is_null($this->project_id)) {
+            $this->getProjectApartmentList();
+            $this->getProjectParkingLotList();
+            $this->getProjectClosetList();
         }
 
         return view('livewire.visits.project');
@@ -99,6 +97,7 @@ class Project extends Component
 
     /**
      * @param $i
+     * @noinspection PhpUnused
      */
     public function addParkingLot($i): void
     {
@@ -131,5 +130,45 @@ class Project extends Component
     public function removeCloset($j): void
     {
         unset($this->closetDropDowns[$j]);
+    }
+
+    /**
+     * Get project apartments list
+     *
+     * @return void
+     */
+    public function getProjectApartmentList(): void
+    {
+        $this->apartmentList = ProjectApartment::leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
+            ->where('project_apartments.project_id', $this->project_id)
+            ->selectRaw("project_apartments.id as id, CONCAT(project_apartments.name, ': Tipo ', project_apartment_types.type_name, ' - ', SUM(project_apartment_types.roofed_area + project_apartment_types.free_area), ' mts.') as text")
+            ->groupBy('project_apartments.id', 'project_apartments.name', 'project_apartment_types.type_name', 'project_apartment_types.free_area', 'project_apartment_types.roofed_area')
+            ->pluck('text', 'id');
+    }
+
+    /**
+     * Get parking lot price
+     *
+     * @return void
+     */
+    public function getProjectParkingLotList(): void
+    {
+        $this->parkingLotList = ProjectParkingLot::whereProjectId($this->project_id)
+            ->selectRaw("id, CONCAT(parking_lot, ': ', floor, ' - ', SUM(roofed_area + free_area), ' mts.') as text")
+            ->groupBy('id', 'parking_lot', 'floor', 'roofed_area', 'free_area')
+            ->pluck('text', 'id');
+    }
+
+    /**
+     * Get project closet list.
+     *
+     * @return void
+     */
+    public function getProjectClosetList(): void
+    {
+        $this->closetList = ProjectCloset::whereProjectId($this->project_id)
+            ->selectRaw("id, CONCAT(floor, ' - ', closet, ': ', roofed_area, ' mts.') as text")
+            ->groupBy('id', 'floor', 'closet', 'roofed_area')
+            ->pluck('text', 'id');
     }
 }

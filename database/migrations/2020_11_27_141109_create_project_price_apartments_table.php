@@ -15,6 +15,8 @@ class CreateProjectPriceApartmentsTable extends Migration
     {
         Schema::create('project_price_apartments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('project_id');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->unsignedBigInteger('project_apartment_type_id');
             $table->foreign('project_apartment_type_id')->references('id')->on('project_apartment_types')->onDelete('cascade');
             $table->integer('start_floor');

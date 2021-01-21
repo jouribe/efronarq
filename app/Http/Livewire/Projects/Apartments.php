@@ -15,6 +15,8 @@ use Livewire\Component;
 
 class Apartments extends Component
 {
+    use \App\Traits\Prices;
+
     /**
      * @var Project $project
      */
@@ -74,6 +76,11 @@ class Apartments extends Component
      * @var mixed $order
      */
     public $order;
+
+    /**
+     * @var mixed $price
+     */
+    public $price;
 
     /**
      * @var boolean $isOpen
@@ -145,6 +152,7 @@ class Apartments extends Component
         $this->parking_lots = '';
         $this->closets = '';
         $this->order = '';
+        $this->price = null;
     }
 
     /**
@@ -168,8 +176,12 @@ class Apartments extends Component
             ->priceApartments
             ->first();
 
+        if (is_null($this->price)) {
+            $this->price = $this->getPricePerApartment(Project::whereId($this->project->id)->first());
+        }
+
         if ($this->end_floor > $apartmentPrice->end_floor) {
-            $this->errorMessage =  'Este valor no concuerda con la lista de precios por tipo de departamento.';
+            $this->errorMessage = 'Este valor no concuerda con la lista de precios por tipo de departamento.';
         } else {
             if ($this->project_apartment_id) {
                 // Update project apartment
@@ -181,7 +193,8 @@ class Apartments extends Component
                     'end_floor' => $this->end_floor,
                     'parking_lots' => $this->parking_lots,
                     'closets' => $this->closets,
-                    'order' => $this->order
+                    'order' => $this->order,
+                    'price' => $this->price
                 ]);
             } else {
                 for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
@@ -193,7 +206,8 @@ class Apartments extends Component
                         'end_floor' => $i,
                         'parking_lots' => $this->parking_lots,
                         'closets' => $this->closets,
-                        'order' => $this->order + ($i - 1)
+                        'order' => $this->order + ($i - 1),
+                        'price' => $this->price
                     ]);
                 }
             }
@@ -222,6 +236,7 @@ class Apartments extends Component
         $this->parking_lots = $apartment->parking_lots;
         $this->closets = $apartment->closets;
         $this->order = $apartment->order;
+        $this->price = $apartment->price;
 
         $this->openModal();
     }
@@ -250,5 +265,32 @@ class Apartments extends Component
     public function clearErrorMessage(): void
     {
         $this->errorMessage = null;
+    }
+
+    /**
+     * Get price per apartment
+     *
+     * @param Project $project
+     * @return float
+     */
+    public function getPricePerApartment(Project $project): float
+    {
+        // Precio de area libre
+        $freeAreaPrice = self::freeAreaTotal($project->prices->first()->free_area, $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->free_area,
+            $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->priceApartments->first()->price_area);
+        // Precio de area techada
+        $roofedAreaPrice = self::roofedAreaTotal($project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->roofed_area,
+            $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->priceApartments->first()->price_area);
+        // Precio de la unidad total Base (Proyecto: Construcción)
+        return self::areaPriceTotal($freeAreaPrice, $roofedAreaPrice);
+    }
+
+    /**
+     * Hydrate the component.
+     */
+    public function hydrate(): void
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
     }
 }

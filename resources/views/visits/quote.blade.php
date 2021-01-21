@@ -1,6 +1,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>$title</title>
+    <title>{{ $title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
@@ -9,11 +9,11 @@
     <tbody>
     <tr>
         <td width="30%">
-            <img src="{{ $visit['project']['logo'] }}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
+            <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
         </td>
         <td width="40%"></td>
         <td width="30%" style="text-align: right;">
-            {{--<img src="http://127.0.0.1:8000/images/atomikal-logo-blanco.png" style="" alt="EfronArq">--}}
+            <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">
         </td>
     </tr>
     <tr>
@@ -79,52 +79,50 @@
     @if(!is_null($visit['apartment']))
 
         @php
-
-            $total_apartment_price = 0;
-            $total_apartment_price += $visit['apartment']['apartment_type']['price_apartments'][0]['price_area'] * ($visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area']);
-
+            $total_apartment_price = $visit['apartment']['price'];
         @endphp
 
         <tr>
             <td style="border-bottom: 1px solid;border-right: 1px solid; text-align:left;padding: 3px 0 3px 20px;"> Departamento</td>
-            <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['apartment_type']['type_name'] }}</td>
-            <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['apartment_type']['type_name'] }}</td>
+            <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['name'] }}</td>
+            <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['apartment_type']['bedroom'] }}</td>
             <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['apartment_type']['free_area'] }}</td>
             <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $visit['apartment']['apartment_type']['roofed_area'] }}</td>
             <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">
                 {{ $visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area'] }}
             </td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ __('US$') }} {{number_format($visit['apartment']['apartment_type']['price_apartments'][0]['price_area'] * ($visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area']) , 2) }}
+                {{ __('US$') }} {{number_format($visit['apartment']['price'] , 2) }}
             </td>
         </tr>
     @endif
 
     @php
-        $total_parking_price = 0
+        $total_parking_price = 0;
     @endphp
 
-    @if(!is_null($parking_lot))
-        @foreach($parking_lot as $key => $value)
+
+    @if(!is_null($visit['parking_lots']))
+
+        @foreach($visit['parking_lots'] as $key => $value)
 
             @php
-
-                $total_parking_price += $value['price']['price'];
-
+                $total_parking_price += $value['parking_lot']['price'];
             @endphp
 
             <tr>
                 <td style="border-bottom: 1px solid;border-right: 1px solid; text-align:left;padding: 3px 0 3px 20px;"> Estacionamiento {{ $key + 1 }} </td>
-                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking']['parking_lot']['id'] }}</td>
-                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"> -</td>
-                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking']['parking_lot']['free_area'] }}</td>
-                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking']['parking_lot']['roofed_area'] }}</td>
-                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking']['parking_lot']['free_area'] + $value['parking']['parking_lot']['roofed_area'] }}</td>
+                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['parking_lot'] }}</td>
+                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">-</td>
+                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['free_area'] }}</td>
+                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['roofed_area'] }}</td>
+                <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['free_area'] + $value['parking_lot']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ __('US$') }} {{ number_format(  $value['price']['price'], 2) }}
+                    {{ __('US$') }} {{ number_format(  $value['parking_lot']['price'], 2) }}
                 </td>
             </tr>
         @endforeach
+
     @endif
 
     @php
@@ -132,26 +130,26 @@
     @endphp
 
     @if(!is_null($visit['closets']))
+
         @foreach($visit['closets'] as $key => $value)
 
             @php
-
-                $total_closet_price += $closet_price['price'] * $value['closet']['roofed_area'];
-
+                $total_closet_price += $value['closet']['price']
             @endphp
 
             <tr>
-                <td style="border-bottom: 1px solid;border-right: 1px solid; text-align:left;padding: 3px 0 3px 20px;"> Estacionamiento {{ $key + 1 }} </td>
+                <td style="border-bottom: 1px solid;border-right: 1px solid; text-align:left;padding: 3px 0 3px 20px;"> Depósito/Closet {{ $key + 1 }} </td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['closet'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"> -</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">0</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ __('US$') }} {{ number_format(  $closet_price['price'] * $value['closet']['roofed_area'], 2) }}
+                    {{ __('US$') }} {{ number_format(  $value['closet']['price'] , 2) }}
                 </td>
             </tr>
         @endforeach
+
     @endif
 
     <tr>
@@ -235,7 +233,7 @@
         <td style="font-size: 14px;"><span style="font-weight: bold;">Nombre:</span> {{ auth()->user()->name }}</td>
     </tr>
     <tr>
-        <td style="font-size: 14px;"><span style="font-weight: bold;">Teléfono:</span> 789874587 </td>
+        <td style="font-size: 14px;"><span style="font-weight: bold;">Teléfono:</span> 789874587</td>
     </tr>
     <tr>
         <td style="font-size: 14px;"><span style="font-weight: bold;">Correo:</span> {{ auth()->user()->email }}</td>

@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
 use App\Models\ProjectCloset;
+use App\Models\ProjectPriceCloset;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -171,7 +172,8 @@ class Closets extends Component
                 'closet' => $this->closet,
                 'roofed_area' => $this->roofed_area,
                 'availability' => $this->availability,
-                'blueprint' => $this->current_blueprint
+                'blueprint' => $this->current_blueprint,
+                'price' => $this->getPrice()
             ]);
 
         session()->flash('message', $this->project_closet_id ? __('Closet updated successfully.') : __('Closet created successfully.'));
@@ -215,5 +217,17 @@ class Closets extends Component
         } catch (Exception $e) {
             echo $e;
         }
+    }
+
+    /**
+     * Return closet price
+     *
+     * @return float|int
+     */
+    public function getPrice(): float|int
+    {
+        $price = ProjectPriceCloset::whereProjectId($this->project->id)->first()->price;
+
+        return $price * $this->roofed_area;
     }
 }

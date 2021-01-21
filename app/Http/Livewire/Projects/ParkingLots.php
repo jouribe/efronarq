@@ -9,6 +9,8 @@ namespace App\Http\Livewire\Projects;
 use App\Models\Project;
 use App\Models\ProjectAddress;
 use App\Models\ProjectParkingLot;
+use App\Models\ProjectPrice;
+use App\Models\ProjectPriceParkingLot;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -245,7 +247,8 @@ class ParkingLots extends Component
                 'address_id' => $this->address_id,
                 'discount' => $this->discount,
                 'closet' => $this->closet,
-                'blueprint' => $this->current_blueprint
+                'blueprint' => $this->current_blueprint,
+                'price' => $this->getPrice()
             ]);
 
         session()->flash('message', $this->project_parking_lot_id ? __('Parking lot updated successfully') : __('Parking lot created successfully'));
@@ -294,5 +297,23 @@ class ParkingLots extends Component
         } catch (Exception $e) {
             echo $e;
         }
+    }
+
+    /**
+     * Return parking lot price
+     *
+     * @return mixed
+     */
+    public function getPrice(): mixed
+    {
+        $price = ProjectPriceParkingLot::whereProjectId($this->project->id)->whereFloor($this->floor)->whereType($this->type)->first()->price;
+
+        if ($this->discount === 1) {
+            $discount = ProjectPrice::whereProjectId($this->project->id)->first()->parking_discount;
+
+            $price -= ($price * $discount / 100);
+        }
+
+        return $price;
     }
 }

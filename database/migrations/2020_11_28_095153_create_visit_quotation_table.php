@@ -18,6 +18,7 @@ class CreateVisitQuotationTable extends Migration
             $table->unsignedBigInteger('visit_id');
             $table->foreign('visit_id')->references('id')->on('visits')->onDelete('cascade');
             $table->string('file');
+            $table->string('mode')->nullable();
             $table->timestamps();
         });
     }

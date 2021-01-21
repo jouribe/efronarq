@@ -23,7 +23,7 @@
                 Estacionamientos
             </button>
             <button data-target="panel-6" class="tab text-gray-600 py-4 px-6 block">
-                Closets / Depositos
+                Closets / Depósitos
             </button>
             <button data-target="panel-7" class="tab text-gray-600 py-4 px-6 block">
                 Documentos
@@ -40,8 +40,8 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="flex-row p-4">
                             <span class="block text-xs text-gray-500">{{ __('Logo') }}</span>
-                            <div class="block">
-                                <img src="https://dummyimage.com/200x200/000/fff" alt="{{ $project->name }}">
+                            <div class="inline-block p-3 w-36 w-36">
+                                <img src="{{ asset('storage/' . $project->logo ) }}" alt="{{ $project->name }}">
                             </div>
                         </div>
 

@@ -49,7 +49,7 @@ class ProjectApartments extends LivewireDatatable
             })
             ->where('project_apartments.project_id', $this->projectId)
             ->groupBy('availability', 'project_apartment_types.type_name', 'start_floor', 'project_apartment_types.roofed_area', 'project_apartment_types.free_area',
-                'project_price_apartments.price_area', 'parking_lots', 'closets', 'order', 'id', 'project_apartments.name');
+                'project_price_apartments.price_area', 'parking_lots', 'closets', 'order', 'id', 'project_apartments.name', 'project_apartments.price');
     }
 
     /**
@@ -74,12 +74,8 @@ class ProjectApartments extends LivewireDatatable
             Column::name('project_apartments.name')
                 ->label(__('Apartment name')),
 
-            Column::callback([
-                'project_price_apartments.price_area',
-                'project_apartment_types.roofed_area',
-                'project_apartment_types.free_area'
-            ], function ($price, $roofed, $free) {
-                return '<pre>US$ ' . number_format($price * ($roofed + $free), 2) . '</pre>';
+            Column::callback('project_apartments.price', function ($price) {
+                return '<pre>US$ ' . number_format((float)$price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 

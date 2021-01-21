@@ -201,28 +201,10 @@ class VisitController extends Controller
         $quotation = VisitQuotation::whereVisitId($visit->id)->first();
 
         if (is_null($quotation)) {
-
-            if ($visit->parkingLots->count() > 0) {
-                $parkingLotPrices = [];
-
-                foreach (VisitParkingLot::whereVisitId($id)->get() as $parking) {
-                    $priceParkingLot = ProjectPriceParkingLot::whereProjectId($visit->project_id)
-                        ->where('type', $parking->parkingLot->type)
-                        ->where('floor', $parking->parkingLot->floor)->first()->toArray();
-
-                    $parkingLotPrices[] = [
-                        'parking' => $parking->toArray(),
-                        'price' => $priceParkingLot
-                    ];
-                }
-            }
-
             $data = [
                 'visit' => $visit->toArray(),
-                'parking_lot' => $parkingLotPrices ?? null,
-                'closet_price' => $visit->closets->count() > 0 ? ProjectPriceCloset::whereProjectId($visit->id)->first()->toArray() : null,
-                'discount' => 0,
-                'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id
+                'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id,
+                'discount' => 0
             ];
 
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';

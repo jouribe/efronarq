@@ -22,6 +22,7 @@ class CreateProjectClosetsTable extends Migration
             $table->decimal('roofed_area', 10);
             $table->enum('availability', ['Disponible', 'Reservado', 'Separado', 'Vendido']);
             $table->string('blueprint');
+            $table->decimal('price', 20)->nullable();
             $table->timestamps();
         });
     }

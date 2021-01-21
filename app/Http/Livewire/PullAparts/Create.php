@@ -539,6 +539,10 @@ class Create extends Component
                 if (!is_null($this->amountAt)) {
                     $this->feeAt[$key] = Carbon::parse($this->amountAt)->addMonthsNoOverflow($key + 1)->format('Y-m-d');
                 }
+
+                if (!is_null($this->feeBalanceAt)) {
+                    $this->feeAt[$key] = Carbon::parse($this->feeBalanceAt)->addMonthsNoOverflow($key + 1)->format('Y-m-d');
+                }
             }
         }
     }
@@ -639,6 +643,11 @@ class Create extends Component
         }
     }
 
+    /**
+     * Reset all payment fees.
+     *
+     * @return void
+     */
     public function resetPaymentFees(): void
     {
         if ($this->paymentType !== $this->pullApart->payment_type) {
@@ -647,8 +656,10 @@ class Create extends Component
             $this->milestone = '';
             $this->creditAmount = '';
             $this->afpAmount = '';
+            $this->feeCount = 0;
 
             $this->updateBalance();
+            $this->generateFeeInputs();
 
             PullApart::whereId($this->pullApart->id)->update([
                 'payment_type' => $this->paymentType,

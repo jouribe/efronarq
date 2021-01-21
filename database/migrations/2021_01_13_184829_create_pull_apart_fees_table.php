@@ -22,6 +22,9 @@ class CreatePullApartFeesTable extends Migration
             $table->decimal('fee');
             $table->date('fee_at');
             $table->string('milestone')->nullable();
+            $table->enum('type', ['Monto Separación', 'Saldo Cuota Inicial', 'AFP', 'Crédito Hipotecario', 'Cuota']);
+            $table->boolean('pay')->default(false);
+            $table->date('payment_at')->nullable();
             $table->timestamps();
         });
     }

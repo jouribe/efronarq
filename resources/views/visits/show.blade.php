@@ -174,7 +174,7 @@
                     <div class="p-4 w-1/4">
                         <span class="block text-xs text-gray-500">{{ __('Apartment') }}</span>
                         <div>
-                            {{ $visit->apartment->apartmentType->type_name }}:
+                            {{ $visit->apartment->name }}:
                             Tipo {{ $visit->apartment->apartmentType->type_name }} -
                             {{ $visit->apartment->apartmentType->roofed_area + $visit->apartment->apartmentType->free_area }} m<sup>2</sup></div>
                     </div>

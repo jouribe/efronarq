@@ -63,11 +63,19 @@
                             <x-jet-input type="text" id="order" class="w-full" wire:model="order"/>
                             @error('order') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
+
+                        @if(!is_null($price))
+                            <div class="p-4 w-1/2">
+                                <x-jet-label for="price">{{ __('Price') }}</x-jet-label>
+                                <x-jet-input type="number" id="price" class="w-full" wire:model="price"/>
+                                @error('price') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+                        @endif
                     </div>
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>
-                        <x-jet-button type="submit" class="bg-blue-900 hover:bg-blue-700" wire:click="store">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button type="submit" class="bg-blue-500 hover:bg-blue-700" wire:click="store">{{ __('Save') }}</x-jet-button>
                     </div>
                 </div>
 

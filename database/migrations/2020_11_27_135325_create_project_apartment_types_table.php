@@ -20,8 +20,8 @@ class CreateProjectApartmentTypesTable extends Migration
             $table->string('type_name');
             $table->decimal('roofed_area', 10);
             $table->decimal('free_area', 10);
-            $table->integer('bedroom');
-            $table->integer('bathroom');
+            $table->decimal('bedroom', 10);
+            $table->decimal('bathroom', 10);
             $table->string('view')->nullable();
             $table->string('blueprint')->nullable();
             $table->boolean('service_room')->default(false);

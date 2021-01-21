@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\Prices;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProjectApartment extends Model
 {
-    use HasFactory;
+    use Prices;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +25,8 @@ class ProjectApartment extends Model
         'end_floor',
         'parking_lots',
         'closets',
-        'order'
+        'order',
+        'price'
     ];
 
     /**

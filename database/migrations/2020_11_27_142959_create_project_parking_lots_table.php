@@ -28,6 +28,7 @@ class CreateProjectParkingLotsTable extends Migration
             $table->boolean('discount')->default(false);
             $table->boolean('closet')->default(false);
             $table->string('blueprint')->nullable();
+            $table->decimal('price', 20)->nullable();
             $table->timestamps();
         });
     }

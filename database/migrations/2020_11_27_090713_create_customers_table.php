@@ -21,9 +21,20 @@ class CreateCustomersTable extends Migration
             $table->string('email');
             $table->string('secondary_email');
             $table->string('phone', 12);
+
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('position')->nullable();
+
+            $table->boolean('single')->default(true);
+
             $table->unsignedBigInteger('district_id');
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('address')->nullable();
+
+            $table->enum('customer_type', ['Persona Natural', 'Persona Jurídica'])->default('Persona Natural');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

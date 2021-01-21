@@ -25,8 +25,10 @@ class CreateVisitsTable extends Migration
             $table->foreign('origin_id')->references('id')->on('origins')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('interested')->default(false);
             $table->integer('discount')->default(0);
+            $table->enum('type_financing', ['Financiamiento directo', 'Crédito hipotecario'])->nullable();
             $table->enum('status', ['Visita', 'Separación', 'Cotización'])->default('Visita');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

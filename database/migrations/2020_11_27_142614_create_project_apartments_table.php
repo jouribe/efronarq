@@ -20,11 +20,13 @@ class CreateProjectApartmentsTable extends Migration
             $table->unsignedBigInteger('apartment_type_id');
             $table->foreign('apartment_type_id')->references('id')->on('project_apartment_types')->onDelete('cascade');
             $table->enum('availability', ['Disponible', 'Reservado', 'Separado', 'Vendido']);
+            $table->string('name');
             $table->integer('start_floor');
             $table->integer('end_floor');
             $table->integer('parking_lots');
             $table->integer('closets');
             $table->integer('order');
+            $table->decimal('price', 20)->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
+use App\Models\ProjectApartment;
 use App\Models\ProjectApartmentType;
 use App\Models\ProjectPriceApartment;
 use Exception;
@@ -15,6 +16,8 @@ use Livewire\Component;
 
 class PriceApartments extends Component
 {
+    use \App\Traits\Prices;
+
     /**
      * @var Project $project
      */
@@ -137,6 +140,25 @@ class PriceApartments extends Component
                 'end_floor' => $this->end_floor,
                 'price_area' => $this->price_area
             ]);
+
+        if (!is_null($this->project_price_apartment_id)) {
+            $apartments = ProjectApartment::whereApartmentTypeId($this->project_apartment_type_id)
+                ->where('availability', '!=', 'Vendido')
+                ->get();
+
+            foreach ($apartments as $apartment) {
+                // Precio de area libre
+                $freeAreaPrice = self::freeAreaTotal($apartment->project->prices->first()->free_area, $apartment->apartmentType->free_area, $apartment->project->apartmentPrices->first()->price_area);
+                // Precio de area techada
+                $roofedAreaPrice = self::roofedAreaTotal($apartment->apartmentType->roofed_area, $apartment->project->apartmentPrices->first()->price_area);
+                // Precio de la unidad total Base (Proyecto: Construcción)
+                $totalPrice = self::areaPriceTotal($freeAreaPrice, $roofedAreaPrice);
+
+                $apartment->update([
+                    'price' => $totalPrice
+                ]);
+            }
+        }
 
         session()->flash('message', $this->project_price_apartment_id ? __('Price apartment updated successfully') : __('Price apartment created successfully'));
 

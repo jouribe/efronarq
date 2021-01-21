@@ -1,3 +1,3 @@
-<x-modals.master header="true">
+<x-modals.master>
     <livewire:tables.visit-pull-aparts />
 </x-modals.master>

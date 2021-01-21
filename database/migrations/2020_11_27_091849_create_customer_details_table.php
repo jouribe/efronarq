@@ -21,7 +21,6 @@ class CreateCustomerDetailsTable extends Migration
             $table->integer('bedroom');
             $table->integer('bathroom');
             $table->boolean('service_room');
-            $table->enum('type_financing', ['Crédito Hipotecario', 'Financiamiento Directo']);
             $table->timestamps();
         });
     }

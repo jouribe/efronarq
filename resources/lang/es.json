@@ -95,7 +95,7 @@
     "Parking lots": "Estacionamientos",
     "Floor": "Piso",
     "Storage or closet value per area": "Valor depósito o closet por área",
-    "Storage / Closets": "Depósitos / Closets",
+    "Closets": "Closets / Depósitos",
     "Price": "Precio",
     "Availability": "Disponibilidad",
     "Apartment name": "Nombre departamento",
@@ -158,5 +158,6 @@
     "Pull apart submitted for approval successfully": "Separación enviada para aprobación exitosamente!",
     "Fee balance": "Saldo de cuota inicial",
     "AFP amount": "Monto AFP",
-    "Credit amount": "Crédito hipotecario"
+    "Credit amount": "Crédito hipotecario",
+    "Edit project": "Editar proyecto"
 }

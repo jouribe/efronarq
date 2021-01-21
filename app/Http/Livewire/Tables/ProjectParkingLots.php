@@ -58,7 +58,7 @@ class ProjectParkingLots extends LivewireDatatable
             ->groupBy('project_parking_lots.id', 'project_parking_lots.floor', 'project_parking_lots.parking_lot', 'project_parking_lots.roofed_area', 'project_parking_lots.free_area',
                 'project_parking_lots.type', 'project_parking_lots.availability', 'project_parking_lots.discount', 'project_parking_lots.closet', 'project_price_parking_lots.type',
                 'project_price_parking_lots.floor', 'project_price_parking_lots.price', 'project_prices.free_area', 'project_prices.discount_presale', 'project_prices.delivery_increment',
-                'project_prices.parking_discount', 'project_parking_lots.blueprint');
+                'project_prices.parking_discount', 'project_parking_lots.blueprint', 'project_parking_lots.price');
     }
 
     /**
@@ -99,24 +99,8 @@ class ProjectParkingLots extends LivewireDatatable
             //            BooleanColumn::name('closet')
             //                ->label(__('Closet')),
 
-            Column::callback([
-                'project_parking_lots.roofed_area',
-                'project_parking_lots.free_area',
-                'project_parking_lots.type',
-                'project_price_parking_lots.type',
-                'project_parking_lots.floor',
-                'project_price_parking_lots.floor',
-                'project_price_parking_lots.price',
-                'project_prices.free_area',
-                'project_prices.discount_presale',
-                'project_prices.delivery_increment',
-                'project_prices.parking_discount'
-            ], function ($parking_roofed_area, $parking_free_area, $parking_type, $price_type, $parking_floor, $price_floor, $price, $price_free_area, $presale, $delivery, $parking) {
-                if ($parking_type === $price_type && $parking_floor === $price_floor) {
-                    return '<pre>US$ ' . number_format($price - ($price * $price_free_area / 100), 2) . '</pre>';
-                }
-
-                return '<span class="text-red">SIN VALOR</span>';
+            Column::callback('project_parking_lots.price', function ($price) {
+                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 

@@ -15,9 +15,11 @@ class CreateProjectPriceParkingLotsTable extends Migration
     {
         Schema::create('project_price_parking_lots', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('project_id');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->string('floor');
             $table->enum('type', ['Simple', 'Doble']);
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 10);
             $table->timestamps();
         });
     }
