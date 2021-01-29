@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,18 +9,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasFactory;
     use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'dni',
         'first_name',
         'last_name',
+        'full_name',
         'email',
         'secondary_email',
         'phone',
@@ -30,8 +29,23 @@ class Customer extends Model
         'address',
         'customer_type',
         'position',
-        'single'
+        'single',
+        'document_nro'
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->full_name = "{$model->first_name} {$model->last_name}";
+        });
+    }
 
     /**
      * Visits.

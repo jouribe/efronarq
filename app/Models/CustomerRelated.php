@@ -8,25 +8,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CustomerRelated extends Model
 {
-    use HasFactory;
-
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @var mixed
      */
     protected $table = 'customer_relates';
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'customer_id',
         'customer_related_id',
         'type',
         'partner_type',
+        'part_one',
+        'part_two',
+        'document_nro',
+        'document'
     ];
 
     /**

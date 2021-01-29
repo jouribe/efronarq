@@ -15,11 +15,10 @@ class CreatePullApartsTable extends Migration
     {
         Schema::create('pull_aparts', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('visit_id');
             $table->foreign('visit_id')->references('id')->on('visits')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('discount_type')->nullable();
-            $table->integer('discount')->default(0);
+            $table->decimal('discount', 10)->nullable();
             $table->enum('buyer_type', ['Soltero(a)', 'Sociedad Conyugal', 'Copropietario', 'Empresa'])->default('Soltero(a)');
             $table->enum('payment_type', ['Directo', 'Hipotecario', 'Mixto'])->default('Directo');
             $table->unsignedBigInteger('bank_id')->nullable();
@@ -27,7 +26,6 @@ class CreatePullApartsTable extends Migration
             $table->date('separation_agreement_at')->nullable();
             $table->date('signature_minute_at')->nullable();
             $table->decimal('final_price', 20)->nullable();
-            $table->text('comment')->nullable();
             $table->enum('status', ['Pendiente Aprobación', 'Aprobado', 'Registrado', 'Rechazado'])->default('Registrado');
 
             $table->timestamps();

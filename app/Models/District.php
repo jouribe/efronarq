@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class District extends Model
 {
-    use HasFactory;
-
     /**
      * Project address
      *

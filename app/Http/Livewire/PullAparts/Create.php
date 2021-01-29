@@ -7,8 +7,11 @@
 namespace App\Http\Livewire\PullAparts;
 
 use App\Models\Bank;
+use App\Models\Company;
 use App\Models\Customer;
+use App\Models\CustomerRelated;
 use App\Models\PullApart;
+use App\Models\PullApartComment;
 use App\Models\PullApartFee;
 use App\Models\Visit;
 use Carbon\Carbon;
@@ -16,9 +19,12 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
     /**
      * @var Visit $visit
      */
@@ -27,7 +33,7 @@ class Create extends Component
     /**
      * @var Customer $customer
      */
-    public Customer $customer;
+    public mixed $customer;
 
     /**
      * @var mixed $pullApart
@@ -50,24 +56,24 @@ class Create extends Component
     public $apartmentNro;
 
     /**
-     * @var string $priceApartment
+     * @var mixed $priceApartment
      */
-    public string $priceApartmentText;
+    public $priceApartmentText;
 
     /**
-     * @var float $priceApartment
+     * @var mixed $priceApartment
      */
-    public float $priceApartment;
+    public $priceApartment;
 
     /**
-     * @var float $priceClosets
+     * @var mixed $priceClosets
      */
-    public float $priceClosets;
+    public $priceClosets;
 
     /**
-     * @var float $priceParkingLots
+     * @var mixed $priceParkingLots
      */
-    public float $priceParkingLots;
+    public $priceParkingLots;
 
     /**
      * @var string $priceTotalText
@@ -75,9 +81,9 @@ class Create extends Component
     public string $priceTotalText;
 
     /**
-     * @var float $priceTotal
+     * @var mixed $priceTotal
      */
-    public float $priceTotal;
+    public $priceTotal;
 
     /**
      * @var array|string[] $buyerTypeList
@@ -204,6 +210,36 @@ class Create extends Component
     public string $customerPhone;
 
     /**
+     * @var mixed $customerFirstNameSecond
+     */
+    public $customerFirstNameSecond;
+
+    /**
+     * @var mixed $customerLastNameSecond
+     */
+    public $customerLastNameSecond;
+
+    /**
+     * @var mixed $customerDocumentSecond
+     */
+    public $customerDocumentSecond;
+
+    /**
+     * @var mixed $customerAddressSecond
+     */
+    public $customerAddressSecond;
+
+    /**
+     * @var mixed $customerEmailSecond
+     */
+    public $customerEmailSecond;
+
+    /**
+     * @var mixed $customerPhoneSecond
+     */
+    public $customerPhoneSecond;
+
+    /**
      * @var mixed $separationAgreementAt
      */
     public $separationAgreementAt;
@@ -264,20 +300,128 @@ class Create extends Component
     public $creditAmountMilestone;
 
     /**
+     * @var mixed $partnerType
+     */
+    public $partnerType = 'Tradicional';
+
+    /**
+     * @var mixed $partnerTypeList
+     */
+    public $partnerTypeList = [
+        'Tradicional' => 'Tradicional',
+        'Casado con separación de patrimonio' => 'Casado con separación de patrimonio'
+    ];
+
+    /**
+     * @var mixed $companyName
+     */
+    public $companyName;
+
+    /**
+     * @var mixed $companyTaxNr
+     */
+    public $companyTaxNr;
+
+    /**
+     * @var mixed $companyAddress
+     */
+    public $companyAddress;
+
+    /**
+     * @var mixed $companyEmail
+     */
+    public $companyEmail;
+
+    /**
+     * @var mixed $companyPhone
+     */
+    public $companyPhone;
+
+    /**
+     * @var mixed $customerPosition
+     */
+    public $customerPosition;
+
+    /**
+     * @var mixed $customerDocumentNro
+     */
+    public $customerDocumentNro;
+
+    /**
+     * @var mixed $partOne
+     */
+    public $partOne;
+
+    /**
+     * @var mixed $partTwo
+     */
+    public $partTwo;
+
+    /**
+     * @var mixed $documentNro
+     */
+    public $documentNro;
+
+    /**
+     * @var mixed $document
+     */
+    public $document;
+
+    /**
+     * @var mixed $lastPaymentType
+     */
+    public $lastPaymentType;
+
+    /**
+     * @var mixed $paymentEdit
+     */
+    public $paymentEdit = false;
+
+    /**
+     * @var mixed $statusType
+     */
+    public $statusType;
+
+    /**
+     * @var mixed $statusList
+     */
+    public $statusList = [
+        'Soltero(a)' => 'Soltero(a)',
+        'Casado(a)' => 'Casado(a)'
+    ];
+
+    /**
+     * @var mixed $current_document
+     */
+    public $current_document;
+
+    /**
+     * @var mixed $pullApartStaticStatus
+     */
+    public $pullApartStaticStatus = 'Aprobado';
+
+    /**
      * Component mount.
      */
     public function mount(): void
     {
+        $this->bankList = Bank::whereIsActive(true)->pluck('name', 'id');
+
         $this->settingData();
-        //$this->setGlobalPrice();
         $this->settingCustomerData();
         $this->setApartmentPrice();
         $this->setParkingLotsPrice();
         $this->setClosetPrice();
+
+        if (!is_null($this->pullApart)) {
+            $this->settingPriceFromPullApart();
+        } else {
+            $this->settingPriceFromForm();
+        }
+
         $this->settingDateAgreementAndSignMinute();
         $this->settingFees();
         $this->settingPaymentType();
-
     }
 
     /**
@@ -287,11 +431,11 @@ class Create extends Component
      */
     public function render(): Factory|View|Application
     {
-        $this->bankList = Bank::whereIsActive(true)->pluck('name', 'id');
-
+        $this->modifyPrice();
         $this->updateBalance();
 
         if (!is_null($this->pullApart)) {
+
             $this->resetPaymentFees();
         }
 
@@ -325,31 +469,39 @@ class Create extends Component
     public function settingFees(): void
     {
         if (!is_null($this->pullApart)) {
-            $this->amount = $this->pullApart->amount;
-            $this->amountAt = $this->pullApart->amount_at;
-            $this->milestone = $this->pullApart->milestone;
 
-            if ($this->pullApart->payment_type === 'Hipotecario' || $this->pullApart->payment_type === 'Mixto') {
-                $this->afpAmount = $this->pullApart->afp_amount;
-                $this->afpAmountAt = $this->pullApart->afp_amount_at;
-                $this->afpAmountMilestone = $this->pullApart->afp_amount_milestone;
-                $this->creditAmount = $this->pullApart->mortgage_credit;
-                $this->creditAmountAt = $this->pullApart->mortgage_credit_at;
-                $this->creditAmountMilestone = $this->pullApart->mortgage_credit_milestone;
-                $this->feeBalanceAt = $this->pullApart->fee_balance_at;
-                $this->bankId = $this->pullApart->bank_id;
-            }
+            $pullApartFee = $this->pullApart->fees()->whereType('Monto Separación')->first();
 
-            $fees = PullApartFee::wherePullApartId($this->pullApart->id)->get();
+            if (!is_null($pullApartFee)) {
+                $this->amount = $pullApartFee->fee;
+                $this->amountAt = $pullApartFee->fee_at;
+                $this->milestone = $pullApartFee->milestone;
 
-            $this->feeCount = $fees->count();
+                if ($this->pullApart->payment_type === 'Hipotecario' || $this->pullApart->payment_type === 'Mixto') {
+                    $this->afpAmount = $this->getFeeByType('AFP');
+                    $this->afpAmountAt = $this->getFeeAtByType('AFP');
+                    $this->afpAmountMilestone = $this->getFeeMilestoneByType('AFP');
+                    $this->creditAmount = $this->getFeeByType('Crédito Hipotecario');
+                    $this->creditAmountAt = $this->getFeeAtByType('Crédito Hipotecario');
+                    $this->creditAmountMilestone = $this->getFeeMilestoneByType('Crédito Hipotecario');
+                    $this->bankId = $this->pullApart->bank_id;
+                }
 
-            $this->generateFeeInputs();
+                if ($this->pullApart->payment_type === 'Hipotecario') {
+                    $this->feeBalanceAt = $this->getFeeAtByType('Saldo Cuota Inicial');
+                }
 
-            foreach ($fees as $key => $value) {
-                $this->fee[$key] = 'US$ ' . number_format($value->fee, 2);
-                $this->feeAt[$key] = $value->fee_at;
-                $this->feeMilestone[$key] = $value->milestone;
+                $fees = PullApartFee::wherePullApartId($this->pullApart->id)->where('type', '=', 'Cuota')->get();
+
+                $this->feeCount = $fees->count();
+
+                $this->generateFeeInputs();
+
+                foreach ($fees as $key => $value) {
+                    $this->fee[$key] = 'US$ ' . number_format($value->fee, 2);
+                    $this->feeAt[$key] = $value->fee_at;
+                    $this->feeMilestone[$key] = $value->milestone;
+                }
             }
         }
     }
@@ -362,12 +514,8 @@ class Create extends Component
         $this->pullApart = PullApart::whereVisitId($this->visit->id)->first();
 
         if (!is_null($this->pullApart)) {
-            $this->settingPriceFromPullApart();
-        } else {
-            $this->settingPriceFromForm();
+            $this->lastPaymentType = $this->pullApart->payment_type;
         }
-
-        $this->apartmentNro = $this->visit->apartment->name;
     }
 
     /**
@@ -375,19 +523,31 @@ class Create extends Component
      */
     public function updateBalance(): void
     {
-        if ($this->amount === '') {
-            $this->amount = 0;
+        $amount = 0;
+
+        if ($this->amount !== '') {
+            $amount = $this->amount;
         }
 
-        if ($this->afpAmount === '') {
-            $this->afpAmount = 0;
+        $afpAmount = 0;
+
+        if ($this->afpAmount !== '') {
+            $afpAmount = $this->afpAmount;
         }
 
-        if ($this->creditAmount === '') {
-            $this->creditAmount = 0;
+        $creditAmount = 0;
+
+        if ($this->creditAmount !== '') {
+            $creditAmount = $this->creditAmount;
         }
 
-        $this->balance = $this->feeBalance = 'US$ ' . number_format($this->priceTotal - ($this->amount + $this->afpAmount + $this->creditAmount), 2);
+        $finalPrice = 0;
+
+        if (!is_null($this->pullApart)) {
+            $finalPrice = $this->pullApart->final_price;
+        }
+
+        $this->balance = $this->feeBalance = 'US$ ' . number_format($finalPrice - ($amount + $afpAmount + $creditAmount), 2);
     }
 
     /**
@@ -403,6 +563,15 @@ class Create extends Component
     }
 
     /**
+     * Setting global price.
+     */
+    public function settingPriceFromForm(): void
+    {
+        $this->priceTotal = $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
+        $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
+    }
+
+    /**
      * Setting customer data.
      */
     public function settingCustomerData(): void
@@ -413,6 +582,25 @@ class Create extends Component
         $this->customerAddress = $this->visit->customer->address;
         $this->customerEmail = $this->visit->customer->email;
         $this->customerPhone = $this->visit->customer->phone;
+
+        if ($this->visit->customer->single === 0 && is_null($this->visit->customer->company_id)) {
+            $this->buyerType = 'Sociedad Conyugal';
+
+            $relatedBy = CustomerRelated::whereCustomerId($this->visit->customer->id)->first();
+            $related = Customer::whereId($relatedBy->customer_related_id)->first();
+
+            $this->customerFirstNameSecond = $related->first_name;
+            $this->customerLastNameSecond = $related->last_name;
+            $this->customerDocumentSecond = $related->dni;
+            $this->customerAddressSecond = $related->address;
+            $this->customerEmailSecond = $related->email;
+            $this->customerPhoneSecond = $related->phone;
+            $this->partnerType = $relatedBy->partner_type;
+            $this->partOne = $relatedBy->part_one;
+            $this->partTwo = $relatedBy->part_two;
+            $this->documentNro = $relatedBy->document_nro;
+            $this->current_document = $relatedBy->document;
+        }
     }
 
     /**
@@ -420,22 +608,8 @@ class Create extends Component
      */
     public function modifyPrice(): void
     {
-        if ($this->discountAmount !== '' && !is_null($this->discountType)) {
-            $this->priceTotal -= match ((int)$this->discountType) {
-                1 => $this->discountAmount,
-                2 => ($this->priceTotal * ($this->discountAmount / 100)),
-            };
+        $this->priceTotal = $this->setTotalPriceOfSale((float)$this->discountAmount);
 
-            $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
-        }
-    }
-
-    /**
-     * Setting global price.
-     */
-    public function settingPriceFromForm(): void
-    {
-        $this->priceTotal = $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
         $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
     }
 
@@ -444,9 +618,7 @@ class Create extends Component
      */
     public function setApartmentPrice(): void
     {
-        $apartmentTotalArea = $this->visit->apartment->apartmentType->roofed_area + $this->visit->apartment->apartmentType->free_area;
-
-        $this->priceApartment = $this->visit->apartment->apartmentType->priceApartments->first()->price_area * $apartmentTotalArea;
+        $this->priceApartment = $this->visit->apartment->price;
         $this->priceApartmentText = 'US$ ' . number_format($this->priceApartment, 2);
     }
 
@@ -459,7 +631,7 @@ class Create extends Component
             $this->priceParkingLots = 0;
 
             foreach ($this->visit->parkingLots as $parkingLot) {
-                $this->priceParkingLots += $parkingLot->parkingLot->project->parkingLotPrices->first()->price;
+                $this->priceParkingLots += $parkingLot->parkingLot->price;
             }
         }
     }
@@ -473,9 +645,33 @@ class Create extends Component
             $this->priceClosets = 0;
 
             foreach ($this->visit->closets as $closet) {
-                $this->priceClosets += $closet->closet->project->closetPrices->first()->price * $closet->closet->roofed_area;
+                $this->priceClosets += $closet->closet->price;
             }
         }
+    }
+
+    /**
+     * Get the total price without discounts.
+     *
+     * @param mixed $discount
+     * @return float
+     */
+    public function setTotalPriceOfSale(mixed $discount): float
+    {
+        if (!is_null($this->pullApart)) {
+            $this->priceApartment = $this->pullApart->visit->apartment->price;
+        } else {
+            $this->setApartmentPrice();
+        }
+
+        if (!is_null($this->discountType)) {
+            $this->priceApartment -= match ((int)$this->discountType) {
+                1 => $discount,
+                2 => ($this->priceApartment * ($discount / 100)),
+            };
+        }
+
+        return $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
     }
 
     /**
@@ -504,18 +700,97 @@ class Create extends Component
      */
     public function storeOwner(): void
     {
-        Customer::whereId($this->visit->customer->id)->update([
+        if (!is_null($this->pullApart)) {
+            PullApart::whereId($this->pullApart->id)->update([
+                'buyer_type' => $this->buyerType
+            ]);
+        }
+
+        $customer = Customer::whereId($this->visit->customer->id)->first();
+
+        $customer->update([
             'first_name' => $this->customerFirstName,
             'last_name' => $this->customerLastName,
             'email' => $this->customerEmail,
             'dni' => $this->customerDocument,
             'phone' => $this->customerPhone,
             'customer_type' => $this->buyerType === 'Empresa' ? 'Persona Jurídica' : 'Persona Natural',
-            'single' => $this->buyerType === 'Sociedad Conyugal',
+            'single' => $this->buyerType !== 'Sociedad Conyugal',
             'address' => $this->customerAddress
         ]);
 
-        session()->flash('message', __('Customer updated successfully'));
+        if ($this->buyerType !== 'Soltero(a)') {
+
+            if ($this->buyerType === 'Empresa') {
+                $companyFindByTaxNr = Company::whereTaxNro($this->companyTaxNr)->first();
+
+                $company = Company::updateOrCreate([
+                    'id' => $companyFindByTaxNr
+                ], [
+                    'name' => $this->companyName,
+                    'tax_nro' => $this->companyTaxNr,
+                    'address' => $this->companyAddress,
+                    'email' => $this->companyEmail,
+                    'phone' => $this->companyPhone
+                ]);
+
+                $customerCompanyByDni = Customer::whereDni($this->customerDocumentSecond)->first();
+
+                Customer::updateOrCreate([
+                    'id' => $customerCompanyByDni->id
+                ], [
+                    'first_name' => $this->customerFirstNameSecond,
+                    'last_name' => $this->customerLastNameSecond,
+                    'dni' => $this->customerDocumentSecond,
+                    'email' => $this->customerEmailSecond,
+                    'phone' => $this->customerPhoneSecond,
+                    'single' => $this->statusList === 'Soltero(a)',
+                    'address' => $this->customerAddressSecond,
+                    'position' => $this->customerPosition,
+                    'company_id' => $company->id,
+                    'document_nro' => $this->customerDocumentNro
+                ]);
+            }
+
+            if ($this->buyerType === 'Sociedad Conyugal' || $this->buyerType = 'Copropietario') {
+                $customerByDni = Customer::whereDni($this->customerDocumentSecond)->first();
+
+                $customerSecond = Customer::updateOrCreate([
+                    'id' => $customerByDni === null ? null : $customerByDni->id
+                ], [
+                    'first_name' => $this->customerFirstNameSecond,
+                    'last_name' => $this->customerLastNameSecond,
+                    'dni' => $this->customerDocumentSecond,
+                    'email' => $this->customerEmailSecond,
+                    'phone' => $this->customerPhoneSecond,
+                    'single' => $this->buyerType !== 'Sociedad Conyugal',
+                    'address' => $this->customerAddressSecond,
+                ]);
+
+                $customerRelatedByCustomerId = CustomerRelated::whereCustomerId($customer->id)->first();
+
+                $documentPath = $this->current_document;
+
+                if ($this->document !== null && $this->document !== '') {
+                    $documentPath = $this->document->store('customer-documents', 'public');
+                }
+
+                CustomerRelated::updateOrCreate([
+                    'id' => $customerRelatedByCustomerId === null ? null : $customerRelatedByCustomerId->id
+                ], [
+                    'customer_id' => $customer->id,
+                    'customer_related_id' => $customerSecond->id,
+                    'type' => $this->buyerType,
+                    'partner_type' => $this->partnerType,
+                    'part_one' => $this->partOne,
+                    'part_two' => $this->partTwo,
+                    'document_nro' => $this->documentNro,
+                    'document' => $documentPath
+                ]);
+            }
+        }
+
+        session()->flash('customerUpdated', __('Customer updated successfully'));
     }
 
     /**
@@ -526,12 +801,31 @@ class Create extends Component
         $this->inputs = [];
         $this->fee = [];
 
+
+        $amount = 0;
+
+        if (!is_null($this->amount)) {
+            $amount = (float)$this->amount;
+        }
+
+        $afpAmount = 0;
+
+        if (!is_null($this->afpAmount)) {
+            $afpAmount = (float)$this->afpAmount;
+        }
+
+        $creditAmount = 0;
+
+        if (!is_null($this->creditAmount)) {
+            $creditAmount = (float)$this->creditAmount;
+        }
+
         if ((int)$this->feeCount > 0) {
             for ($i = 0; $i < (int)$this->feeCount; $i++) {
                 $this->inputs[] = $i;
             }
 
-            $feeAmount = ($this->priceTotal - ($this->amount + $this->afpAmount + $this->creditAmount)) / $this->feeCount;
+            $feeAmount = ($this->priceTotal - ($amount + $afpAmount + $creditAmount)) / $this->feeCount;
 
             foreach ($this->inputs as $key => $value) {
                 $this->fee[$key] = 'US$ ' . number_format($feeAmount, 2);
@@ -554,50 +848,130 @@ class Create extends Component
     {
         $feeBalance = null;
 
-        if ($this->feeBalance !== '') {
-            $feeBalance = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $this->feeBalance));
+        $amount = 0;
+
+        if (is_numeric($this->amount)) {
+            $amount = $this->amount;
         }
 
-        PullApart::whereId($this->pullApart->id)->update([
-            'payment_type' => $this->paymentType,
-            'bank_id' => $this->bankId,
-            'amount' => $this->amount,
-            'amount_at' => $this->amountAt,
-            'milestone' => $this->milestone === '' ? null : $this->milestone,
-            'fee_balance' => $feeBalance,
-            'fee_balance_at' => $this->feeBalanceAt,
-            'fee_balance_milestone' => $this->feeBalanceMilestone,
-            'afp_amount' => $this->afpAmount,
-            'afp_amount_at' => $this->afpAmountAt,
-            'afp_amount_milestone' => $this->afpAmountMilestone,
-            'mortgage_credit' => $this->creditAmount,
-            'mortgage_credit_at' => $this->creditAmountAt,
-            'mortgage_credit_milestone' => $this->creditAmountMilestone
-        ]);
+        $afpAmount = 0;
 
-        $this->removeFeesIfExist();
+        if (is_numeric($this->afpAmount)) {
+            $afpAmount = $this->afpAmount;
+        }
 
-        // Remove fees inputs if payment type is Hipotecario.
+        $creditAmount = 0;
+
+        if (is_numeric($this->creditAmount)) {
+            $creditAmount = $this->creditAmount;
+        }
+
+        $validateAmount = $this->priceTotal - ($amount + $afpAmount + $creditAmount);
+
+        if (!is_null($this->fee)) {
+            foreach ($this->fee as $key => $value) {
+                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+
+                $validateAmount -= $fee;
+            }
+        }
+
         if ($this->paymentType === 'Hipotecario') {
-            $this->fee = [];
+            $validateAmount = 0;
         }
 
-        // register all fees only if payment type not is Hipotecario.
-        foreach ($this->fee as $key => $value) {
-            $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+        if ($validateAmount <= 0) {
 
-            $milestone = null;
-
-            if (!is_null($this->feeMilestone) && isset($this->feeMilestone[$key])) {
-                $milestone = $this->feeMilestone[$key];
+            if (session()->has('amountValidation')) {
+                session()->forget('amountValidation');
             }
 
-            PullApartFee::create([
-                'pull_apart_id' => $this->pullApart->id,
-                'fee' => $fee,
-                'fee_at' => $this->feeAt[$key],
-                'milestone' => $milestone
+            PullApart::whereId($this->pullApart->id)->update([
+                'payment_type' => $this->paymentType,
+                'bank_id' => $this->bankId,
             ]);
+
+            $this->removeFeesIfExist();
+
+            // Remove fees inputs if payment type is Hipotecario.
+            if ($this->paymentType === 'Hipotecario') {
+                $this->fee = [];
+            }
+
+            if ($this->paymentType === 'Directo') {
+                PullApartFee::create([
+                    'pull_apart_id' => $this->pullApart->id,
+                    'fee' => $this->amount,
+                    'fee_at' => $this->amountAt,
+                    'milestone' => $this->milestone === '' ? null : $this->milestone,
+                    'type' => 'Monto Separación'
+                ]);
+            } else {
+                if ($this->feeBalance !== '') {
+                    $feeBalance = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $this->feeBalance));
+                }
+
+                PullApartFee::create([
+                    'pull_apart_id' => $this->pullApart->id,
+                    'fee' => $this->amount,
+                    'fee_at' => $this->amountAt,
+                    'milestone' => $this->milestone === '' ? null : $this->milestone,
+                    'type' => 'Monto Separación'
+                ]);
+
+                if (is_numeric($this->afpAmount)) {
+                    PullApartFee::create([
+                        'pull_apart_id' => $this->pullApart->id,
+                        'fee' => $this->afpAmount,
+                        'fee_at' => $this->afpAmountAt,
+                        'milestone' => $this->afpAmountMilestone === '' ? null : $this->afpAmountMilestone,
+                        'type' => 'AFP'
+                    ]);
+                }
+
+                PullApartFee::create([
+                    'pull_apart_id' => $this->pullApart->id,
+                    'fee' => $this->creditAmount,
+                    'fee_at' => $this->creditAmountAt,
+                    'milestone' => $this->creditAmountMilestone === '' ? null : $this->creditAmountMilestone,
+                    'type' => 'Crédito Hipotecario'
+                ]);
+
+
+                if (($this->paymentType === 'Hipotecario') && $this->feeBalance > 0) {
+                    PullApartFee::create([
+                        'pull_apart_id' => $this->pullApart->id,
+                        'fee' => $feeBalance,
+                        'fee_at' => $this->feeBalanceAt,
+                        'milestone' => $this->feeBalanceMilestone === '' ? null : $this->feeBalanceMilestone,
+                        'type' => 'Saldo Cuota Inicial'
+                    ]);
+                }
+            }
+
+            // register all fees only if payment type not is Hipotecario.
+            foreach ($this->fee as $key => $value) {
+
+                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+
+                $milestone = null;
+
+                if (!is_null($this->feeMilestone) && isset($this->feeMilestone[$key])) {
+                    $milestone = $this->feeMilestone[$key];
+                }
+
+                PullApartFee::create([
+                    'pull_apart_id' => $this->pullApart->id,
+                    'fee' => $fee,
+                    'fee_at' => $this->feeAt[$key],
+                    'milestone' => $milestone,
+                    'type' => 'Cuota'
+                ]);
+            }
+
+            session()->flash('feeSuccess', __('Pull apart fee store successfully!'));
+        } else {
+            session()->flash('amountValidation', __('La suma de los montos de las cuotas no coinciden con el valor de venta total'));
         }
     }
 
@@ -610,6 +984,8 @@ class Create extends Component
             'separation_agreement_at' => $this->separationAgreementAt,
             'signature_minute_at' => $this->signatureMinuteAt
         ]);
+
+        session()->flash('datesUpdated', __('Dates updated successfully!'));
     }
 
     /**
@@ -618,13 +994,41 @@ class Create extends Component
     public function sendToApprove(): void
     {
         if (!is_null($this->pullApart)) {
-            PullApart::whereId($this->pullApart->id)->update([
+
+            $status = $this->pullApartStaticStatus;
+
+            /** @noinspection NullPointerExceptionInspection */
+            if (!auth()->user()->hasRole('admin')) {
+                $status = 'Pendiente Aprobación';
+            }
+
+            PullApartComment::create([
                 'comment' => $this->comment,
-                'status' => 'Pendiente Aprobación'
+                'status' => $status,
+                'user_id' => auth()->user()->id,
+                'pull_apart_id' => $this->pullApart->id
             ]);
 
-            session()->flash('sendToApprove', __('Pull apart submitted for approval successfully'));
+            PullApart::whereId($this->pullApart->id)->update([
+                'status' => $status,
+            ]);
+
+            session()->flash('sendToApprove', __('Comment saved successfully!'));
+
+            $this->emit('refreshLivewireDatatable');
         }
+    }
+
+    /**
+     * Reject pull apart .
+     *
+     * @return void
+     */
+    public function pullApartReject(): void
+    {
+        $this->pullApartStaticStatus = 'Rechazado';
+
+        $this->sendToApprove();
     }
 
     /**
@@ -650,35 +1054,78 @@ class Create extends Component
      */
     public function resetPaymentFees(): void
     {
-        if ($this->paymentType !== $this->pullApart->payment_type) {
+        if ($this->lastPaymentType !== $this->paymentType) {
+            $this->lastPaymentType = $this->paymentType;
+            $this->paymentEdit = false;
+
             $this->amount = '';
             $this->amountAt = null;
             $this->milestone = '';
             $this->creditAmount = '';
+            $this->creditAmountAt = null;
             $this->afpAmount = '';
+            $this->afpAmountAt = null;
+            $this->feeBalanceAt = null;
+            $this->feeBalanceMilestone = '';
             $this->feeCount = 0;
 
             $this->updateBalance();
             $this->generateFeeInputs();
-
-            PullApart::whereId($this->pullApart->id)->update([
-                'payment_type' => $this->paymentType,
-                'bank_id' => null,
-                'amount' => 0,
-                'amount_at' => null,
-                'milestone' => null,
-                'fee_balance' => null,
-                'fee_balance_at' => null,
-                'fee_balance_milestone' => null,
-                'afp_amount' => null,
-                'afp_amount_at' => null,
-                'afp_amount_milestone' => null,
-                'mortgage_credit' => null,
-                'mortgage_credit_at' => null,
-                'mortgage_credit_milestone' => null,
-            ]);
-
-            $this->removeFeesIfExist();
         }
+
+        if (($this->paymentType === $this->pullApart->payment_type) && $this->pullApart->fees()->count() > 0) {
+            /** @noinspection NestedPositiveIfStatementsInspection */
+            if (!$this->paymentEdit) {
+                $this->amount = $this->pullApart->fees()->whereType('Monto Separación')->first()->fee;
+                $this->afpAmount = $this->getFeeByType('AFP');
+                $this->creditAmount = $this->getFeeByType('Crédito Hipotecario');
+                $this->updateBalance();
+                $this->settingFees();
+
+                $this->paymentEdit = true;
+            }
+        }
+    }
+
+    /**
+     * Get fee amount by type
+     *
+     * @param string $type
+     * @return string
+     */
+    public function getFeeByType(string $type): string
+    {
+        return $this->pullApart->fees()->whereType($type)->first() !== null ? $this->pullApart->fees()->whereType($type)->first()->fee : '';
+    }
+
+    /**
+     * Get fee at by type.
+     *
+     * @param string $type
+     * @return mixed
+     */
+    public function getFeeAtByType(string $type): mixed
+    {
+        if (is_null($this->pullApart)) {
+            return null;
+        }
+
+        /** @noinspection PhpExpressionAlwaysNullInspection */
+        return $this->pullApart->fees()->whereType($type)->first() !== null ? $this->pullApart->fees()->whereType($type)->first()->fee_at : null;
+    }
+
+    /**
+     * Get fee milestone by type.
+     *
+     * @param string $type
+     * @return string
+     */
+    public function getFeeMilestoneByType(string $type): string
+    {
+        if ($this->pullApart->fees()->whereType($type)->first() !== null) {
+            return $this->pullApart->fees()->whereType($type)->first()->milestone ?? '';
+        }
+
+        return '';
     }
 }

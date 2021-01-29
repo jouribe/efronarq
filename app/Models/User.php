@@ -2,27 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-    use HasFactory;
     use HasProfilePhoto;
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'name',
@@ -33,7 +35,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var mixed
      */
     protected $hidden = [
         'password',
@@ -45,7 +47,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var mixed
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -54,9 +56,29 @@ class User extends Authenticatable
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var mixed
      */
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Project sellers
+     *
+     * @return HasMany
+     */
+    public function projectSellers(): HasMany
+    {
+        return $this->hasMany(ProjectSeller::class);
+    }
+
+    /**
+     * Visits
+     *
+     * @return HasMany
+     */
+    public function visits(): HasMany
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

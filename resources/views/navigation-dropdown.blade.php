@@ -16,9 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
+                    @role('admin')
                     <x-jet-nav-link href="{{ route('projects.index') }}" :active="request()->routeIs(['projects.index', 'projects.show', 'projects.create'])">
                         {{ __('Projects') }}
                     </x-jet-nav-link>
+                    @endrole
 
                     <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create', 'visits.show'])">
                         {{ __('Visits') }}
@@ -28,16 +30,14 @@
                         {{ __('Pull apart') }}
                     </x-jet-nav-link>
 
+                    @role('admin')
                     <x-jet-nav-link href="#" :active="request()->routeIs('sales')">
                         {{ __('Sales') }}
                     </x-jet-nav-link>
+                    @endrole
 
                     <x-jet-nav-link href="#" :active="request()->routeIs('reports')">
                         {{ __('Reports') }}
-                    </x-jet-nav-link>
-
-                    <x-jet-nav-link href="#" :active="request()->routeIs('promotions')">
-                        {{ __('Promotions') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -81,6 +81,7 @@
                             </x-jet-dropdown-link>
                         @endif
 
+                        @role('admin')
                         <div class="border-t border-gray-100"></div>
 
                         <!-- Maintenance -->
@@ -100,6 +101,11 @@
                         <x-jet-dropdown-link href="#">
                             {{ __('Users') }}
                         </x-jet-dropdown-link>
+
+                        <x-jet-dropdown-link href="#">
+                            {{ __('Promotions') }}
+                        </x-jet-dropdown-link>
+                        @endrole
 
                         <div class="border-t border-gray-100"></div>
 

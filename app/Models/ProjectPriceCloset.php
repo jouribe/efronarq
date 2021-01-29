@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectPriceCloset extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *

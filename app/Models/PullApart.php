@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PullApart extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -24,21 +23,8 @@ class PullApart extends Model
         'buyer_type',
         'payment_type',
         'bank_id',
-        'amount',
-        'amount_at',
-        'milestone',
-        'fee_balance',
-        'fee_balance_at',
-        'fee_balance_milestone',
-        'afp_amount',
-        'afp_amount_at',
-        'afp_amount_milestone',
-        'mortgage_credit',
-        'mortgage_credit_at',
-        'mortgage_credit_milestone',
         'separation_agreement_at',
         'signature_minute_at',
-        'comment',
         'status'
     ];
 
@@ -70,5 +56,33 @@ class PullApart extends Model
     public function visit(): BelongsTo
     {
         return $this->belongsTo(Visit::class);
+    }
+
+    /**
+     * Comments.
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(PullApartComment::class);
+    }
+
+    /**
+     * Get pull aparts only for logged user id.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOnlyForMe(Builder $query): Builder
+    {
+        /** @noinspection NullPointerExceptionInspection */
+        if(!auth()->user()->hasRole('admin')) {
+            return $query->whereHas('visit', function (Builder $q) {
+                return $q->where('user_id', auth()->id());
+            });
+        }
+
+        return $query;
     }
 }

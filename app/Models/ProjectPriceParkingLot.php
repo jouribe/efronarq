@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectPriceParkingLot extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'project_id',

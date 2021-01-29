@@ -19,3 +19,4 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('projects', ProjectCon
 Route::middleware(['auth:sanctum', 'verified'])->resource('visits', VisitController::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/visits/{id}/quote/generate', [VisitController::class, 'generate'])->name('visits.quote');
 Route::middleware(['auth:sanctum', 'verified'])->resource('pull-apart', PullApartController::class);
+Route::middleware(['auth:sanctum', 'verified'])->get('/pull-apart/{id}/agreement/generate', [PullApartController::class, 'generate'])->name('pull-apart.agreement');

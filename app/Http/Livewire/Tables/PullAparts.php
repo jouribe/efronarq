@@ -6,6 +6,7 @@ use App\Models\PullApart;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelIdea\Helper\App\Models\_PullApartQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
+use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class PullAparts extends LivewireDatatable
@@ -18,7 +19,7 @@ class PullAparts extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'id';
+    public $searchable = 'visits.id, projects.name, customers.full_name, pull_aparts.status';
 
     /**
      * @var mixed $hideable
@@ -38,7 +39,9 @@ class PullAparts extends LivewireDatatable
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.last_name', 'project_apartments.name', 'pull_aparts.status');
+            ->onlyForMe()
+            ->groupBy('visits.id', 'projects.name', 'customers.full_name', 'project_apartments.name',
+                'pull_aparts.status', 'pull_aparts.created_at');
     }
 
     /**
@@ -52,21 +55,19 @@ class PullAparts extends LivewireDatatable
     {
         return [
             Column::name('visits.id')
-                ->label(__('ID')),
+                ->label(__('Quotation')),
 
             Column::name('projects.name')
                 ->label(__('Project')),
 
-            Column::callback(['customers.first_name', 'customers.last_name'], function ($firstName, $lastName) {
-                return $firstName . ' ' . $lastName;
-            })
-                ->label(__('Project')),
+            Column::name('customers.full_name')
+                ->label(__('Customer')),
 
             Column::name('project_apartments.name')
                 ->label(__('Apartment')),
 
-            Column::name('pull_aparts.status')
-                ->label(__('Status')),
+            DateColumn::name('pull_aparts.created_at')
+                ->label(__('Pull apart at')),
 
             Column::callback(['visits.id'], function ($id) {
                 return '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
@@ -76,7 +77,10 @@ class PullAparts extends LivewireDatatable
                             </svg>
                         </a>';
             })
-                ->label(__('Actions'))
+                ->label(__('Actions')),
+
+            Column::name('pull_aparts.status')
+                ->label(__('Status'))
         ];
     }
 }

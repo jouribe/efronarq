@@ -1,26 +1,28 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        @if(session()->has('message'))
-            <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-8" role="alert">
-                <div class="flex">
-                    <div>
-                        <p class="text-sm">{{ session('message') }}</p>
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
             {{ __('Unidades del Proyecto') }}
         </h2>
+
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-          <form wire:submit.prevent="storeGeneralPrice" autocomplete="off">
+
+            @if(session()->has('message'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('message') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <form wire:submit.prevent="storeGeneralPrice" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
                         <div class="p-4 w-1/2">
                             <x-jet-label for="apartmentNro">{{ __('Apartment') }}</x-jet-label>
-                            <x-jet-input type="text" id="apartmentNro" class="w-full" required wire:model="apartmentNro" readonly/>
+                            <x-jet-input type="text" id="apartmentNro" class="w-full" required value="{{ $visit->apartment->name }}" readonly/>
                         </div>
 
                         <div class="p-4 w-1/2">
@@ -34,12 +36,12 @@
                             <div class="flex">
                                 <div class="p-4 w-1/2">
                                     <label>{{ __('Parking lot') }} {{ $key + 1 }}</label>
-                                    <input class="form-input w-full" type="text" value="{{ $value->parkingLot->id }}" readonly>
+                                    <input class="form-input w-full" type="text" value="{{ $value->parkingLot->parking_lot }}" readonly>
                                 </div>
 
                                 <div class="p-4 w-1/2">
                                     <label>{{ __('Price') }}</label>
-                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->parkingLot->project->parkingLotPrices->first()->price, 2) }}" readonly>
+                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->parkingLot->price, 2) }}" readonly>
                                 </div>
                             </div>
                         @endforeach
@@ -55,7 +57,7 @@
 
                                 <div class="p-4 w-1/2">
                                     <label>{{ __('Price') }}</label>
-                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->closet->project->closetPrices->first()->price * $value->closet->roofed_area, 2) }}"
+                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->closet->price, 2) }}"
                                            readonly>
                                 </div>
                             </div>
@@ -91,10 +93,22 @@
             </form>
 
         </div>
+
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
             {{ __('Datos del Propietario') }}
         </h2>
+
         <div class="bg-white p-6 rounded-lg shadow mb-10">
+            @if(session()->has('customerUpdated'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('customerUpdated') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form wire:submit.prevent="storeOwner" autocomplete="off">
                 <div class="flex-col">
                     <div class="p-4 w-1/2">
@@ -106,7 +120,22 @@
 
                 <div class="flex">
                     <div class="flex-row w-1/2">
-                        <h2 class="px-4 font-bold">Del Titular</h2>
+                        @if($buyerType === 'Empresa')
+                            <h2 class="px-4 font-bold">Representante</h2>
+                        @else
+                            <h2 class="px-4 font-bold">Del Titular</h2>
+                        @endif
+
+                        @if($buyerType === 'Empresa')
+                            <div class="flex">
+                                <div class="p-4 w-full">
+                                    <x-jet-label for="customerPosition">{{ __('Cargo') }}</x-jet-label>
+                                    <x-jet-input type="text" id="customerPosition" class="w-full" wire:model="customerPosition"/>
+                                    @error('customerPosition') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+
+                            </div>
+                        @endif
 
                         <div class="flex">
                             <div class="p-4 w-1/2">
@@ -138,6 +167,15 @@
                             </div>
                         </div>
 
+                        @if($buyerType === 'Empresa')
+                            <div class="p-4 w-full">
+                                <x-jet-label for="statusType">{{ __('Estado civil') }}</x-jet-label>
+                                <x-dropdown-list :items="$statusList" id="statusType" required wire:model="statusType"/>
+                                @error('statusType') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                        @endif
+
                         <div class="flex">
                             <div class="p-4 w-full">
                                 <x-jet-label for="customerEmail">{{ __('Email') }}</x-jet-label>
@@ -153,60 +191,190 @@
                                 @error('customerPhone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
+
+                        @if($buyerType === 'Empresa')
+                            <div class="flex">
+                                <div class="p-4 w-full">
+                                    <x-jet-label for="customerDocumentNro">{{ __('N° de partida') }}</x-jet-label>
+                                    <x-jet-input type="text" id="customerDocumentNro" class="w-full" wire:model="customerDocumentNro"/>
+                                    @error('customerDocumentNro') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     @if($buyerType !== 'Soltero(a)')
                         <div class="flex-row w-1/2">
-                            <h2 class="px-4 font-bold">Del {{ $buyerType }}</h2>
+                            <h2 class="px-4 font-bold">{{ $buyerType }}</h2>
 
-                            <div class="flex">
-                                <div class="p-4 w-1/2">
-                                    <x-jet-label for="customerFirstNameSecond">{{ __('First name') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerFirstNameSecond" class="w-full" required wire:model="customerFirstNameSecond"/>
-                                    @error('customerFirstNameSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            @if ($buyerType !== 'Empresa')
+
+                                <div class="flex">
+                                    <div class="p-4 w-1/2">
+                                        <x-jet-label for="customerFirstNameSecond">{{ __('First name') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerFirstNameSecond" class="w-full" required wire:model="customerFirstNameSecond"/>
+                                        @error('customerFirstNameSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div class="p-4 w-1/2">
+                                        <x-jet-label for="customerLastNameSecond">{{ __('Last name') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerLastNameSecond" class="w-full" required wire:model="customerLastNameSecond"/>
+                                        @error('customerLastNameSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
 
-                                <div class="p-4 w-1/2">
-                                    <x-jet-label for="customerLastNameSecond">{{ __('Last name') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerLastNameSecond" class="w-full" required wire:model="customerLastNameSecond"/>
-                                    @error('customerLastNameSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="customerDocumentSecond">{{ __('DNI') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerDocumentSecond" class="w-full" required wire:model="customerDocumentSecond"/>
+                                        @error('customerDocumentSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="flex">
-                                <div class="p-4 w-full">
-                                    <x-jet-label for="customerDocumentSecond">{{ __('DNI') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerDocumentSecond" class="w-full" required wire:model="customerDocumentSecond"/>
-                                    @error('customerDocumentSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="customerAddressSecond">{{ __('Address') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerAddressSecond" class="w-full" required wire:model="customerAddressSecond"/>
+                                        @error('customerAddressSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="flex">
-                                <div class="p-4 w-full">
-                                    <x-jet-label for="customerAddressSecond">{{ __('Address') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerAddressSecond" class="w-full" required wire:model="customerAddressSecond"/>
-                                    @error('customerAddressSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="customerEmailSecond">{{ __('Email') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerEmailSecond" class="w-full" required wire:model="customerEmailSecond"/>
+                                        @error('customerEmailSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="flex">
-                                <div class="p-4 w-full">
-                                    <x-jet-label for="customerEmailSecond">{{ __('Email') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerEmailSecond" class="w-full" required wire:model="customerEmailSecond"/>
-                                    @error('customerEmailSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="customerPhoneSecond">{{ __('Phone') }}</x-jet-label>
+                                        <x-jet-input type="text" id="customerPhoneSecond" class="w-full" required wire:model="customerPhoneSecond"/>
+                                        @error('customerPhoneSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="companyName">{{ __('Razón social') }}</x-jet-label>
+                                        <x-jet-input type="text" id="companyName" class="w-full" wire:model="companyName"/>
+                                        @error('companyName') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
 
-                            <div class="flex">
-                                <div class="p-4 w-full">
-                                    <x-jet-label for="customerPhoneSecond">{{ __('Phone') }}</x-jet-label>
-                                    <x-jet-input type="text" id="customerPhoneSecond" class="w-full" required wire:model="customerPhoneSecond"/>
-                                    @error('customerPhoneSecond') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="companyTaxNr">{{ __('RUC') }}</x-jet-label>
+                                        <x-jet-input type="text" id="companyTaxNr" class="w-full" wire:model="companyTaxNr" max="11"/>
+                                        @error('companyTaxNr') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="companyAddress">{{ __('Address') }}</x-jet-label>
+                                        <x-jet-input type="text" id="companyAddress" class="w-full" wire:model="companyAddress"/>
+                                        @error('companyAddress') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="companyEmail">{{ __('Email') }}</x-jet-label>
+                                        <x-jet-input type="email" id="companyEmail" class="w-full" wire:model="companyEmail"/>
+                                        @error('companyEmail') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+
+                                <div class="flex">
+                                    <div class="p-4 w-full">
+                                        <x-jet-label for="companyPhone">{{ __('Phone') }}</x-jet-label>
+                                        <x-jet-input type="tel" id="companyPhone" class="w-full" wire:model="companyPhone"/>
+                                        @error('companyPhone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>
+
+                @if($buyerType === 'Sociedad Conyugal' || $buyerType === 'Copropietario')
+                    <div class="flex">
+                        @if($buyerType === 'Sociedad Conyugal')
+                            <div class="flex w-1/2">
+                                <div class="p-4 w-full">
+                                    <x-jet-label for="partnerType">{{ __('Partner type') }}</x-jet-label>
+                                    <x-dropdown-list :items="$partnerTypeList" id="partnerType" required wire:model="partnerType"/>
+                                    @error('partnerType') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($partnerType !== 'Tradicional' ||  $buyerType === 'Copropietario')
+                            <div class="flex-row w-1/2">
+                                <div class="flex w-full">
+                                    <div class="p-4 w-1/4">
+                                        <x-jet-label for="partOne">{{ __('Part') }} 1</x-jet-label>
+                                        <x-jet-input type="number" id="partOne" class="w-full" required wire:model="partOne" min="0"/>
+                                        @error('partOne') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div class="p-4 w-1/4">
+                                        <x-jet-label for="partTwo">{{ __('Part') }} 2</x-jet-label>
+                                        <x-jet-input type="number" id="partTwo" class="w-full" required wire:model="partTwo" min="0"/>
+                                        @error('partTwo') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div class="p-4 w-2/4">
+                                        <x-jet-label for="documentNro">{{ __('Document Nro') }}</x-jet-label>
+                                        <x-jet-input type="text" id="documentNro" class="w-full" required wire:model="documentNro"/>
+                                        @error('documentNro') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+
+                                @if(!is_null($current_document))
+                                    <div class="flex w-full">
+                                        <a href="{{ asset('storage/' . $current_document) }}" target="_blank" class="p-4 inline-block hover:text-blue-500">
+                                            <svg class="w-7 h-7 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            Documento
+                                        </a>
+                                    </div>
+                                @endif
+
+                                <div class="flex w-full">
+                                    <div class="p-4 w-full" x-data="{ isUploading: false, progress: 0 }"
+                                         x-on:livewire-upload-start="isUploading = true"
+                                         x-on:livewire-upload-finish="isUploading = false"
+                                         x-on:livewire-upload-error="isUploading = false"
+                                         x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                        <x-jet-label for="document">{{ __('Document') }}</x-jet-label>
+                                        <label
+                                            class="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-white">
+                                            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"/>
+                                            </svg>
+                                            <span class="mt-2 text-base leading-normal">{{ __('Select a file') }}</span>
+                                            <input type="file" class="hidden" wire:model="document"/>
+                                            <input type="hidden" wire:model="current_document">
+                                        </label>
+
+                                        @error('blueprint') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+
+                                    <!-- Progress Bar -->
+                                        <div x-show="isUploading" class="mt-1 flex">
+                                            <progress max="100" x-bind:value="progress" class="w-full h-1"></progress>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
 
                 <div class="flex justify-end">
                     <div class="p-4">
@@ -215,10 +383,33 @@
                 </div>
             </form>
         </div>
+
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
             {{ __('Forma de Pago') }}
         </h2>
+
         <div class="bg-white p-6 rounded-lg shadow mb-10">
+
+            @if(session()->has('amountValidation'))
+                <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('amountValidation') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session()->has('feeSuccess'))
+                <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('feeSuccess') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form wire:submit.prevent="storePullApartFee" autocomplete="off">
                 <div class="flex-row">
 
@@ -226,6 +417,8 @@
                         <div class="p-4 w-1/2">
                             <x-jet-label for="paymentType">{{ __('Payment type') }}</x-jet-label>
                             <x-dropdown-list :items="$paymentTypeList" id="paymentType" required wire:model="paymentType"/>
+                            <x-jet-input type="hidden" wire:model="lastPaymentType"/>
+                            <x-jet-input type="hidden" wire:model="paymentEdit"/>
                             @error('paymentType') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
 
@@ -285,13 +478,13 @@
                         <div class="flex">
                             <div class="p-4 w-1/3">
                                 <x-jet-label for="afpAmount">{{ __('AFP amount') }}</x-jet-label>
-                                <x-jet-input type="text" class="w-full" required wire:model="afpAmount"/>
+                                <x-jet-input type="text" class="w-full" wire:model="afpAmount"/>
                                 @error('afpAmount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="p-4 w-1/3">
                                 <x-jet-label for="afpAmountAt">{{ __('Date') }}</x-jet-label>
-                                <x-jet-input type="date" class="w-full" required wire:model="afpAmountAt"/>
+                                <x-jet-input type="date" class="w-full" wire:model="afpAmountAt"/>
                                 @error('afpAmountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
@@ -331,7 +524,7 @@
 
                             <div class="p-4 w-1/3">
                                 <x-jet-label for="feeBalanceAt">{{ __('Date') }}</x-jet-label>
-                                <x-jet-input type="date" class="w-full" required wire:model="feeBalanceAt"/>
+                                <x-jet-input type="date" class="w-full" wire:model="feeBalanceAt"/>
                                 @error('feeBalanceAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
@@ -385,10 +578,22 @@
                 </div>
             </form>
         </div>
+
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
             {{ __('Fechas') }}
         </h2>
+
         <div class="bg-white p-6 rounded-lg shadow mb-10">
+            @if(session()->has('datesUpdated'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('datesUpdated') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form wire:submit.prevent="storeAgreementAndSignMinute" autocomplete="off">
                 <div class="flex-row">
 
@@ -413,6 +618,14 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+            {{ __('Historial de comentarios') }}
+        </h2>
+
+        <div class="mb-10">
+            <livewire:tables.pull-apart-comments :pull-aprt-id="$pullApart === null ? 0 : $pullApart->id"/>
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow">
@@ -440,7 +653,19 @@
 
                 <div class="flex justify-end">
                     <div class="p-4">
-                        <x-jet-button class="bg-blue-500">{{ __('Send to approve') }}</x-jet-button>
+                        @role('admin')
+                        <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                        @endrole
+
+                        <x-jet-button class="bg-blue-500">
+                            @role('admin')
+                            {{ __('Approve') }}
+                            @endrole
+
+                            @unlessrole('admin')
+                            {{ __('Send to approve') }}
+                            @endunlessrole
+                        </x-jet-button>
                     </div>
                 </div>
             </form>

@@ -11,26 +11,53 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 class VisitsTracking extends LivewireDatatable
 {
     /**
-     * @var string $model
+     * @var mixed $visitId
      */
-    public $model = VisitTracking::class;
+    public $visitId;
 
     /**
-     * @var string $searchable
+     * @var mixed $searchable
      */
     public $searchable = 'action, status';
 
     /**
-     * @var string $sort
+     * @var mixed $sort
      */
     public $sort = 'created_at';
 
-    //    public function builder()
-    //    {
-    //        //
-    //    }
+    /**
+     * @var mixed $hideable
+     */
+    public $hideable;
 
-    public function columns()
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createTracking';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
+     * Query builder
+     *
+     * @return mixed
+     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     */
+    public function builder(): mixed
+    {
+        return VisitTracking::query()->whereVisitId($this->visitId);
+    }
+
+    /**
+     * Table columns
+     *
+     * @return array
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
+     */
+    public function columns(): array
     {
         return [
             DateColumn::name('created_at')
@@ -65,7 +92,7 @@ class VisitsTracking extends LivewireDatatable
 
             Column::name('id')
                 ->label(__('Actions'))
-                ->view('visits.actions.tracking')
+                ->view('visits.actions.tracking'),
         ];
     }
 }

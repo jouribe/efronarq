@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CustomerDetail extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'customer_id',

@@ -13,5 +13,5 @@
         </div>
     </div>
 
-    @include('components.modals.pull-aparts-selection')
+    @include('pull-apart.modals.pull-aparts-selection')
 </x-app-layout>

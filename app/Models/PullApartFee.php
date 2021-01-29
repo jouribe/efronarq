@@ -8,18 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PullApartFee extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var mixed
      */
     protected $fillable = [
         'pull_apart_id',
         'fee',
         'fee_at',
-        'milestone'
+        'milestone',
+        'type',
+        'pay',
+        'payment_at'
     ];
 
     /**

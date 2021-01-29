@@ -159,5 +159,21 @@
     "Fee balance": "Saldo de cuota inicial",
     "AFP amount": "Monto AFP",
     "Credit amount": "Crédito hipotecario",
-    "Edit project": "Editar proyecto"
+    "Edit project": "Editar proyecto",
+    "Partner type": "Tipo sociedad conyugal",
+    "Document Nro": "N° de partida",
+    "Document": "Documento",
+    "Part": "Parte",
+    "Pull apart fee store successfully!": "Los montos y las cuotas de la separación fueron guardadas con éxito!",
+    "Profit percentage": "Porcentaje de Comisión",
+    "Sellers": "Vendedores",
+    "Seller": "Vendedor",
+    "Profit": "Comisión",
+    "Customer": "Cliente",
+    "Pull apart at": "F. Separación",
+    "Quotation": "Cotización",
+    "Reject": "Rechazar",
+    "Approve": "Aprobar",
+    "Comment saved successfully!": "Comentario guardado con éxito!",
+    "Dates updated successfully!": "Fechas actualizadas con éxito!"
 }

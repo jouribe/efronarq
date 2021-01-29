@@ -10,7 +10,7 @@ class ProjectPrice extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var mixed
      */
     protected $fillable = [
         'project_id',

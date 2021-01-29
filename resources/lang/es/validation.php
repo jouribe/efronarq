@@ -170,7 +170,9 @@ return [
         'parking_lots' => 'estacionamientos',
         'closets' => 'depósitos',
         'order' => 'orden',
-        'file' => 'archivo'
+        'file' => 'archivo',
+        'userId' => 'usuario',
+        'profitPercentage' => 'porcentaje de comisión'
     ],
 
 ];

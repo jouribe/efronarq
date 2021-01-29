@@ -70,7 +70,8 @@
 
                             <x-link color="blue" href="#tracking">
                                 <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                                 </svg>
                                 {{ __('Tracking') }}
                             </x-link>
@@ -218,6 +219,7 @@
                             {{ __('Back') }}
                         </x-link>
                         @if (is_null($visit->quotation))
+                            @unlessrole('admin')
                             <x-link color="green" href="{{ route('visits.quote', $visit->id) }}" target="_blank">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -225,13 +227,16 @@
                                 </svg>
                                 {{ __('Generate Quote') }}
                             </x-link>
+                            @endunlessrole
                         @endif
+                        @unlessrole('admin')
                         <x-link color="blue" href="{{ route('visits.edit', $visit->id) }}">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
                             </svg>
                             {{ __('Edit') }}
                         </x-link>
+                        @endunlessrole
                     </div>
                 </div>
             </div>

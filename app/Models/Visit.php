@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Visit extends Model
 {
-    use HasFactory;
     use SoftDeletes;
 
     /**
@@ -22,6 +21,7 @@ class Visit extends Model
     protected $fillable = [
         'customer_id',
         'project_id',
+        'user_id',
         'project_apartment_id',
         'origin_id',
         'interested',
@@ -118,5 +118,31 @@ class Visit extends Model
     public function pullAparts(): HasMany
     {
         return $this->hasMany(PullApart::class);
+    }
+
+    /**
+     * Seller.
+     *
+     * @return BelongsTo
+     */
+    public function seller(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get visits for login user.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOnlyForMe(Builder $query): Builder
+    {
+        /** @noinspection NullPointerExceptionInspection */
+        if (!auth()->user()->hasRole('admin')) {
+            return $query->where('user_id', auth()->id());
+        }
+
+        return $query->where('user_id', '>' , 0);
     }
 }

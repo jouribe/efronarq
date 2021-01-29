@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\Visit;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use LaravelIdea\Helper\App\Models\_VisitQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -18,7 +19,7 @@ class VisitPullAparts extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'visits.id';
+    public $searchable = 'visits.id, projects.name, customers.full_name';
 
     /**
      * Query builder.
@@ -32,8 +33,12 @@ class VisitPullAparts extends LivewireDatatable
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
+            ->leftJoin('pull_aparts', 'visits.id', 'pull_aparts.visit_id')
+            ->whereNotIn('visits.id', DB::table('pull_aparts')->select('visit_id'))
             ->where('visits.status', 'Cotización')
-            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.last_name', 'project_apartments.name');
+            ->onlyForMe()
+            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.full_name', 'project_apartments.name',
+                'project_apartments.price');
     }
 
     /**
@@ -50,19 +55,23 @@ class VisitPullAparts extends LivewireDatatable
                 ->label(__('ID')),
 
             Column::name('projects.name')
-                ->label(__('Name')),
+                ->label(__('Project')),
 
-            Column::callback(['customers.first_name', 'customers.last_name'], function ($firstName, $lastName) {
-                return "{$firstName} {$lastName}";
-            })
+            Column::name('customers.full_name')
                 ->label(__('Customer')),
 
             Column::name('project_apartments.name')
                 ->label(__('Apartment')),
 
-            Column::callback('visits.id', function ($id) {
-                return '<a class="text-blue-600 hover:text-blue-800" href="' . route('pull-apart.create', ['visitId' => $id]) . '">Separar</a>';
+            Column::callback(['project_apartments.price'], function ($apartmentPrice) {
+                return '<code> US$ ' . number_format($apartmentPrice, 2) . '</code>';
             })
+                ->label(__('Total')),
+
+            Column::callback('visits.id', function ($id) {
+                return '<a class="text-blue-500 hover:text-blue-800" href="' . route('pull-apart.create', ['visitId' => $id]) . '">Separar</a>';
+            })
+                ->label(__('Actions'))
         ];
     }
 }

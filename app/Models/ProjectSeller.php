@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class VisitParkingLot extends Model
+class ProjectSeller extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,27 +14,28 @@ class VisitParkingLot extends Model
      * @var mixed
      */
     protected $fillable = [
-        'visit_id',
-        'project_parking_lot_id'
+        'user_id',
+        'project_id',
+        'profit_percentage'
     ];
 
     /**
-     * Visit
+     * Project
      *
      * @return BelongsTo
      */
-    public function visit(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Visit::class);
+        return $this->belongsTo(Project::class);
     }
 
     /**
-     * Project parking lot.
+     * User
      *
      * @return BelongsTo
      */
-    public function parkingLot(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(ProjectParkingLot::class, 'project_parking_lot_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }

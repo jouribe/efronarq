@@ -3,13 +3,9 @@
         {{ __('Tracking') }}
     </h2>
 
-    <div class="flex justify-end mb-2">
-        <x-link wire:click="create()" href="javascript:">{{ __('Add') }}</x-link>
-    </div>
-
     @if($isOpen)
         @include('visits.modals.tracking-create')
     @endif
 
-    <livewire:tables.visits-tracking/>
+    <livewire:tables.visits-tracking :visit-id="$visit->id" :hideable="auth()->user()->hasRole('vendedor') ? 'add-modal' : null"/>
 </div>

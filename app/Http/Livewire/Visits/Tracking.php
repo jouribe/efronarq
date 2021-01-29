@@ -6,7 +6,6 @@ use App\Models\Visit;
 use App\Models\VisitTracking;
 use App\Traits\Lists;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -66,11 +65,12 @@ class Tracking extends Component
     public bool $isOpen = false;
 
     /**
-     * @var string[] $listeners
+     * @var mixed $listeners
      */
     protected $listeners = [
         'editTracking' => 'edit',
-        'deleteTracking' => 'delete'
+        'deleteTracking' => 'delete',
+        'createTracking' => 'create'
     ];
 
     /**

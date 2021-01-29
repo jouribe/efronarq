@@ -8,8 +8,6 @@ use App\Models\CustomerDetail;
 use App\Models\District;
 use App\Models\Origin;
 use App\Models\Project;
-use App\Models\ProjectPriceCloset;
-use App\Models\ProjectPriceParkingLot;
 use App\Models\Visit;
 use App\Models\VisitCloset;
 use App\Models\VisitParkingLot;
@@ -18,9 +16,7 @@ use App\Traits\Lists;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class VisitController extends Controller
 {
@@ -50,8 +46,10 @@ class VisitController extends Controller
         $origins = Origin::all()->pluck('name', 'id');
 
         // Projects
-        // TODO: mostrar solo los proyectos para el usuario que inicio sesión.
-        $projects = Project::all()->pluck('name', 'id');
+        $projects = Project::whereHas('sellers', function ($query) {
+            return $query->where('user_id', auth()->user()->id);
+        })->whereIsActive(true)
+            ->pluck('name', 'id');
 
         // Discount
         $discountList = [];
@@ -107,10 +105,10 @@ class VisitController extends Controller
         $visit = Visit::create([
             'customer_id' => $exist->id,
             'project_id' => $request->get('project_id'),
+            'user_id' => auth()->user()->id,
             'project_apartment_id' => $request->get('project_apartment_id'),
             'origin_id' => $request->get('origin_id'),
             'interested' => $request->get('interested'),
-            'discount' => $request->get('discount') ?? 0,
             'type_financing' => $request->get('type_financing')
         ]);
 
@@ -162,28 +160,28 @@ class VisitController extends Controller
         return view('visits.quote')->with('visit', Visit::find($id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+//    /**
+//     * Update the specified resource in storage.
+//     *
+//     * @param Request $request
+//     * @param int $id
+//     * @return Response
+//     */
+//    public function update(Request $request, $id)
+//    {
+//        //
+//    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param int $id
+//     * @return Response
+//     */
+//    public function destroy($id)
+//    {
+//        //
+//    }
 
     /**
      * Generates the quote for the visit.

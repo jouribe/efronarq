@@ -19,7 +19,7 @@ class CreateProjectSellersTable extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('profit_percentage');
+            $table->decimal('profit_percentage');
             $table->timestamps();
         });
     }

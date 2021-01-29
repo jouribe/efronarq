@@ -24,6 +24,11 @@ class CreateCustomerRelatesTable extends Migration
             $table->enum('type', ['Soltero(a)', 'Sociedad Conyugal', 'Copropietario'])->default('Soltero(a)');
             $table->enum('partner_type', ['Tradicional', 'Casado con separación de patrimonio'])->nullable();
 
+            $table->integer('part_one')->nullable();
+            $table->integer('part_two')->nullable();
+            $table->string('document_nro')->nullable();
+            $table->string('document')->nullable();
+
             $table->timestamps();
         });
     }

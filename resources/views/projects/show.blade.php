@@ -159,8 +159,10 @@
                 <livewire:projects.documents :project="$project"/>
             </div>
         </div>
-        <div class="panel-7 tab-content vendors py-5">
-            <p>Vendedores content</p>
+        <div class="panel-8 tab-content vendors py-5">
+            <div class="py-12">
+                <livewire:projects.sellers :project="$project"/>
+            </div>
         </div>
     </div>
 </x-app-layout>

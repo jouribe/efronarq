@@ -145,4 +145,14 @@ class Project extends Model
     {
         return $this->hasMany(Visit::class);
     }
+
+    /**
+     * Project sellers.
+     *
+     * @return HasMany
+     */
+    public function sellers(): HasMany
+    {
+        return $this->hasMany(ProjectSeller::class);
+    }
 }

@@ -21,7 +21,7 @@ class Visits extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'projects.name, customers.first_name, customers.last_name, origins.name, visits.status';
+    public $searchable = 'projects.name, customers.full_name, origins.name, visits.status';
 
     /**
      * @var mixed $exportable
@@ -40,20 +40,35 @@ class Visits extends LivewireDatatable
 
     /**
      * Table builder.
+     *
+     * @return mixed
+     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
      */
-    public function builder(): _VisitQueryBuilder|Builder
+    public function builder(): mixed
     {
+        ray()->clearAll();
+
+        ray()->showQueries();
+
         return Visit::query()
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->leftJoin('visit_tracking', function ($join) {
-                $join->on('visits.id', '=', 'visit_tracking.visit_id')
-                    ->where('visit_tracking.action_at', '>=', now()->format('Y-m-d'));
+            ->leftJoin('visit_tracking', function ($query) {
+                $query->on('visits.id', 'visit_tracking.visit_id')
+                    ->whereRaw('visit_tracking.action_at IN (
+                        select * from (
+                            select vt.action_at from visit_tracking vt
+                            inner join visits as v on v.id = vt.visit_id
+                            order by vt.action_at desc
+                            limit 1
+                        ) as vt2
+                    )');
             })
-            ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.first_name', 'customers.last_name', 'origins.name', 'visits.interested', 'visits.status',
+            ->onlyForMe()
+            ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested', 'visits.status',
                 'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');
     }
 
@@ -75,10 +90,8 @@ class Visits extends LivewireDatatable
             DateColumn::name('visits.created_at')
                 ->label(__('Visit date')),
 
-            Column::callback(['customers.first_name', 'customers.last_name'], function ($first_name, $last_name) {
-                return $first_name . ' ' . $last_name;
-            })
-                ->label(__('Name')),
+            Column::name('customers.full_name')
+                ->label(__('Customer')),
 
             Column::name('projects.name')
                 ->label(__('Project')),

@@ -21,6 +21,7 @@
         "laraveles/spanish": "^1.5",
         "livewire/livewire": "^2.0",
         "mediconesystems/livewire-datatables": "^0.4.3",
+        "spatie/laravel-permission": "^3.18",
         "spatie/laravel-ray": "^1.8"
     },
     "require-dev": {
