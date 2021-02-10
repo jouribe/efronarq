@@ -142,7 +142,7 @@
     "Pull apart updated successfully!": "Separación actualizada con éxito!",
     "Pull apart created successfully!": "Separación generada con éxito!",
     "Buyer Type": "Tipo de comprador",
-    "Customer updated successfully" : "Cliente actualizado exitosamente",
+    "Customer updated successfully": "Cliente actualizado exitosamente",
     "Payment type": "Forma de pago",
     "Amount pull apart": "Monto de separación",
     "Amount at": "Fecha",
@@ -175,5 +175,7 @@
     "Reject": "Rechazar",
     "Approve": "Aprobar",
     "Comment saved successfully!": "Comentario guardado con éxito!",
-    "Dates updated successfully!": "Fechas actualizadas con éxito!"
+    "Dates updated successfully!": "Fechas actualizadas con éxito!",
+    "Role": "Rol",
+    "Password confirmation": "Confirmación de contraseña"
 }

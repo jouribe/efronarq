@@ -3,10 +3,6 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\Visit;
-use Carbon\Carbon;
-use DB;
-use Illuminate\Database\Eloquent\Builder;
-use LaravelIdea\Helper\App\Models\_VisitQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -51,22 +47,16 @@ class Visits extends LivewireDatatable
         ray()->showQueries();
 
         return Visit::query()
+            ->leftJoin('visit_tracking', function ($join) {
+                $join->on('visit_tracking.visit_id', 'visits.id')
+                    ->whereRaw('visit_tracking.id IN (select MAX(vt.id) from visit_tracking as vt join visits as v on v.id = vt.visit_id group by vt.id)');
+            })
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->leftJoin('visit_tracking', function ($query) {
-                $query->on('visits.id', 'visit_tracking.visit_id')
-                    ->whereRaw('visit_tracking.action_at IN (
-                        select * from (
-                            select vt.action_at from visit_tracking vt
-                            inner join visits as v on v.id = vt.visit_id
-                            order by vt.action_at desc
-                            limit 1
-                        ) as vt2
-                    )');
-            })
+            ->latestTracking()
             ->onlyForMe()
             ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested', 'visits.status',
                 'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');

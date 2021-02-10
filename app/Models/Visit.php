@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection UnknownInspectionInspection */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -143,6 +145,20 @@ class Visit extends Model
             return $query->where('user_id', auth()->id());
         }
 
-        return $query->where('user_id', '>' , 0);
+        return $query->where('user_id', '>', 0);
+    }
+
+    /**
+     * Get latest tracking of the pull apart.
+     *
+     * @param Builder $query
+     * @return Builder
+     * @noinspection PhpUnused
+     */
+    public function scopeLatestTracking(Builder $query): Builder
+    {
+        return $query->whereHas('tracking', function (Builder $q) {
+            return $q->latest();
+        });
     }
 }

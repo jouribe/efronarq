@@ -172,7 +172,11 @@ return [
         'order' => 'orden',
         'file' => 'archivo',
         'userId' => 'usuario',
-        'profitPercentage' => 'porcentaje de comisión'
+        'profitPercentage' => 'porcentaje de comisión',
+        'password confirmation' => 'confirmación de contraseña',
+        'role' => 'rol',
+        'name' => 'nombre',
+        'email' => 'correo electrónico'
     ],
 
 ];
