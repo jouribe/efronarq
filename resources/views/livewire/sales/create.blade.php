@@ -927,7 +927,7 @@
 
                             @error('estimate') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
 
-                            <!-- Progress Bar -->
+                        <!-- Progress Bar -->
                             <div x-show="isUploading" class="mt-1 flex">
                                 <progress max="100" x-bind:value="progress" class="w-full h-1"></progress>
                             </div>
@@ -994,13 +994,13 @@
                 </div>
 
                 <div class="w-full p-4">
-                    <livewire:tables.pull-apart-changes :pull-apart-id="$pullApart->id" />
+                    <livewire:tables.pull-apart-changes :pull-apart-id="$pullApart->id"/>
                 </div>
             </form>
         </div>
 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
-            {{ __('Historial de pago') }}
+            {{ __('Historial de pagos') }}
         </h2>
 
         <div class="bg-white p-6 rounded-lg shadow mb-10">
@@ -1014,15 +1014,42 @@
                 </div>
             @endif
 
-            <form wire:submit.prevent="storePaymentHistory" autocomplete="off">
-                <div class="flex w-1/2">
-
+            <div class="flex flex-ro">
+                <div class="p-4 w-1/2">
+                    <h3 class="mb-6">Cronograma establecido</h3>
+                    <table class="text-sm w-full">
+                        <thead>
+                        <tr>
+                            <th class="py-2"></th>
+                            <th class="py-2">Valor</th>
+                            <th class="py-2">F. Cronograma</th>
+                            <th class="py-2">F. Pago</th>
+                            <th class="py-2">Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($pullApart->fees as $item)
+                            <tr>
+                                <td class="py-2 text-xs">{{ $item->type }}</td>
+                                <td class="py-2 text-xs">US$. {{ number_format($item->fee,2) }}</td>
+                                <td class="py-2 text-xs">{{  \Carbon\Carbon::parse($item->fee_at)->format('d/m/Y') }}</td>
+                                <td class="py-2 text-xs">{{ \Carbon\Carbon::parse($item->payment_at)->format('d/m/Y') }}</td>
+                                <td class="py-2 text-xs">
+                                    @if($item->pay === 0)
+                                        Pendiente
+                                    @else
+                                        Cancelado
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="flex flex-row">
-                    <div class="w-1/2"></div>
-                    <div class="w-1/2"></div>
+                <div class="p-4 w-1/2">
+                    <h3>Pagos realizados</h3>
                 </div>
-            </form>
+            </div>
         </div>
 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">

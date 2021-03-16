@@ -208,7 +208,7 @@ class VisitController extends Controller
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';
 
             $pdf = \PDF::loadView('visits.quote', $data)
-                ->save(storage_path('app/public/quotation/' . $fileName));
+                ->save(storage_path('app/public/quotation/')  . $fileName);
 
             VisitQuotation::create([
                 'visit_id' => $visit->id,

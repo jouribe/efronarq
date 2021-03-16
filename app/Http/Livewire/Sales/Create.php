@@ -20,6 +20,11 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use PhpOffice\PhpWord\Exception\Exception;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Style\Font;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Create extends Component
 {
@@ -614,33 +619,33 @@ class Create extends Component
     public $pullApartDeliveryId;
 
     /**
-    * @var mixed $billDeliveryAt
-    */
+     * @var mixed $billDeliveryAt
+     */
     public $billDeliveryAt;
 
     /**
-    * @var mixed $deliveryApartmentDate
-    */
+     * @var mixed $deliveryApartmentDate
+     */
     public $deliveryApartmentDate;
 
     /**
-    * @var mixed $deliveryApartmentTime
-    */
+     * @var mixed $deliveryApartmentTime
+     */
     public $deliveryApartmentTime;
 
     /**
-    * @var mixed $executive
-    */
+     * @var mixed $executive
+     */
     public $executive;
 
     /**
-    * @var mixed $evidence
-    */
+     * @var mixed $evidence
+     */
     public $evidence;
 
     /**
-    * @var mixed $currentEvidence
-    */
+     * @var mixed $currentEvidence
+     */
     public $currentEvidence;
 
     /**
@@ -991,6 +996,16 @@ class Create extends Component
     }
 
     /**
+     * Store pull apart document control.
+     *
+     * @return void
+     */
+    public function storeDocumentControl(): void
+    {
+
+    }
+
+    /**
      * Store pull apart changes
      *
      * @return void;
@@ -1061,9 +1076,9 @@ class Create extends Component
     /**
      * Store pull apart bill
      *
-     * @return void
+     * @return BinaryFileResponse
      */
-    public function storeSaleBill(): void
+    public function storeSaleBill(): BinaryFileResponse
     {
         PullApartBill::updateOrCreate([
             'id' => $this->pullApartBillId
@@ -1088,6 +1103,74 @@ class Create extends Component
         ]);
 
         session()->flash('billValidation', !is_null($this->pullApart) ? __('Minuta actualizada con éxito!') : __('Minuta creada con éxito!'));
+        $this->generateBill();
+        return response()->download(storage_path('app/public/bills/') . 'Minuta.docx');
+    }
+
+    /**
+     * Generate pull apart bill.
+     * @noinspection DuplicatedCode
+     */
+    public function generateBill(): void
+    {
+        // Creating the new document...
+        $phpWord = new PhpWord();
+
+        /* Note: any element you append to a document must reside inside of a Section. */
+
+        // Adding an empty Section to the document...
+        $section = $phpWord->addSection();
+
+        // Adding Text element to the Section having font styled by default...
+        $section->addText(
+            '"Learn from yesterday, live for today, hope for tomorrow. '
+            . 'The important thing is not to stop questioning." '
+            . '(Albert Einstein)'
+        );
+
+        /*
+         * Note: it's possible to customize font style of the Text element you add in three ways:
+         * - inline;
+         * - using named font style (new font style object will be implicitly created);
+         * - using explicitly created font style object.
+         */
+
+        // Adding Text element with font customized inline...
+        $section->addText(
+            '"Great achievement is usually born of great sacrifice, '
+            . 'and is never the result of selfishness." '
+            . '(Napoleon Hill)',
+            array('name' => 'Tahoma', 'size' => 10)
+        );
+
+        // Adding Text element with font customized using named font style...
+        $fontStyleName = 'oneUserDefinedStyle';
+        $phpWord->addFontStyle(
+            $fontStyleName,
+            array('name' => 'Tahoma', 'size' => 10, 'color' => '1B2232', 'bold' => true)
+        );
+        $section->addText(
+            '"The greatest accomplishment is not in never falling, '
+            . 'but in rising again after you fall." '
+            . '(Vince Lombardi)',
+            $fontStyleName
+        );
+
+        // Adding Text element with font customized using explicitly created font style object...
+        $fontStyle = new Font();
+        $fontStyle->setBold(true);
+        $fontStyle->setName('Tahoma');
+        $fontStyle->setSize(13);
+        $myTextElement = $section->addText('"Believe you can and you\'re halfway there." (Theodor Roosevelt)');
+        $myTextElement->setFontStyle($fontStyle);
+
+        // Saving the document as OOXML file...
+        try {
+            $objWriter = IOFactory::createWriter($phpWord);
+            $objWriter->save(storage_path('app/public/bills/') . 'Minuta.docx');
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 
     /**

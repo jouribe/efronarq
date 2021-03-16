@@ -47,16 +47,13 @@ class Visits extends LivewireDatatable
         ray()->showQueries();
 
         return Visit::query()
-            ->leftJoin('visit_tracking', function ($join) {
-                $join->on('visit_tracking.visit_id', 'visits.id')
-                    ->whereRaw('visit_tracking.id IN (select MAX(vt.id) from visit_tracking as vt join visits as v on v.id = vt.visit_id group by vt.id)');
-            })
+            ->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->latestTracking()
+            //->latestTracking()
             ->onlyForMe()
             ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested', 'visits.status',
                 'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');
