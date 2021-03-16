@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePullApartFeesTable extends Migration
+class CreatePullApartBillHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,15 @@ class CreatePullApartFeesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('pull_apart_fees', function (Blueprint $table) {
+        Schema::create('pull_apart_bill_history', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('pull_apart_id');
             $table->foreign('pull_apart_id')->references('id')->on('pull_aparts')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->decimal('fee');
-            $table->date('fee_at');
-            $table->string('milestone')->nullable();
-            $table->enum('type', ['Monto Separación', 'Saldo Cuota Inicial', 'AFP', 'Crédito Hipotecario', 'Cuota', 'Adicional']); // TODO: Adicional no debe de mostrarse como cuota original
-            $table->boolean('pay')->default(false);
-            $table->date('payment_at')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('bill')->nullable();
+            $table->boolean('is_active')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
@@ -36,6 +33,6 @@ class CreatePullApartFeesTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pull_apart_fees');
+        Schema::dropIfExists('pull_apart_bill_history');
     }
 }

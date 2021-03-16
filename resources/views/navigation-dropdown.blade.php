@@ -31,7 +31,7 @@
                     </x-jet-nav-link>
 
                     @role('admin')
-                    <x-jet-nav-link href="#" :active="request()->routeIs('sales')">
+                    <x-jet-nav-link href="{{ route('sales.index') }}" :active="request()->routeIs(['sales.index', 'sales.create'])">
                         {{ __('Sales') }}
                     </x-jet-nav-link>
                     @endrole

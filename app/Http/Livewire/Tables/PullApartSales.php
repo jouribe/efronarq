@@ -2,41 +2,41 @@
 
 namespace App\Http\Livewire\Tables;
 
-use App\Models\Visit;
+use App\Models\PullApart;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
-class VisitPullAparts extends LivewireDatatable
+class PullApartSales extends LivewireDatatable
 {
     /**
      * @var mixed $model
      */
-    public $model = Visit::class;
+    public $model = PullApart::class;
 
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'visits.id, projects.name, customers.full_name';
+    public $searchable = 'pull_aparts.id, projects.name, customers.full_name';
 
     /**
      * Query builder.
      *
      * @return Builder
      */
-    public function builder(): Builder
+    public function builder() : Builder
     {
-        return Visit::query()
+        return PullApart::query()
+            ->leftJoin('visits', 'pull_aparts.visit_id', 'visits.id')
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
-            ->leftJoin('pull_aparts', 'visits.id', 'pull_aparts.visit_id')
-            ->whereNotIn('visits.id', DB::table('pull_aparts')->select('visit_id'))
-            ->where('visits.status', 'Cotización')
+            //->whereNotIn('visits.id', DB::table('pull_aparts')->select('visit_id'))
+            //->where('visits.status', 'Cotización')
             ->onlyForMe()
-            ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.full_name', 'project_apartments.name',
+            ->selectableForSale()
+            ->groupBy('pull_aparts.id', 'projects.name', 'customers.first_name', 'customers.full_name', 'project_apartments.name',
                 'project_apartments.price');
     }
 
@@ -50,8 +50,8 @@ class VisitPullAparts extends LivewireDatatable
     {
         /** @noinspection DuplicatedCode */
         return [
-            Column::name('visits.id')
-                ->label(__('ID')),
+            Column::name('pull_aparts.id')
+                ->label(__('Quotation')),
 
             Column::name('projects.name')
                 ->label(__('Project')),
@@ -67,8 +67,8 @@ class VisitPullAparts extends LivewireDatatable
             })
                 ->label(__('Total')),
 
-            Column::callback('visits.id', function ($id) {
-                return '<a class="text-blue-500 hover:text-blue-800" href="' . route('pull-apart.create', ['visitId' => $id]) . '">Separar</a>';
+            Column::callback('pull_aparts.id', function ($id) {
+                return '<a class="text-blue-500 hover:text-blue-800" href="' . route('sales.create', ['pullApartId' => $id]) . '">Vender</a>';
             })
                 ->label(__('Actions'))
         ];

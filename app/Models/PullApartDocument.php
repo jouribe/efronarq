@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PullApartFee extends Model
+class PullApartDocument extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -16,12 +14,10 @@ class PullApartFee extends Model
      */
     protected $fillable = [
         'pull_apart_id',
-        'fee',
-        'fee_at',
-        'milestone',
-        'type',
-        'pay',
-        'payment_at'
+        'document_id',
+        'signed_at',
+        'observation',
+        'approve'
     ];
 
     /**
@@ -35,12 +31,12 @@ class PullApartFee extends Model
     }
 
     /**
-     * Pull apart fee payments.
+     * Document
      *
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function payments(): HasMany
+    public function document(): BelongsTo
     {
-        return $this->hasMany(PullApartFeePayment::class);
+        return $this->belongsTo(Document::class);
     }
 }

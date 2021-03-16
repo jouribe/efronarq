@@ -19,13 +19,17 @@ class PullApart extends Model
         'visit_id',
         'discount_type',
         'discount',
-        'final_price',
         'buyer_type',
         'payment_type',
         'bank_id',
         'separation_agreement_at',
         'signature_minute_at',
-        'status'
+        'final_price',
+        'status',
+        'agreement',
+        'sworn_declaration',
+        'is_sale',
+        'signed_separation_agreement'
     ];
 
     /**
@@ -69,6 +73,56 @@ class PullApart extends Model
     }
 
     /**
+     * Pull apart documents.
+     *
+     * @return HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(PullApartDocument::class);
+    }
+
+    /**
+     * Pull apart bill
+     *
+     * @return HasMany
+     */
+    public function bills(): HasMany
+    {
+        return $this->hasMany(PullApartBill::class);
+    }
+
+    /**
+     * Pull apart changes
+     *
+     * @return HasMany
+     */
+    public function changes(): HasMany
+    {
+        return $this->hasMany(PullApartChange::class);
+    }
+
+    /**
+     * Pull apart deliveries
+     *
+     * @return HasMany
+     */
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(PullApartDelivery::class);
+    }
+
+    /**
+     * Bill History
+     *
+     * @return HasMany
+     */
+    public function billHistory(): HasMany
+    {
+        return $this->hasMany(PullApartBillHistory::class);
+    }
+
+    /**
      * Get pull aparts only for logged user id.
      *
      * @param Builder $query
@@ -77,12 +131,45 @@ class PullApart extends Model
     public function scopeOnlyForMe(Builder $query): Builder
     {
         /** @noinspection NullPointerExceptionInspection */
-        if(!auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->hasRole('admin')) {
             return $query->whereHas('visit', function (Builder $q) {
                 return $q->where('user_id', auth()->id());
             });
         }
 
         return $query;
+    }
+
+    /**
+     * Get pull a aparts that are a sale.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIsASale(Builder $query): Builder
+    {
+        return $query->where('is_sale', true);
+    }
+
+    /**
+     * Get pull aparts that are not a sale.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIsNotASale(Builder $query): Builder
+    {
+        return $query->where('is_sale', false);
+    }
+
+    /**
+     * Get pull aparts thar are selectables for sale.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeSelectableForSale(Builder $query): Builder
+    {
+        return $query->where('is_sale', false)->where('pull_aparts.status', 'Aprobado');
     }
 }
