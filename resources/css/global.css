@@ -66,3 +66,69 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     padding-left: 0.9rem!important;
     padding-right: 0.9rem!important;
 }
+fieldset {
+    border: 1px solid rgb(30, 41, 59);
+    border-radius: 8px;
+    padding: 25px;
+    padding-top: 10px;
+    font-size: 14px;
+    min-height: 400px;
+    position: relative;
+}
+
+fieldset legend {
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+fieldset > p {
+    font-weight: bold;
+}
+fieldset .datos {
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+fieldset .estado {
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+fieldset .tabla table tr td:last-child {
+    text-align: right!important;
+}
+fieldset .tabla table tr td:nth-child(2) {
+    text-align: center;
+}
+fieldset .tabla table {
+    width: 97%;
+    margin: 0 auto;
+}
+fieldset .tabla table tr:nth-last-of-type(4) {
+    border-bottom: 1px solid rgb(30, 41, 59, 0.5);
+}
+fieldset .tabla table tr td {
+    padding: 2px;
+}
+fieldset .acciones {
+    position: absolute;
+    bottom: -117px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.nav-ventas.mx-auto.nav-interno {
+    max-width: 76rem;
+    border-radius: 8px;
+}
+.nav-ventas.mx-auto.nav-interno nav.tabs button.tab {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+fieldset .acciones button {
+    margin: 0 10px;
+}
+.tab-content.panel-venta {
+    margin-top: 45px;
+}

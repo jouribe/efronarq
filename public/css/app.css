@@ -1,5 +1,3 @@
-/*! tailwindcss v2.0.3 | MIT License | https://tailwindcss.com */
-
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /*
@@ -442,18 +440,15 @@ textarea {
 }
 
 input::-moz-placeholder, textarea::-moz-placeholder {
-  opacity: 1;
   color: #94a3b8;
 }
 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-  opacity: 1;
   color: #94a3b8;
 }
 
 input::placeholder,
 textarea::placeholder {
-  opacity: 1;
   color: #94a3b8;
 }
 
@@ -925,6 +920,85 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   padding-right: 0.9rem!important;
 }
 
+fieldset {
+  border: 1px solid rgb(30, 41, 59);
+  border-radius: 8px;
+  padding: 25px;
+  padding-top: 10px;
+  font-size: 14px;
+  min-height: 400px;
+  position: relative;
+}
+
+fieldset legend {
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+fieldset > p {
+  font-weight: bold;
+}
+
+fieldset .datos {
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+fieldset .estado {
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+fieldset .tabla table tr td:last-child {
+  text-align: right!important;
+}
+
+fieldset .tabla table tr td:nth-child(2) {
+  text-align: center;
+}
+
+fieldset .tabla table {
+  width: 97%;
+  margin: 0 auto;
+}
+
+fieldset .tabla table tr:nth-last-of-type(4) {
+  border-bottom: 1px solid rgb(30, 41, 59, 0.5);
+}
+
+fieldset .tabla table tr td {
+  padding: 2px;
+}
+
+fieldset .acciones {
+  position: absolute;
+  bottom: -117px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.nav-ventas.mx-auto.nav-interno {
+  max-width: 76rem;
+  border-radius: 8px;
+}
+
+.nav-ventas.mx-auto.nav-interno nav.tabs button.tab {
+  font-size: 15px;
+  line-height: 20px;
+}
+
+fieldset .acciones button {
+  margin: 0 10px;
+}
+
+.tab-content.panel-venta {
+  margin-top: 45px;
+}
+
 .container {
   width: 100%;
 }
@@ -983,49 +1057,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   font-weight: 600;
 }
 
-.prose ol[type="A"] {
-  --list-counter-style: upper-alpha;
-}
-
-.prose ol[type="a"] {
-  --list-counter-style: lower-alpha;
-}
-
-.prose ol[type="A s"] {
-  --list-counter-style: upper-alpha;
-}
-
-.prose ol[type="a s"] {
-  --list-counter-style: lower-alpha;
-}
-
-.prose ol[type="I"] {
-  --list-counter-style: upper-roman;
-}
-
-.prose ol[type="i"] {
-  --list-counter-style: lower-roman;
-}
-
-.prose ol[type="I s"] {
-  --list-counter-style: upper-roman;
-}
-
-.prose ol[type="i s"] {
-  --list-counter-style: lower-roman;
-}
-
-.prose ol[type="1"] {
-  --list-counter-style: decimal;
+.prose ol {
+  counter-reset: list-counter;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
 }
 
 .prose ol > li {
   position: relative;
+  counter-increment: list-counter;
   padding-left: 1.75em;
 }
 
 .prose ol > li::before {
-  content: counter(list-item, var(--list-counter-style, decimal)) ".";
+  content: counter(list-counter) ".";
   position: absolute;
   font-weight: 400;
   color: #64748b;
@@ -1163,11 +1208,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 }
 
 .prose pre code::before {
-  content: none;
+  content: "";
 }
 
 .prose pre code::after {
-  content: none;
+  content: "";
 }
 
 .prose table {
@@ -1247,11 +1292,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
 .prose h3 code {
   font-size: 0.9em;
-}
-
-.prose ol {
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
 }
 
 .prose ul {
@@ -2222,44 +2262,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   margin-bottom: 0;
 }
 
-.prose-yellow a {
-  color: #ca8a04;
+.prose-yellow {
 }
 
-.prose-yellow a code {
-  color: #ca8a04;
+.prose-blue {
 }
 
-.prose-blue a {
-  color: #025181;
+.prose-red {
 }
 
-.prose-blue a code {
-  color: #025181;
+.prose-indigo {
 }
 
-.prose-red a {
-  color: #dc2626;
-}
-
-.prose-red a code {
-  color: #dc2626;
-}
-
-.prose-indigo a {
-  color: #4f46e5;
-}
-
-.prose-indigo a code {
-  color: #4f46e5;
-}
-
-.prose-green a {
-  color: #16a34a;
-}
-
-.prose-green a code {
-  color: #16a34a;
+.prose-green {
 }
 
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -10418,10 +10433,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   cursor: move;
 }
 
-.cursor-help {
-  cursor: help;
-}
-
 .cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -17506,6 +17517,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 }
 
 .sticky {
+  position: -webkit-sticky;
   position: sticky;
 }
 
@@ -29149,49 +29161,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     font-weight: 600;
   }
 
-  .sm\:prose ol[type="A"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .sm\:prose ol[type="a"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .sm\:prose ol[type="A s"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .sm\:prose ol[type="a s"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .sm\:prose ol[type="I"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .sm\:prose ol[type="i"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .sm\:prose ol[type="I s"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .sm\:prose ol[type="i s"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .sm\:prose ol[type="1"] {
-    --list-counter-style: decimal;
+  .sm\:prose ol {
+    counter-reset: list-counter;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
   }
 
   .sm\:prose ol > li {
     position: relative;
+    counter-increment: list-counter;
     padding-left: 1.75em;
   }
 
   .sm\:prose ol > li::before {
-    content: counter(list-item, var(--list-counter-style, decimal)) ".";
+    content: counter(list-counter) ".";
     position: absolute;
     font-weight: 400;
     color: #64748b;
@@ -29329,11 +29312,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .sm\:prose pre code::before {
-    content: none;
+    content: "";
   }
 
   .sm\:prose pre code::after {
-    content: none;
+    content: "";
   }
 
   .sm\:prose table {
@@ -29413,11 +29396,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
   .sm\:prose h3 code {
     font-size: 0.9em;
-  }
-
-  .sm\:prose ol {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
   }
 
   .sm\:prose ul {
@@ -30388,44 +30366,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin-bottom: 0;
   }
 
-  .sm\:prose-yellow a {
-    color: #ca8a04;
+  .sm\:prose-yellow {
   }
 
-  .sm\:prose-yellow a code {
-    color: #ca8a04;
+  .sm\:prose-blue {
   }
 
-  .sm\:prose-blue a {
-    color: #025181;
+  .sm\:prose-red {
   }
 
-  .sm\:prose-blue a code {
-    color: #025181;
+  .sm\:prose-indigo {
   }
 
-  .sm\:prose-red a {
-    color: #dc2626;
-  }
-
-  .sm\:prose-red a code {
-    color: #dc2626;
-  }
-
-  .sm\:prose-indigo a {
-    color: #4f46e5;
-  }
-
-  .sm\:prose-indigo a code {
-    color: #4f46e5;
-  }
-
-  .sm\:prose-green a {
-    color: #16a34a;
-  }
-
-  .sm\:prose-green a code {
-    color: #16a34a;
+  .sm\:prose-green {
   }
 
   .sm\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -38584,10 +38537,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     cursor: move;
   }
 
-  .sm\:cursor-help {
-    cursor: help;
-  }
-
   .sm\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -45672,6 +45621,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .sm\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -57237,49 +57187,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     font-weight: 600;
   }
 
-  .md\:prose ol[type="A"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .md\:prose ol[type="a"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .md\:prose ol[type="A s"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .md\:prose ol[type="a s"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .md\:prose ol[type="I"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .md\:prose ol[type="i"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .md\:prose ol[type="I s"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .md\:prose ol[type="i s"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .md\:prose ol[type="1"] {
-    --list-counter-style: decimal;
+  .md\:prose ol {
+    counter-reset: list-counter;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
   }
 
   .md\:prose ol > li {
     position: relative;
+    counter-increment: list-counter;
     padding-left: 1.75em;
   }
 
   .md\:prose ol > li::before {
-    content: counter(list-item, var(--list-counter-style, decimal)) ".";
+    content: counter(list-counter) ".";
     position: absolute;
     font-weight: 400;
     color: #64748b;
@@ -57417,11 +57338,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .md\:prose pre code::before {
-    content: none;
+    content: "";
   }
 
   .md\:prose pre code::after {
-    content: none;
+    content: "";
   }
 
   .md\:prose table {
@@ -57501,11 +57422,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
   .md\:prose h3 code {
     font-size: 0.9em;
-  }
-
-  .md\:prose ol {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
   }
 
   .md\:prose ul {
@@ -58476,44 +58392,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin-bottom: 0;
   }
 
-  .md\:prose-yellow a {
-    color: #ca8a04;
+  .md\:prose-yellow {
   }
 
-  .md\:prose-yellow a code {
-    color: #ca8a04;
+  .md\:prose-blue {
   }
 
-  .md\:prose-blue a {
-    color: #025181;
+  .md\:prose-red {
   }
 
-  .md\:prose-blue a code {
-    color: #025181;
+  .md\:prose-indigo {
   }
 
-  .md\:prose-red a {
-    color: #dc2626;
-  }
-
-  .md\:prose-red a code {
-    color: #dc2626;
-  }
-
-  .md\:prose-indigo a {
-    color: #4f46e5;
-  }
-
-  .md\:prose-indigo a code {
-    color: #4f46e5;
-  }
-
-  .md\:prose-green a {
-    color: #16a34a;
-  }
-
-  .md\:prose-green a code {
-    color: #16a34a;
+  .md\:prose-green {
   }
 
   .md\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -66672,10 +66563,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     cursor: move;
   }
 
-  .md\:cursor-help {
-    cursor: help;
-  }
-
   .md\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -73760,6 +73647,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .md\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -85325,49 +85213,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     font-weight: 600;
   }
 
-  .lg\:prose ol[type="A"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .lg\:prose ol[type="a"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .lg\:prose ol[type="A s"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .lg\:prose ol[type="a s"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .lg\:prose ol[type="I"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .lg\:prose ol[type="i"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .lg\:prose ol[type="I s"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .lg\:prose ol[type="i s"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .lg\:prose ol[type="1"] {
-    --list-counter-style: decimal;
+  .lg\:prose ol {
+    counter-reset: list-counter;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
   }
 
   .lg\:prose ol > li {
     position: relative;
+    counter-increment: list-counter;
     padding-left: 1.75em;
   }
 
   .lg\:prose ol > li::before {
-    content: counter(list-item, var(--list-counter-style, decimal)) ".";
+    content: counter(list-counter) ".";
     position: absolute;
     font-weight: 400;
     color: #64748b;
@@ -85505,11 +85364,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .lg\:prose pre code::before {
-    content: none;
+    content: "";
   }
 
   .lg\:prose pre code::after {
-    content: none;
+    content: "";
   }
 
   .lg\:prose table {
@@ -85589,11 +85448,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
   .lg\:prose h3 code {
     font-size: 0.9em;
-  }
-
-  .lg\:prose ol {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
   }
 
   .lg\:prose ul {
@@ -86564,44 +86418,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin-bottom: 0;
   }
 
-  .lg\:prose-yellow a {
-    color: #ca8a04;
+  .lg\:prose-yellow {
   }
 
-  .lg\:prose-yellow a code {
-    color: #ca8a04;
+  .lg\:prose-blue {
   }
 
-  .lg\:prose-blue a {
-    color: #025181;
+  .lg\:prose-red {
   }
 
-  .lg\:prose-blue a code {
-    color: #025181;
+  .lg\:prose-indigo {
   }
 
-  .lg\:prose-red a {
-    color: #dc2626;
-  }
-
-  .lg\:prose-red a code {
-    color: #dc2626;
-  }
-
-  .lg\:prose-indigo a {
-    color: #4f46e5;
-  }
-
-  .lg\:prose-indigo a code {
-    color: #4f46e5;
-  }
-
-  .lg\:prose-green a {
-    color: #16a34a;
-  }
-
-  .lg\:prose-green a code {
-    color: #16a34a;
+  .lg\:prose-green {
   }
 
   .lg\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -94760,10 +94589,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     cursor: move;
   }
 
-  .lg\:cursor-help {
-    cursor: help;
-  }
-
   .lg\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -101848,6 +101673,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .lg\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -113413,49 +113239,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     font-weight: 600;
   }
 
-  .xl\:prose ol[type="A"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .xl\:prose ol[type="a"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .xl\:prose ol[type="A s"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .xl\:prose ol[type="a s"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .xl\:prose ol[type="I"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .xl\:prose ol[type="i"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .xl\:prose ol[type="I s"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .xl\:prose ol[type="i s"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .xl\:prose ol[type="1"] {
-    --list-counter-style: decimal;
+  .xl\:prose ol {
+    counter-reset: list-counter;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
   }
 
   .xl\:prose ol > li {
     position: relative;
+    counter-increment: list-counter;
     padding-left: 1.75em;
   }
 
   .xl\:prose ol > li::before {
-    content: counter(list-item, var(--list-counter-style, decimal)) ".";
+    content: counter(list-counter) ".";
     position: absolute;
     font-weight: 400;
     color: #64748b;
@@ -113593,11 +113390,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .xl\:prose pre code::before {
-    content: none;
+    content: "";
   }
 
   .xl\:prose pre code::after {
-    content: none;
+    content: "";
   }
 
   .xl\:prose table {
@@ -113677,11 +113474,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
   .xl\:prose h3 code {
     font-size: 0.9em;
-  }
-
-  .xl\:prose ol {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
   }
 
   .xl\:prose ul {
@@ -114652,44 +114444,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin-bottom: 0;
   }
 
-  .xl\:prose-yellow a {
-    color: #ca8a04;
+  .xl\:prose-yellow {
   }
 
-  .xl\:prose-yellow a code {
-    color: #ca8a04;
+  .xl\:prose-blue {
   }
 
-  .xl\:prose-blue a {
-    color: #025181;
+  .xl\:prose-red {
   }
 
-  .xl\:prose-blue a code {
-    color: #025181;
+  .xl\:prose-indigo {
   }
 
-  .xl\:prose-red a {
-    color: #dc2626;
-  }
-
-  .xl\:prose-red a code {
-    color: #dc2626;
-  }
-
-  .xl\:prose-indigo a {
-    color: #4f46e5;
-  }
-
-  .xl\:prose-indigo a code {
-    color: #4f46e5;
-  }
-
-  .xl\:prose-green a {
-    color: #16a34a;
-  }
-
-  .xl\:prose-green a code {
-    color: #16a34a;
+  .xl\:prose-green {
   }
 
   .xl\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -122848,10 +122615,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     cursor: move;
   }
 
-  .xl\:cursor-help {
-    cursor: help;
-  }
-
   .xl\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -129936,6 +129699,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .xl\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -141501,49 +141265,20 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     font-weight: 600;
   }
 
-  .\32xl\:prose ol[type="A"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .\32xl\:prose ol[type="a"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .\32xl\:prose ol[type="A s"] {
-    --list-counter-style: upper-alpha;
-  }
-
-  .\32xl\:prose ol[type="a s"] {
-    --list-counter-style: lower-alpha;
-  }
-
-  .\32xl\:prose ol[type="I"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .\32xl\:prose ol[type="i"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .\32xl\:prose ol[type="I s"] {
-    --list-counter-style: upper-roman;
-  }
-
-  .\32xl\:prose ol[type="i s"] {
-    --list-counter-style: lower-roman;
-  }
-
-  .\32xl\:prose ol[type="1"] {
-    --list-counter-style: decimal;
+  .\32xl\:prose ol {
+    counter-reset: list-counter;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
   }
 
   .\32xl\:prose ol > li {
     position: relative;
+    counter-increment: list-counter;
     padding-left: 1.75em;
   }
 
   .\32xl\:prose ol > li::before {
-    content: counter(list-item, var(--list-counter-style, decimal)) ".";
+    content: counter(list-counter) ".";
     position: absolute;
     font-weight: 400;
     color: #64748b;
@@ -141681,11 +141416,11 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .\32xl\:prose pre code::before {
-    content: none;
+    content: "";
   }
 
   .\32xl\:prose pre code::after {
-    content: none;
+    content: "";
   }
 
   .\32xl\:prose table {
@@ -141765,11 +141500,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
 
   .\32xl\:prose h3 code {
     font-size: 0.9em;
-  }
-
-  .\32xl\:prose ol {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
   }
 
   .\32xl\:prose ul {
@@ -142740,44 +142470,19 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     margin-bottom: 0;
   }
 
-  .\32xl\:prose-yellow a {
-    color: #ca8a04;
+  .\32xl\:prose-yellow {
   }
 
-  .\32xl\:prose-yellow a code {
-    color: #ca8a04;
+  .\32xl\:prose-blue {
   }
 
-  .\32xl\:prose-blue a {
-    color: #025181;
+  .\32xl\:prose-red {
   }
 
-  .\32xl\:prose-blue a code {
-    color: #025181;
+  .\32xl\:prose-indigo {
   }
 
-  .\32xl\:prose-red a {
-    color: #dc2626;
-  }
-
-  .\32xl\:prose-red a code {
-    color: #dc2626;
-  }
-
-  .\32xl\:prose-indigo a {
-    color: #4f46e5;
-  }
-
-  .\32xl\:prose-indigo a code {
-    color: #4f46e5;
-  }
-
-  .\32xl\:prose-green a {
-    color: #16a34a;
-  }
-
-  .\32xl\:prose-green a code {
-    color: #16a34a;
+  .\32xl\:prose-green {
   }
 
   .\32xl\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -150936,10 +150641,6 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
     cursor: move;
   }
 
-  .\32xl\:cursor-help {
-    cursor: help;
-  }
-
   .\32xl\:cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -158024,6 +157725,7 @@ h2.font-semibold.text-xl.text-gray-800.leading-tight.mb-2 {
   }
 
   .\32xl\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 

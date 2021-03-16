@@ -4,6 +4,5 @@
             {{ __('Add') }} {{ __('Sale') }}
         </h2>
     </x-slot>
-
     <livewire:sales.create :visit="$pullApart->visit"  />
 </x-app-layout>
