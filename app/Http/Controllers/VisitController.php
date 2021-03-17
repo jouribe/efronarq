@@ -160,29 +160,6 @@ class VisitController extends Controller
         return view('visits.quote')->with('visit', Visit::find($id));
     }
 
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param Request $request
-//     * @param int $id
-//     * @return Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
-
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param int $id
-//     * @return Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
-
     /**
      * Generates the quote for the visit.
      *
@@ -207,12 +184,14 @@ class VisitController extends Controller
 
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';
 
-            $pdf = \PDF::loadView('visits.quote', $data);
-                //->save(storage_path('app/public/quotation/')  . $fileName);
+            /** @noinspection PhpUndefinedClassInspection */
+            /** @noinspection PhpFullyQualifiedNameUsageInspection */
+            $pdf = \PDF::loadView('visits.quote', $data)
+                ->save(storage_path('app/public/quotations/'. $fileName));
 
             VisitQuotation::create([
                 'visit_id' => $visit->id,
-                'file' => "quotation/{$fileName}"
+                'file' => "quotations/$fileName"
             ]);
 
             // Update visit status to 'Cotización'

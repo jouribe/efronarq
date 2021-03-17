@@ -7,15 +7,15 @@
 
 <table width="100%" style="color: #696969;">
     <tbody>
-    <tr>
-        <td width="30%">
-            <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
-        </td>
-        <td width="40%"></td>
-        <td width="30%" style="text-align: right;">
-            <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">
-        </td>
-    </tr>
+{{--    <tr>--}}
+{{--        <td width="30%">--}}
+{{--            <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">--}}
+{{--        </td>--}}
+{{--        <td width="40%"></td>--}}
+{{--        <td width="30%" style="text-align: right;">--}}
+{{--            <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">--}}
+{{--        </td>--}}
+{{--    </tr>--}}
     <tr>
         <td colspan="3" align="right" style="font-family: Helvetica,serif;font-size: 19px;font-weight: bold;">
             Cotización Nº {{$visit['id']}}

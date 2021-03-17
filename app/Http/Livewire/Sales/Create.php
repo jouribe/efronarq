@@ -1,5 +1,9 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+/** @noinspection UnknownInspectionInspection */
+/** @noinspection PhpUnused */
+
 namespace App\Http\Livewire\Sales;
 
 use App\Models\Bank;
@@ -12,8 +16,10 @@ use App\Models\PullApartBill;
 use App\Models\PullApartChange;
 use App\Models\PullApartComment;
 use App\Models\PullApartDelivery;
+use App\Models\PullApartDocument;
 use App\Models\PullApartFee;
 use App\Models\Visit;
+use Arr;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -606,7 +612,7 @@ class Create extends Component
     /**
      * @var mixed $footer
      */
-    public $footer;
+    public $footer = 'MINUTA {PROJECT_NAME}/{BUYER_NAME}/{APARTMENT_NRO}/{BUYER_TYPE}/{PAYMENT_TYPE}';
 
     /**
      * @var mixed $pullApartChangeId
@@ -649,6 +655,26 @@ class Create extends Component
     public $currentEvidence;
 
     /**
+     * @var mixed $documentControlApprove
+     */
+    public $documentControlApprove;
+
+    /**
+     * @var mixed $documentControlDate
+     */
+    public $documentControlDate;
+
+    /**
+     * @var mixed $documentoControlObservation
+     */
+    public $documentoControlObservation;
+
+    /**
+     * @var mixed $documentControlId
+     */
+    public $documentControlId;
+
+    /**
      * Component mount.
      */
     public function mount(): void
@@ -673,6 +699,30 @@ class Create extends Component
         $this->settingDateAgreementAndSignMinute();
         $this->settingFees();
         $this->settingPaymentType();
+        $this->setDocumentControl();
+    }
+
+    /**
+     * Set pull apart document control.
+     */
+    public function setDocumentControl(): void
+    {
+        ray()->clearAll();
+
+        if ($this->pullApart->documents->count() > 0) {
+            $documentType = Document::where('id', $this->pullApart->documents->first()->document_id)->first()->type;
+
+            $this->documentControl = $documentType;
+
+            $this->populateDocumentControl();
+
+            foreach ($this->pullApart->documents as $document) {
+                $this->documentControlId[$document->document_id] = $document->id;
+                $this->documentControlDate[$document->document_id] = $document->signed_at;
+                $this->documentoControlObservation[$document->document_id] = $document->observation;
+                $this->documentControlApprove[$document->document_id] = $document->approve;
+            }
+        }
     }
 
     /**
@@ -757,9 +807,6 @@ class Create extends Component
     {
         if (!is_null($this->documentControl)) {
             $this->documentControlData = Document::where('type', $this->documentControl)->get();
-
-            ray()->clearAll();
-            ray($this->documentControlData);
         }
     }
 
@@ -786,6 +833,7 @@ class Create extends Component
 
     /**
      * Setting fees.
+     * @noinspection DuplicatedCode
      */
     public function settingFees(): void
     {
@@ -841,6 +889,7 @@ class Create extends Component
 
     /**
      * Update balance amount.
+     * @noinspection DuplicatedCode
      */
     public function updateBalance(): void
     {
@@ -873,6 +922,7 @@ class Create extends Component
 
     /**
      * Setting price discount and final price if pull apart exists in db.
+     * @noinspection DuplicatedCode
      */
     public function settingPriceFromPullApart(): void
     {
@@ -894,6 +944,7 @@ class Create extends Component
 
     /**
      * Setting customer data.
+     * @noinspection DuplicatedCode
      */
     public function settingCustomerData(): void
     {
@@ -976,6 +1027,7 @@ class Create extends Component
      *
      * @param mixed $discount
      * @return float
+     * @noinspection DuplicatedCode
      */
     public function setTotalPriceOfSale(mixed $discount): float
     {
@@ -1002,7 +1054,22 @@ class Create extends Component
      */
     public function storeDocumentControl(): void
     {
+        foreach ($this->documentControlData as $item) {
+            if (Arr::exists($this->documentControlDate, $item->id)) {
+                PullApartDocument::updateOrCreate([
+                    'id' => Arr::exists($this->documentControlId, $item->id) === false ? null : $this->documentControlId[$item->id]
+                ],
+                    [
+                        'pull_apart_id' => $this->pullApart->id,
+                        'document_id' => $item->id,
+                        'signed_at' => $this->documentControlDate[$item->id],
+                        'observation' => Arr::exists($this->documentoControlObservation, $item->id) === false ? null : $this->documentoControlObservation[$item->id],
+                        'approve' => Arr::exists($this->documentControlApprove, $item->id)
+                    ]);
+            }
+        }
 
+        session()->flash('documentsControlValidation', !is_null($this->pullApart) ? __('Cambio actualizado con éxito!') : __('Cambio creado con éxito!'));
     }
 
     /**
@@ -1169,7 +1236,7 @@ class Create extends Component
             $objWriter = IOFactory::createWriter($phpWord);
             $objWriter->save(storage_path('app/public/bills/') . 'Minuta.docx');
         } catch (Exception $e) {
-            dd($e);
+            ray($e);
         }
     }
 
@@ -1225,6 +1292,7 @@ class Create extends Component
      * Store pull apart owner.
      *
      * @return void
+     * @noinspection DuplicatedCode
      */
     public function storeOwner(): void
     {
@@ -1323,6 +1391,7 @@ class Create extends Component
 
     /**
      * Generate fee inputs.
+     * @noinspection DuplicatedCode
      */
     public function generateFeeInputs(): void
     {
@@ -1371,6 +1440,7 @@ class Create extends Component
 
     /**
      * Store fees to pull apart.
+     * @noinspection DuplicatedCode
      */
     public function storePullApartFee(): void
     {
@@ -1397,7 +1467,7 @@ class Create extends Component
         $validateAmount = $this->priceTotal - ($amount + $afpAmount + $creditAmount);
 
         if (!is_null($this->fee)) {
-            foreach ($this->fee as $key => $value) {
+            foreach ($this->fee as $value) {
                 $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
 
                 $validateAmount -= $fee;
@@ -1518,6 +1588,7 @@ class Create extends Component
 
     /**
      * Send pull apart to approve/reject.
+     * @noinspection DuplicatedCode
      */
     public function sendToApprove(): void
     {
@@ -1579,6 +1650,7 @@ class Create extends Component
      * Reset all payment fees.
      *
      * @return void
+     * @noinspection DuplicatedCode
      */
     public function resetPaymentFees(): void
     {
@@ -1631,6 +1703,7 @@ class Create extends Component
      *
      * @param string $type
      * @return mixed
+     * @noinspection PhpExpressionAlwaysNullInspection
      */
     public function getFeeAtByType(string $type): mixed
     {
