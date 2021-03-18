@@ -15,7 +15,6 @@ class PullApartFeePayment extends Model
     protected $fillable = [
         'pull_part_fee_id',
         'amount',
-        'fee_amount',
         'currency',
         'type',
         'document_nro',

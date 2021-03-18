@@ -13,12 +13,15 @@ use App\Models\CustomerRelated;
 use App\Models\Document;
 use App\Models\PullApart;
 use App\Models\PullApartBill;
+use App\Models\PullApartBillHistory;
 use App\Models\PullApartChange;
 use App\Models\PullApartComment;
 use App\Models\PullApartDelivery;
 use App\Models\PullApartDocument;
 use App\Models\PullApartFee;
+use App\Models\PullApartFeePayment;
 use App\Models\Visit;
+use App\Utils\WordProcessor;
 use Arr;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -27,9 +30,6 @@ use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use PhpOffice\PhpWord\Exception\Exception;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Style\Font;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Create extends Component
@@ -675,6 +675,118 @@ class Create extends Component
     public $documentControlId;
 
     /**
+     * @var boolean $isOpen
+     */
+    public bool $isOpen = false;
+
+    /**
+     * @var mixed $historyPaymentAt
+     */
+    public $historyPaymentAt;
+
+    /**
+     * @var mixed $historyPaymentTypeSelectList
+     */
+    public $historyPaymentTypeSelectList = [
+        'Transferencia' => 'Transferencia',
+        'Efectivo' => 'Efectivo',
+        'Cheque' => 'Cheque'
+    ];
+
+    /**
+     * @var mixed $historyPaymentType
+     */
+    public $historyPaymentType;
+
+    /**
+     * @var mixed $historyPaymentCurrency
+     */
+    public $historyPaymentCurrency;
+
+    /**
+     * @var mixed $historyPaymentCurrencySelectList
+     */
+    public $historyPaymentCurrencySelectList = [
+        'USD' => 'Dólar Americano',
+        'PEN' => 'Nuevo Sol'
+    ];
+
+    /**
+     * @var mixed $historyPaymentTicketSelectList
+     */
+    public $historyPaymentTicketSelectList = [
+        'Boleta' => 'Boleta',
+        'Factura' => 'Factura'
+    ];
+
+    /**
+     * @var mixed $historyPaymentTicket
+     */
+    public $historyPaymentTicket;
+
+    /**
+     * @var mixed $historyPaymentTicketNro
+     */
+    public $historyPaymentTicketNro;
+
+    /**
+     * @var mixed $historyPaymentDocumentNro
+     */
+    public $historyPaymentDocumentNro;
+
+    /**
+     * @var mixed $historyPaymentAmount
+     */
+    public $historyPaymentAmount;
+
+    /**
+     * @var mixed $historyPaymentVoucher
+     */
+    public $historyPaymentVoucher;
+
+    /**
+     * @var mixed $historyPaymentCurrentVoucher
+     */
+    public $historyPaymentCurrentVoucher;
+
+    /**
+     * @var mixed $historyPaymentLate
+     */
+    public $historyPaymentLate;
+
+    /**
+     * @var mixed $historyPaymentComment
+     */
+    public $historyPaymentComment;
+
+    /**
+     * @var mixed $historyPaymentExchangeRate
+     */
+    public $historyPaymentExchangeRate;
+
+    /**
+     * @var mixed $historyPaymentFeeSelectList
+     */
+    public $historyPaymentFeeSelectList;
+
+    /**
+     * @var mixed $historyPaymentFeeId
+     */
+    public $historyPaymentFeeId;
+
+    /**
+     * @var mixed $historyPaymentId
+     */
+    public $historyPaymentId;
+
+    /**
+     * @var string[] $listeners
+     */
+    protected $listeners = [
+        'editHistoryPayment'
+    ];
+
+    /**
      * Component mount.
      */
     public function mount(): void
@@ -700,6 +812,77 @@ class Create extends Component
         $this->settingFees();
         $this->settingPaymentType();
         $this->setDocumentControl();
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    public function addPayment(): void
+    {
+        $this->resetInputFields();
+        $this->openModal();
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    public function openModal(): void
+    {
+        $this->isOpen = true;
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    public function closeModal(): void
+    {
+        $this->isOpen = false;
+    }
+
+    /**
+     * Edit pull apart history payment
+     *
+     * @param $id
+     * @return void
+     */
+    public function editHistoryPayment($id): void
+    {
+        $history = PullApartFeePayment::findOrFail($id);
+
+        $this->historyPaymentId = $history->id;
+        $this->historyPaymentFeeId = $history->pull_part_fee_id;
+        $this->historyPaymentAt = $history->payment_at;
+        $this->historyPaymentDocumentNro = $history->document_nro;
+        $this->historyPaymentAmount = $history->amount;
+        $this->historyPaymentLate = $history->late_payment;
+        $this->historyPaymentType = $history->type;
+        $this->historyPaymentCurrency = $history->currency;
+        $this->historyPaymentTicket = $history->ticket;
+        $this->historyPaymentTicketNro = $history->ticket_nro;
+        $this->historyPaymentCurrentVoucher = $history->voucher;
+        $this->historyPaymentComment = $history->comment;
+
+        $this->openModal();
+    }
+
+    /**
+     * Clear the input fields.
+     */
+    public function resetInputFields(): void
+    {
+        $this->historyPaymentAt = '';
+        $this->historyPaymentFeeId = '';
+        $this->historyPaymentId = null;
+        $this->historyPaymentDocumentNro = '';
+        $this->historyPaymentAmount = '';
+        $this->historyPaymentLate = '';
+        $this->historyPaymentComment = '';
+        $this->historyPaymentType = '';
+        $this->historyPaymentCurrency = '';
+        $this->historyPaymentType = '';
+        $this->historyPaymentTicketNro = '';
+        $this->historyPaymentCurrentVoucher = '';
+        $this->historyPaymentVoucher = null;
     }
 
     /**
@@ -793,9 +976,10 @@ class Create extends Component
         $this->populateDocumentControl();
 
         if (!is_null($this->pullApart)) {
-
             $this->resetPaymentFees();
         }
+
+        $this->historyPaymentFeeSelectList = $this->pullApart->fees()->where('pay', 0)->pluck('type', 'id');
 
         return view('livewire.sales.create');
     }
@@ -1048,6 +1232,37 @@ class Create extends Component
     }
 
     /**
+     * Store new payment.
+     */
+    public function storePayment(): void
+    {
+        $voucherPath = $this->historyPaymentCurrentVoucher;
+
+        if ($this->historyPaymentVoucher !== null && $this->historyPaymentVoucher !== '') {
+            $voucherPath = $this->historyPaymentVoucher->store('payment-history-vouchers', 'public');
+        }
+
+        PullApartFeePayment::updateOrCreate([
+            'id' => $this->historyPaymentId
+        ], [
+            'pull_part_fee_id' => $this->historyPaymentFeeId,
+            'amount' => $this->historyPaymentAmount,
+            'currency' => $this->historyPaymentCurrency,
+            'type' => $this->historyPaymentType,
+            'document_nro' => $this->historyPaymentDocumentNro,
+            'ticket' => $this->historyPaymentTicket,
+            'ticket_nro' => $this->historyPaymentTicketNro,
+            'voucher' => $voucherPath,
+            'late_payment' => $this->historyPaymentLate === '' ? null : $this->historyPaymentLate,
+            'comment' => $this->historyPaymentComment,
+            'payment_at' => $this->historyPaymentAt
+        ]);
+
+        $this->closeModal();
+        $this->resetInputFields();
+    }
+
+    /**
      * Store pull apart document control.
      *
      * @return void
@@ -1169,72 +1384,73 @@ class Create extends Component
             'footer' => $this->footer
         ]);
 
+        $billName = "Minuta-{$this->pullApart->id}-" . now()->format('dmYHis') . '.docx';
+
         session()->flash('billValidation', !is_null($this->pullApart) ? __('Minuta actualizada con éxito!') : __('Minuta creada con éxito!'));
-        $this->generateBill();
-        return response()->download(storage_path('app/public/bills/') . 'Minuta.docx');
+        $this->generateBill($billName);
+
+        PullApartBillHistory::create([
+            'pull_apart_id' => $this->pullApart->id,
+            'user_id' => auth()->user()->id,
+            'bill' => "bills/$billName",
+            'is_active' => true
+        ]);
+
+        return response()->download(storage_path('app/public/bills/') . $billName);
     }
 
     /**
      * Generate pull apart bill.
      * @noinspection DuplicatedCode
+     * @param $billName
      */
-    public function generateBill(): void
+    public function generateBill($billName): void
     {
-        // Creating the new document...
-        $phpWord = new PhpWord();
-
-        /* Note: any element you append to a document must reside inside of a Section. */
-
-        // Adding an empty Section to the document...
-        $section = $phpWord->addSection();
-
-        // Adding Text element to the Section having font styled by default...
-        $section->addText(
-            '"Learn from yesterday, live for today, hope for tomorrow. '
-            . 'The important thing is not to stop questioning." '
-            . '(Albert Einstein)'
-        );
-
-        /*
-         * Note: it's possible to customize font style of the Text element you add in three ways:
-         * - inline;
-         * - using named font style (new font style object will be implicitly created);
-         * - using explicitly created font style object.
-         */
-
-        // Adding Text element with font customized inline...
-        $section->addText(
-            '"Great achievement is usually born of great sacrifice, '
-            . 'and is never the result of selfishness." '
-            . '(Napoleon Hill)',
-            array('name' => 'Tahoma', 'size' => 10)
-        );
-
-        // Adding Text element with font customized using named font style...
-        $fontStyleName = 'oneUserDefinedStyle';
-        $phpWord->addFontStyle(
-            $fontStyleName,
-            array('name' => 'Tahoma', 'size' => 10, 'color' => '1B2232', 'bold' => true)
-        );
-        $section->addText(
-            '"The greatest accomplishment is not in never falling, '
-            . 'but in rising again after you fall." '
-            . '(Vince Lombardi)',
-            $fontStyleName
-        );
-
-        // Adding Text element with font customized using explicitly created font style object...
-        $fontStyle = new Font();
-        $fontStyle->setBold(true);
-        $fontStyle->setName('Tahoma');
-        $fontStyle->setSize(13);
-        $myTextElement = $section->addText('"Believe you can and you\'re halfway there." (Theodor Roosevelt)');
-        $myTextElement->setFontStyle($fontStyle);
+        $file = storage_path('app/public/bill-template/MinutaModelo.docx');
 
         // Saving the document as OOXML file...
         try {
-            $objWriter = IOFactory::createWriter($phpWord);
-            $objWriter->save(storage_path('app/public/bills/') . 'Minuta.docx');
+            // Creating the new document...
+            $phpWord = new WordProcessor($file);
+
+            $pullApart = PullApart::findOrFail($this->pullApart->id);
+
+            $phpWord->setValue('DATOS_COMPRADOR', $pullApart->visit->customer->full_name);
+            $phpWord->setValue('MONEDA_MINUTA', 'en ' . $pullApart->visit->project->bank->currency === 'PEN' ? 'soles' : 'dólares');
+            $phpWord->setValue('BCO_PROYECTO', $pullApart->visit->project->bank->description);
+
+            if ($pullApart->payment_type === 'Directo') {
+                $phpWord->deleteBlock('F_BANCARIO');
+            }
+
+            if (!$pullApart->bills->first()->proprietorship) {
+                $phpWord->deleteBlock('RESERVA_PROPIEDAD');
+            }
+
+            $phpWord->setValue('P_DANOS_PERJUICIOS', $pullApart->bills->first()->damages);
+            $phpWord->setValue('P_POR_DESOCUPACION', $pullApart->bills->first()->unemployment_str);
+
+            if (!$pullApart->bills->first()->changes) {
+                $phpWord->deleteBlock('CAMBIOS');
+            }
+
+            if (!$pullApart->bills->first()->delivery_term) {
+                $phpWord->deleteBlock('PLAZO_DE_ENTREGA');
+            } else {
+                $phpWord->setValue('PENALIDAD', $pullApart->bills->first()->delivery_term_amount_str);
+            }
+
+            if (!$pullApart->bills->first()->additional_term) {
+                $phpWord->deleteBlock('PLAZO_ADICIONAL');
+            } else {
+                $phpWord->setValue('NUEVA_FECHA_DE_ENTREGA', $pullApart->bills->first()->delivery_apartment_at);
+                $phpWord->setValue('PENALIDAD_ADICIONAL', $pullApart->bills->first()->delivery_term_amount_str);
+            }
+
+            $phpWord->setValue('NOMBRE_COMPRADOR_1', 'Jorge O. Uribe');
+            $phpWord->setValue('DNI_COMPRADOR_1', '41484547');
+
+            $phpWord->saveAs(storage_path("app/public/bills/$billName"));
         } catch (Exception $e) {
             ray($e);
         }

@@ -41,6 +41,6 @@ class PullApartFee extends Model
      */
     public function payments(): HasMany
     {
-        return $this->hasMany(PullApartFeePayment::class);
+        return $this->hasMany(PullApartFeePayment::class, 'pull_part_fee_id', 'id');
     }
 }

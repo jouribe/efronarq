@@ -18,7 +18,6 @@ class CreatePullApartFeePaymentsTable extends Migration
             $table->unsignedBigInteger('pull_part_fee_id');
             $table->foreign('pull_part_fee_id')->references('id')->on('pull_apart_fees')->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('amount')->nullable();
-            $table->decimal('fee_amount')->nullable();
             $table->enum('currency', ['USD', 'PEN'])->default('PEN');
             $table->enum('type', ['Transferencia', 'Efectivo', 'Cheque'])->nullable();
             $table->string('document_nro')->nullable();

@@ -1,34 +1,34 @@
-<div x-data="{ tab: window.location.hash ? window.location.hash : '#tab1' }">
+<div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : 'tab1' }">
     <div class="nav-ventas mx-auto nav-interno mb-4">
         <nav class="tabs flex flex-col sm:flex-row">
-            <button x-on:click.prevent="tab='#tab1'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab1' }">
+            <a href="#" x-on:click.prevent="tab='tab1'; ; window.location.hash = 'tab1'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab1' }">
                 Datos del Propietario
-            </button>
-            <button x-on:click.prevent="tab='#tab2'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab2' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab2'; ; window.location.hash = 'tab2'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab2' }">
                 Forma de Pago
-            </button>
-            <button x-on:click.prevent="tab='#tab3'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab3' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab3'; ; window.location.hash = 'tab3'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab3' }">
                 Convenio de Separación
-            </button>
-            <button x-on:click.prevent="tab='#tab4'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab4' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab4'; ; window.location.hash = 'tab4'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab4' }">
                 Control Documentario
-            </button>
-            <button x-on:click.prevent="tab='#tab5'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab5' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab5'; ; window.location.hash = 'tab5'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab5' }">
                 Minuta
-            </button>
-            <button x-on:click.prevent="tab='#tab6'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab6' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab6'; ; window.location.hash = 'tab6'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab6' }">
                 Cambios en Acabados
-            </button>
-            <button x-on:click.prevent="tab='#tab7'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab7' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab7'; ; window.location.hash = 'tab7'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab7' }">
                 Historial de Pago
-            </button>
-            <button x-on:click.prevent="tab='#tab8'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === '#tab8' }">
+            </a>
+            <a href="#" x-on:click.prevent="tab='tab8'; ; window.location.hash = 'tab8'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab8' }">
                 Entrega
-            </button>
+            </a>
         </nav>
     </div>
 
-    <div x-show="tab == '#tab1'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab1'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('customerUpdated'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -314,7 +314,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab2'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab2'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('amountValidation'))
                 <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -502,7 +502,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab3'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab3'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('quotationValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -589,7 +589,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab4'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab4'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('documentsControlValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -652,7 +652,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab5'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab5'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('billValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -796,7 +796,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab6'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab6'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('changesValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -900,7 +900,7 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == '#tab7'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab7'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('paymentHistoryValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -911,8 +911,8 @@
                     </div>
                 </div>
             @endif
-            <div class="flex flex-ro">
-                <div class="p-4 w-1/2">
+            <div class="flex flex-row">
+                <div class="p-4 w-1/2 border-r border-dotted border-black">
                     <h3 class="mb-6">Cronograma establecido</h3>
                     <table class="text-sm w-full">
                         <thead>
@@ -940,16 +940,74 @@
                                 </td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="5" class="py-1">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-sm font-bold">Total</td>
+                            <td class="p-2 text-center text-sm bg-green-700 text-white font-bold">US$. {{ number_format($pullApart->final_price, 2) }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="p-4 w-1/2">
-                    <h3>Pagos realizados</h3>
+                    <h3 class="mb-6">Pagos realizados</h3>
+                    <table class="text-sm w-full">
+                        <thead>
+                        <tr>
+                            <th class="py-2"></th>
+                            <th class="py-2">Valor</th>
+                            <th class="py-2">F. Pago</th>
+                            <th class="py-2"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @php
+                            $sumFeeAmount = 0;
+                        @endphp
+
+                        @foreach($pullApart->fees as $item)
+                            @if($item->payments->count() > 0)
+                                @foreach($item->payments as $payment)
+
+                                    @php
+                                        $sumFeeAmount += $payment->amount;
+                                    @endphp
+
+                                    <tr>
+                                        <td class="py-2 text-xs">{{ $item->type }}</td>
+                                        <td class="py-2 text-xs">US$. {{ number_format($payment->amount,2) }}</td>
+                                        <td class="py-2 text-xs">{{ \Carbon\Carbon::parse($payment->payment_at)->format('d/m/Y') }}</td>
+                                        <td class="py-2 text-xs">
+                                            <a href="javascript:" wire:click="$emit('editHistoryPayment', {{ $payment->id }})" class="text-xs text-blue-500 hover:text-blue-800 hover:underline">Ver detalle</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        @endforeach
+                        <tr>
+                            <td colspan="4" class="py-1">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-sm font-bold">Total abonado</td>
+                            <td class="p-2 text-center text-sm bg-green-700 text-white font-bold">US$. {{ number_format($sumFeeAmount, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-sm font-bold">Saldo</td>
+                            <td class="p-2 text-center text-sm bg-red-500 text-white font-bold">US$. {{ number_format($pullApart->final_price - $sumFeeAmount, 2) }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="flex flex-row-reverse pt-10">
+                        <a href="javascript:" wire:click="addPayment" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 h-10 bg-blue-500">Agregar Pago</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div x-show="tab == '#tab8'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div x-show="tab == 'tab8'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('saleDeliveryValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -1030,4 +1088,8 @@
             </form>
         </div>
     </div>
+
+    @if($isOpen)
+        @include('sales.modals.payments')
+    @endif
 </div>
