@@ -11,6 +11,7 @@ class WordProcessor extends TemplateProcessor
      *
      * @param string $blockname
      * @param string $replacement
+     * @noinspection ReturnTypeCanBeDeclaredInspection
      */
     public function replaceBlock($blockname, $replacement)
     {

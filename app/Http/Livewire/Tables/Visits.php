@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\Visit;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -37,10 +38,9 @@ class Visits extends LivewireDatatable
     /**
      * Table builder.
      *
-     * @return mixed
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return Builder
      */
-    public function builder(): mixed
+    public function builder(): Builder
     {
         ray()->clearAll();
 

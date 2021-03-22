@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectDocument;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -36,10 +37,9 @@ class ProjectDocuments extends LivewireDatatable
     /**
      * Query Builder
      *
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
+     * @return Builder
      */
-    public function builder()
+    public function builder(): Builder
     {
         return ProjectDocument::query()->whereProjectId($this->projectId);
     }

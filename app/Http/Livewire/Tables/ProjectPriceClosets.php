@@ -5,6 +5,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectPriceCloset;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -41,10 +42,9 @@ class ProjectPriceClosets extends LivewireDatatable
     /**
      * Query builder.
      *
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
+     * @return Builder
      */
-    public function builder()
+    public function builder(): Builder
     {
         return ProjectPriceCloset::query()->whereProjectId($this->projectId);
     }

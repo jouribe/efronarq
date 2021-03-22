@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PullApartController extends Controller
 {
@@ -18,7 +19,7 @@ class PullApartController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function index(): Factory|View|Application
+    public function index()
     {
         return view('pull-apart.index');
     }
@@ -28,7 +29,7 @@ class PullApartController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function create(): Factory|View|Application
+    public function create()
     {
         $visit = Visit::find(request('visitId'));
 
@@ -38,8 +39,8 @@ class PullApartController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -50,7 +51,7 @@ class PullApartController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -61,7 +62,7 @@ class PullApartController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -71,9 +72,9 @@ class PullApartController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -84,7 +85,7 @@ class PullApartController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -97,7 +98,7 @@ class PullApartController extends Controller
      * @param int $id
      * @return mixed
      */
-    public function generate(int $id): mixed
+    public function generate(int $id)
     {
         $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment', 'visit.apartment.apartmentType',
             'visit.closets', 'visit.closets.closet', 'visit.parkingLots', 'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address')

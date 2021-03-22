@@ -31,9 +31,10 @@ class Bank extends LivewireDatatable
     public $sort = "name|asc";
 
     /**
-     * @return array|mixed
+     * @return array
+     * @noinspection ClassMethodNameMatchesFieldNameInspection
      */
-    public function columns()
+    public function columns(): array
     {
         return [
             NumberColumn::name('id')

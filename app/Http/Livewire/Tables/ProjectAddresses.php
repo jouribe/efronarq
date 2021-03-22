@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectAddress;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelIdea\Helper\App\Models\_ProjectAddressQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -48,9 +47,9 @@ class ProjectAddresses extends LivewireDatatable
     /**
      * Query builder.
      *
-     * @return Builder|_ProjectAddressQueryBuilder
+     * @return Builder
      */
-    public function builder(): Builder|_ProjectAddressQueryBuilder
+    public function builder(): Builder
     {
         return ProjectAddress::query()
             ->leftJoin('districts', 'districts.id', 'project_addresses.district_id')

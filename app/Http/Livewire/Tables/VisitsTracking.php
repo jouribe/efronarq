@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\VisitTracking;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -43,10 +44,9 @@ class VisitsTracking extends LivewireDatatable
     /**
      * Query builder
      *
-     * @return mixed
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return Builder
      */
-    public function builder(): mixed
+    public function builder(): Builder
     {
         return VisitTracking::query()->whereVisitId($this->visitId);
     }

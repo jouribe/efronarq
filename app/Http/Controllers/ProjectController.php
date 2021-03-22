@@ -12,16 +12,15 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function index(): Factory|View|Response|Application
+    public function index()
     {
         return view('projects.index');
     }
@@ -29,9 +28,9 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function create(): Factory|View|Response|Application
+    public function create()
     {
         // project status
         $projectStatus = [
@@ -107,9 +106,9 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function show(int $id): Factory|View|Response|Application
+    public function show(int $id)
     {
         return view('projects.show')->with([
             'project' => Project::whereId($id)->firstOrFail()
@@ -120,9 +119,9 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function edit(int $id): Factory|View|Response|Application
+    public function edit(int $id)
     {
         // project status
         $projectStatus = [
@@ -158,9 +157,9 @@ class ProjectController extends Controller
      *
      * @param UpdateProjectRequest $request
      * @param int $id
-     * @return RedirectResponse|Response
+     * @return RedirectResponse
      */
-    public function update(UpdateProjectRequest $request, int $id): Response|RedirectResponse
+    public function update(UpdateProjectRequest $request, int $id): RedirectResponse
     {
         Project::whereId($id)->update([
             'name' => $request->get('name'),

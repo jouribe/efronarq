@@ -158,7 +158,7 @@ class ParkingLots extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         // Project addresses
         $this->projectAddressesList = ProjectAddress::whereProjectId($this->project->id)->pluck('address', 'id');

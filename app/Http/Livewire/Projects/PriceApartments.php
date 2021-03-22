@@ -72,7 +72,7 @@ class PriceApartments extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         // Project apartment types.
         $this->apartmentTypes = ProjectApartmentType::whereProjectId($this->project->id)->pluck('type_name', 'id');

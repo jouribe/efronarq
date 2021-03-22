@@ -14,9 +14,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function index(): Factory|View|Response|Application
+    public function index()
     {
         return view('users.index');
     }
@@ -34,7 +34,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -45,7 +45,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      * @return Response
      */
     public function show(User $user)
@@ -56,7 +56,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      * @return Response
      */
     public function edit(User $user)
@@ -67,8 +67,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
+     * @param Request $request
+     * @param User $user
      * @return Response
      */
     public function update(Request $request, User $user)
@@ -79,7 +79,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      * @return Response
      */
     public function destroy(User $user)

@@ -84,7 +84,7 @@ class Project extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         if (!is_null($this->project_id)) {
             $this->getProjectApartmentList();

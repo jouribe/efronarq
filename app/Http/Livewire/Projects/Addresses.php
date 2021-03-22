@@ -72,7 +72,7 @@ class Addresses extends Component
      *
      * @return Application|Factory|View
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         // Get districts
         $this->districts = District::all()->pluck('name', 'id');

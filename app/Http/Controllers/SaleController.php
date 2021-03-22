@@ -19,7 +19,7 @@ class SaleController extends Controller
      *
      * @return Factory|View|Application
      */
-    public function index(): Factory|View|Application
+    public function index()
     {
         return view('sales.index');
     }
@@ -29,7 +29,7 @@ class SaleController extends Controller
      *
      * @return Factory|View|Application
      */
-    public function create(): Factory|View|Application
+    public function create()
     {
         $pullApart = PullApart::find(request('pullApartId'));
 
@@ -38,6 +38,7 @@ class SaleController extends Controller
 
     /**
      * Generate sale bill
+     * @return BinaryFileResponse
      */
     public function bill(): BinaryFileResponse
     {

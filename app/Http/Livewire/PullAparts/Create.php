@@ -33,7 +33,7 @@ class Create extends Component
     /**
      * @var Customer $customer
      */
-    public mixed $customer;
+    public Customer $customer;
 
     /**
      * @var mixed $pullApart
@@ -429,7 +429,7 @@ class Create extends Component
      *
      * @return Application|Factory|View
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         $this->modifyPrice();
         $this->updateBalance();
@@ -465,6 +465,7 @@ class Create extends Component
 
     /**
      * Setting fees.
+     * @noinspection DuplicatedCode
      */
     public function settingFees(): void
     {
@@ -520,6 +521,7 @@ class Create extends Component
 
     /**
      * Update balance amount.
+     * @noinspection DuplicatedCode
      */
     public function updateBalance(): void
     {
@@ -552,6 +554,7 @@ class Create extends Component
 
     /**
      * Setting price discount and final price if pull apart exists in db.
+     * @noinspection DuplicatedCode
      */
     public function settingPriceFromPullApart(): void
     {
@@ -573,6 +576,7 @@ class Create extends Component
 
     /**
      * Setting customer data.
+     * @noinspection DuplicatedCode
      */
     public function settingCustomerData(): void
     {
@@ -655,8 +659,9 @@ class Create extends Component
      *
      * @param mixed $discount
      * @return float
+     * @noinspection DuplicatedCode
      */
-    public function setTotalPriceOfSale(mixed $discount): float
+    public function setTotalPriceOfSale($discount): float
     {
         if (!is_null($this->pullApart)) {
             $this->priceApartment = $this->pullApart->visit->apartment->price;
@@ -665,10 +670,14 @@ class Create extends Component
         }
 
         if (!is_null($this->discountType)) {
-            $this->priceApartment -= match ((int)$this->discountType) {
-                1 => $discount,
-                2 => ($this->priceApartment * ($discount / 100)),
-            };
+            switch ($this->discountType) {
+                case 1:
+                    $this->priceApartment -= $discount;
+                    break;
+                case 2:
+                    $this->priceApartment -= ($this->priceApartment * ($discount / 100));
+                    break;
+            }
         }
 
         return $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
@@ -697,6 +706,7 @@ class Create extends Component
      * Store pull apart owner.
      *
      * @return void
+     * @noinspection DuplicatedCode
      */
     public function storeOwner(): void
     {
@@ -795,12 +805,12 @@ class Create extends Component
 
     /**
      * Generate fee inputs.
+     * @noinspection DuplicatedCode
      */
     public function generateFeeInputs(): void
     {
         $this->inputs = [];
         $this->fee = [];
-
 
         $amount = 0;
 
@@ -843,6 +853,7 @@ class Create extends Component
 
     /**
      * Store fees to pull apart.
+     * @noinspection DuplicatedCode
      */
     public function storePullApartFee(): void
     {
@@ -869,7 +880,7 @@ class Create extends Component
         $validateAmount = $this->priceTotal - ($amount + $afpAmount + $creditAmount);
 
         if (!is_null($this->fee)) {
-            foreach ($this->fee as $key => $value) {
+            foreach ($this->fee as $value) {
                 $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
 
                 $validateAmount -= $fee;
@@ -990,6 +1001,7 @@ class Create extends Component
 
     /**
      * Send pull apart to approve/reject.
+     * @noinspection DuplicatedCode
      */
     public function sendToApprove(): void
     {
@@ -1051,6 +1063,7 @@ class Create extends Component
      * Reset all payment fees.
      *
      * @return void
+     * @noinspection DuplicatedCode
      */
     public function resetPaymentFees(): void
     {
@@ -1104,7 +1117,7 @@ class Create extends Component
      * @param string $type
      * @return mixed
      */
-    public function getFeeAtByType(string $type): mixed
+    public function getFeeAtByType(string $type)
     {
         if (is_null($this->pullApart)) {
             return null;

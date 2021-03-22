@@ -106,7 +106,7 @@ class Apartments extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         // Project apartment type list
         $this->projectApartmentTypeList = ProjectApartmentType::whereProjectId($this->project->id)->pluck('type_name', 'id');

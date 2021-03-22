@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\PullApart;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelIdea\Helper\App\Models\_PullApartQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;

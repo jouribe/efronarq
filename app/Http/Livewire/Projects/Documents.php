@@ -75,7 +75,7 @@ class Documents extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         return view('livewire.projects.documents');
     }

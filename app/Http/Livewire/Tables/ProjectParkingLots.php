@@ -5,7 +5,6 @@ namespace App\Http\Livewire\Tables;
 use App\Models\ProjectParkingLot;
 use App\Traits\Prices;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelIdea\Helper\App\Models\_ProjectParkingLotQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -41,9 +40,9 @@ class ProjectParkingLots extends LivewireDatatable
     /**
      * Query Builder
      *
-     * @return Builder|_ProjectParkingLotQueryBuilder
+     * @return Builder
      */
-    public function builder(): Builder|_ProjectParkingLotQueryBuilder
+    public function builder(): Builder
     {
         return ProjectParkingLot::query()
             ->leftJoin('projects', 'projects.id', 'project_parking_lots.project_id')

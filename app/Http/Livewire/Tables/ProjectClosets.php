@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectCloset;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelIdea\Helper\App\Models\_ProjectClosetQueryBuilder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -38,9 +37,9 @@ class ProjectClosets extends LivewireDatatable
     /**
      * Query builder
      *
-     * @return Builder|_ProjectClosetQueryBuilder
+     * @return Builder
      */
-    public function builder(): Builder|_ProjectClosetQueryBuilder
+    public function builder(): Builder
     {
         return ProjectCloset::query()
             ->leftJoin('projects', 'projects.id', 'project_closets.project_id')

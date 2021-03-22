@@ -44,7 +44,7 @@ class Create extends Component
     /**
      * @var Customer $customer
      */
-    public mixed $customer;
+    public Customer $customer;
 
     /**
      * @var mixed $pullApart
@@ -1091,7 +1091,7 @@ class Create extends Component
      *
      * @return Application|Factory|View
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         $this->modifyPrice();
         $this->updateBalance();
@@ -1335,7 +1335,7 @@ class Create extends Component
      * @return float
      * @noinspection DuplicatedCode
      */
-    public function setTotalPriceOfSale(mixed $discount): float
+    public function setTotalPriceOfSale($discount): float
     {
         if (!is_null($this->pullApart)) {
             $this->priceApartment = $this->pullApart->visit->apartment->price;
@@ -1344,10 +1344,14 @@ class Create extends Component
         }
 
         if (!is_null($this->discountType)) {
-            $this->priceApartment -= match ((int)$this->discountType) {
-                1 => $discount,
-                2 => ($this->priceApartment * ($discount / 100)),
-            };
+            switch ($this->discountType) {
+                case 1:
+                    $this->priceApartment -= $discount;
+                    break;
+                case 2:
+                    $this->priceApartment -= ($this->priceApartment * ($discount / 100));
+                    break;
+            }
         }
 
         return $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
@@ -1618,10 +1622,8 @@ class Create extends Component
                     $phpWord->setValue('DATOS_PROPIETARIO_1', $pullApart->visit->customer->full_name);
                     $phpWord->setValue('AFP_1', 'AFP Integra'); // TODO: change with name afp
 
-                } else {
-                    if ($pullApart->buyer_type === 'Sociedad Conyugal' || $pullApart->buyer_type === 'Copropietario') {
-                        $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
-                    }
+                } elseif ($pullApart->buyer_type === 'Sociedad Conyugal' || $pullApart->buyer_type === 'Copropietario') {
+                    $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
                 }
             } else {
                 $phpWord->deleteBlock('AFP_DOS_PROPIETARIOS');
@@ -2101,7 +2103,7 @@ class Create extends Component
      * @return mixed
      * @noinspection PhpExpressionAlwaysNullInspection
      */
-    public function getFeeAtByType(string $type): mixed
+    public function getFeeAtByType(string $type)
     {
         if (is_null($this->pullApart)) {
             return null;

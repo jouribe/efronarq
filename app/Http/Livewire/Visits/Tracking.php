@@ -78,7 +78,7 @@ class Tracking extends Component
      *
      * @return Factory|View|Application
      */
-    public function render(): Factory|View|Application
+    public function render()
     {
         $this->actionList = $this->action();
 

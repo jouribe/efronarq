@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectSeller;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -36,10 +37,9 @@ class ProjectSellers extends LivewireDatatable
     /**
      * Build query
      *
-     * @return mixed
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return Builder
      */
-    public function builder(): mixed
+    public function builder(): Builder
     {
         return ProjectSeller::query()
             ->leftJoin('users', 'project_sellers.user_id', 'users.id')

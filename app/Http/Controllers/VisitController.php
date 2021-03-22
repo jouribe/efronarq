@@ -25,9 +25,9 @@ class VisitController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function index(): Factory|View|Response|Application
+    public function index()
     {
         return view('visits.index');
     }
@@ -35,9 +35,9 @@ class VisitController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function create(): Factory|View|Response|Application
+    public function create()
     {
         // Get all districts
         $districts = District::all()->pluck('name', 'id');
@@ -70,9 +70,9 @@ class VisitController extends Controller
      *
      * @param StoreVisitRequest $request
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function store(StoreVisitRequest $request): Factory|View|Response|Application
+    public function store(StoreVisitRequest $request)
     {
         // Verify if user exists
         $exist = Customer::whereDni($request->get('dni'))->first();
@@ -139,9 +139,9 @@ class VisitController extends Controller
      *
      * @param int $id
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
-    public function show(int $id): Factory|View|Response|Application
+    public function show(int $id)
     {
         return view('visits.show')->with([
             'visit' => Visit::whereId($id)->firstOrFail()
@@ -155,7 +155,7 @@ class VisitController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function edit(int $id): Factory|View|Application
+    public function edit(int $id)
     {
         return view('visits.quote')->with('visit', Visit::find($id));
     }

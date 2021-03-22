@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\PullApart;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -26,10 +27,10 @@ class Sales extends LivewireDatatable
 
     /**
      * Query builder
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
+     *
+     * @return Builder
      */
-    public function builder()
+    public function builder(): Builder
     {
         return PullApart::query()
             ->leftJoin('visits', 'pull_aparts.visit_id', 'visits.id')

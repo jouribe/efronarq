@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -29,11 +30,11 @@ class Users extends LivewireDatatable
     public $searchable = 'users.name, roles.name';
 
     /**
-     * @return mixed
-     * @noinspection PhpRedundantDocCommentInspection
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * Query Builder
+     *
+     * @return Builder
      */
-    public function builder(): mixed
+    public function builder(): Builder
     {
         return User::query()
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')

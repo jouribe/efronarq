@@ -14,7 +14,7 @@ class BankController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -34,7 +34,7 @@ class BankController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -45,7 +45,7 @@ class BankController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Bank $bank
+     * @param Bank $bank
      * @return Response
      */
     public function show(Bank $bank)
@@ -56,7 +56,7 @@ class BankController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Bank $bank
+     * @param Bank $bank
      * @return Response
      */
     public function edit(Bank $bank)
@@ -67,8 +67,8 @@ class BankController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Bank $bank
+     * @param Request $request
+     * @param Bank $bank
      * @return Response
      */
     public function update(Request $request, Bank $bank)
@@ -79,7 +79,7 @@ class BankController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Bank $bank
+     * @param Bank $bank
      * @return Response
      */
     public function destroy(Bank $bank)

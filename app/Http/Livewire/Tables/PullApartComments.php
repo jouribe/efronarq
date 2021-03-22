@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\PullApartComment;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
@@ -12,7 +13,7 @@ class PullApartComments extends LivewireDatatable
     /**
      * @var mixed $pullAprtId
      */
-    public $pullAprtId;
+    public $pullApartId;
 
     /**
      * @var mixed $searchable
@@ -22,15 +23,14 @@ class PullApartComments extends LivewireDatatable
     /**
      * Query builder
      *
-     * @return mixed
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return Builder
      */
-    public function builder(): mixed
+    public function builder(): Builder
     {
         return PullApartComment::query()
             ->leftJoin('users', 'pull_apart_comments.user_id', 'users.id')
             ->groupBy('comment', 'status', 'pull_apart_comments.created_at', 'users.name')
-            ->where('pull_apart_comments.pull_apart_id', $this->pullAprtId)
+            ->where('pull_apart_comments.pull_apart_id', $this->pullApartId)
             ->orderBy('pull_apart_comments.created_at', 'desc');
     }
 
@@ -47,12 +47,16 @@ class PullApartComments extends LivewireDatatable
                 ->label(__('Name')),
 
             Column::callback('status', function ($status) {
-                return match ($status) {
-                    'Rechazado' => "<span class='bg-red-500 text-white px-4 py-1 rounded-md text-xs'>{$status}</span>",
-                    'Aprobado' => "<span class='bg-green-500 text-white px-4 py-1 rounded-md text-xs'>{$status}</span>",
-                    'Pendiente Aprobación' => "<span class='bg-yellow-600 text-white px-4 py-1 rounded-md text-xs'>{$status}</span>",
-                    default => "<span class='bg-blue-500 px-4 py-1 rounded-md text-white text-xs'>{$status}</span>",
-                };
+                switch ($status) {
+                    case 'Rechazado':
+                        return "<span class='bg-red-500 text-white px-4 py-1 rounded-md text-xs'>$status</span>";
+                    case 'Aprobado':
+                        return "<span class='bg-green-500 text-white px-4 py-1 rounded-md text-xs'>$status</span>";
+                    case 'Pendiente Aprobación':
+                        return "<span class='bg-yellow-600 text-white px-4 py-1 rounded-md text-xs'>$status</span>";
+                    default:
+                        return "<span class='bg-blue-500 px-4 py-1 rounded-md text-white text-xs'>$status</span>";
+                }
             })
                 ->label(__('Status'))
             ->filterable(),

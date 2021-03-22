@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\ProjectPriceApartment;
+use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
@@ -36,9 +37,9 @@ class ProjectPriceApartments extends LivewireDatatable
     /**
      * Query Builder
      *
-     * @noinspection PhpMissingReturnTypeInspection
+     * @return Builder
      */
-    public function builder()
+    public function builder(): Builder
     {
         return ProjectPriceApartment::query()
             ->leftJoin('project_apartment_types', 'project_apartment_types.id', 'project_price_apartments.project_apartment_type_id')
