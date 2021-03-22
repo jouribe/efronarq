@@ -399,19 +399,19 @@
                     {{-- Hipotecario --}}
                     @if($paymentType === 'Hipotecario' || $paymentType === 'Mixto')
                         <div class="flex">
-                            <div class="p-4 w-1/3">
+                            <div class="p-4 w-1/4">
                                 <x-jet-label for="afpAmount">{{ __('AFP amount') }}</x-jet-label>
                                 <x-jet-input type="text" class="w-full" wire:model="afpAmount"/>
                                 @error('afpAmount') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="p-4 w-1/3">
+                            <div class="p-4 w-1/4">
                                 <x-jet-label for="afpAmountAt">{{ __('Date') }}</x-jet-label>
                                 <x-jet-input type="date" class="w-full" wire:model="afpAmountAt"/>
                                 @error('afpAmountAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="p-4 w-1/3">
+                            <div class="p-4 w-1/4">
                                 <x-jet-label for="afpAmountMilestone">{{ __('Milestone') }}</x-jet-label>
                                 <x-jet-input type="text" class="w-full" wire:model="afpAmountMilestone"/>
                                 @error('afpAmountMilestone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
@@ -723,6 +723,22 @@
                             <x-dropdown-list :items="$sanitationSelectList" id="sanitation" wire:model="sanitation"/>
                             @error('sanitation') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                         </div>
+
+                        @if($sanitation)
+                            <div class="flex flex-row">
+                                <div class="p-4 w-1/2">
+                                    <x-jet-label for="montante">{{ __('Montante') }} m<sup>2</sup></x-jet-label>
+                                    <x-jet-input type="text" id="montante" class="w-full" wire:model="montante"/>
+                                    @error('montante') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="p-4 w-1/2">
+                                    <x-jet-label for="montanteStr">{{ __('Montante en letras') }}</x-jet-label>
+                                    <x-jet-input type="text" id="montanteStr" class="w-full" wire:model="montanteStr"/>
+                                    @error('montanteStr') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="w-1/2">
                         <div class="p-4 w-full">
@@ -777,10 +793,16 @@
                                 </div>
                             </div>
                         @endif
+
+                        <div class="p-4 w-full">
+                            <x-jet-label for="batchNro">{{ __('N° de partida') }}</x-jet-label>
+                            <x-jet-input type="text" id="batchNro" class="w-full" wire:model="batchNro"/>
+                            @error('batchNro') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col">
+                <div class="flex flex-col hidden">
                     <div class="p-4 w-full">
                         <x-jet-label for="footer">{{ __('Footer') }}</x-jet-label>
                         <x-jet-input type="text" id="footer" class="w-full" wire:model="footer"/>
@@ -788,9 +810,50 @@
                     </div>
                 </div>
 
+                <div class="flex flex-row">
+                    <fieldset class="w-full border rounded-lg border-gray-300 m-4 p-4 h-auto">
+                        <legend>Documentos adicionales</legend>
+
+                        @if ($pullApart->visit->project->documents->count() > 0)
+                            @foreach($pullApart->visit->project->documents as $document)
+                                <a href="{{ asset('storage/' . $document->file) }}" target="_blank" class="text-blue-500 hover:underline hover:text-blue-800 flex w-1/3">{{ $document->name }}</a>
+                            @endforeach
+                        @endif
+
+                        <div class="flex flex-row">
+                            <a href="{{ asset('storage/' . $pullApart->visit->project->apartments->first()->apartmentType->blueprint) }}" target="_blank" class="text-blue-500 hover:underline hover:text-blue-800 flex w-1/3">Plano departamento</a>
+
+                            @if($pullApart->visit->project->parkingLots->count() > 0)
+                                <a href="{{ asset('storage/' . $pullApart->visit->project->parkingLots->first()->blueprint) }}" target="_blank" class="text-blue-500 hover:underline hover:text-blue-800 flex w-1/3">Plano Estacionamiento</a>
+                            @endif
+
+                            @if($pullApart->visit->project->closets->count() > 0)
+                                <a href="{{ asset('storage/' . $pullApart->visit->project->closets->first()->blueprint) }}" target="_blank" class="text-blue-500 hover:underline hover:text-blue-800 flex w-1/3">Plano Closet</a>
+                            @endif
+                        </div>
+                    </fieldset>
+                </div>
+
                 <div class="flex justify-end">
                     <div class="p-4">
-                        <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                        <x-jet-button class="bg-blue-500">{{ __('Enviar a aprobación') }}</x-jet-button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <div class="p-4">
+                        @if($pullApart->billHistory()->count() > 0)
+                            @foreach($pullApart->billHistory->where('is_active', 1) as $item)
+                                Minuta actualizada el <strong>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</strong><br>
+                                <strong>Actualizado por:</strong> {{ $item->user->name }}<br>
+                                <strong>Cambios y/o excepciones agregados</strong><br>
+                                <a href="javascript:" wire:click="editAttachNewBill({{ $item->id }})" class="text-blue-500 hover:text-blue-800 hover:underline">Ver detalle</a>
+                            @endforeach
+                        @endif
+                    </div>
+                    <div class="p-4">
+                        <h3 class="mb-2">Deseas adjuntar la minuta generada?</h3>
+                        <a href="javascript:" wire:click="attachNewBill" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 h-10 bg-blue-500">Adjuntar nueva minuta</a>
                     </div>
                 </div>
             </form>
@@ -1092,4 +1155,19 @@
     @if($isOpen)
         @include('sales.modals.payments')
     @endif
+
+    @if($isOpenAttachNewBill)
+        @include('sales.modals.attach-bill')
+
+        <script>
+            tinymce.remove("#historyBillComment");
+
+            tinymce.init({
+                selector: '#historyBillComment',
+                menubar: false,
+            })
+        </script>
+    @endif
+
+
 </div>

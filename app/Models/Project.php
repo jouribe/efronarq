@@ -23,7 +23,10 @@ class Project extends Model
         'bank_id',
         'legal',
         'status',
-        'is_active'
+        'is_active',
+        'currency',
+        'account_nro_mn',
+        'account_nro_me'
     ];
 
     /**

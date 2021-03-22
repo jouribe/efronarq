@@ -42,6 +42,11 @@ class ProjectController extends Controller
             'Finalizado' => 'Finalizado'
         ];
 
+        $currencyList = [
+            'USD' => 'Dólar Americano',
+            'PEN' => 'Nuevo Sol Peruano'
+        ];
+
         // districts
         $districts = District::all()->pluck("name", "id");
 
@@ -52,7 +57,8 @@ class ProjectController extends Controller
             ->with([
                 'projectStatus' => $projectStatus,
                 'districts' => $districts,
-                'banks' => $banks
+                'banks' => $banks,
+                'currencyList' => $currencyList
             ]);
     }
 
@@ -79,7 +85,10 @@ class ProjectController extends Controller
             'description' => $request->get('description'),
             'legal' => $request->get('legal'),
             'status' => $request->get('status'),
-            'bank_id' => $request->get('bank_id')
+            'bank_id' => $request->get('bank_id'),
+            'currency' => $request->get('currency'),
+            'account_nro_me' => $request->get('account_nro_me'),
+            'account_nro_mn' => $request->get('account_nro_mn')
         ]);
 
         // Add Address
@@ -87,8 +96,7 @@ class ProjectController extends Controller
             'project_id' => $project->id,
             'district_id' => $request->get('district_id'),
             'type' => 'Principal',
-            'address' => $request->get('address'),
-            'logo'
+            'address' => $request->get('address')
         ]);
 
         // Return to show view.
@@ -125,6 +133,11 @@ class ProjectController extends Controller
             'Finalizado' => 'Finalizado'
         ];
 
+        $currencyList = [
+            'USD' => 'Dólar Americano',
+            'PEN' => 'Nuevo Sol Peruano'
+        ];
+
         // districts
         $districts = District::all()->pluck("name", "id");
 
@@ -135,6 +148,7 @@ class ProjectController extends Controller
             'project' => Project::whereId($id)->first(),
             'districts' => $districts,
             'projectStatus' => $projectStatus,
+            'currencyList' => $currencyList,
             'banks' => $banks
         ]);
     }
@@ -153,7 +167,10 @@ class ProjectController extends Controller
             'status' => $request->get('status'),
             'description' => $request->get('description'),
             'legal' => $request->get('legal'),
-            'bank_id' => $request->get('bank_id')
+            'bank_id' => $request->get('bank_id'),
+            'currency' => $request->get('currency'),
+            'account_nro_mn' => $request->get('account_nro_mn'),
+            'account_nro_me' => $request->get('account_nro_me')
         ]);
 
         ProjectAddress::whereProjectId($id)->where('type', 'Principal')->update([
@@ -169,16 +186,5 @@ class ProjectController extends Controller
         }
 
         return redirect()->route('projects.index')->with('success', __('Project updated successfully'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

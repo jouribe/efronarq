@@ -29,7 +29,10 @@ class PullApartBill extends Model
         'additional_term_at',
         'additional_term_penalty',
         'additional_term_penalty_str',
-        'footer'
+        'footer',
+        'batch_nro',
+        'montante',
+        'montante_str'
     ];
 
     /**

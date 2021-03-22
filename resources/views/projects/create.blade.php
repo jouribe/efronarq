@@ -59,8 +59,31 @@
 
                     <div class="flex">
                         <div class="p-4 w-1/2">
+                            <x-jet-label for="currency" value="{{ __('Currency') }}"/>
+                            <x-dropdown-list id="currency" name="currency" :items="$currencyList"/>
+                            @error('currency') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="account_nro_mn">{{ __('N° Cuenta corriente MN') }}</x-jet-label>
+                            <x-jet-input type="text" id="account_nro_mn" class="w-full"  name="account_nro_mn" value="{{ old('account_nro_mn') }}"/>
+                            @error('account_nro_mn') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="p-4 w-1/2">
+                            <x-jet-label for="account_nro_me">{{ __('N° Cuenta corriente ME') }}</x-jet-label>
+                            <x-jet-input type="text" id="account_nro_me" class="w-full" name="account_nro_me" value="{{ old('account_nro_me') }}"/>
+                            @error('account_nro_me') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="flex">
+                        <div class="p-4 w-1/2">
                             <x-jet-label for="description" value="{{ __('Description') }}"/>
-                            <textarea class="form-textarea" id="description" name="description"></textarea>
+                            <textarea class="form-textarea editor" id="description" name="description"></textarea>
                         </div>
 
                         <div class="p-4 w-1/2">

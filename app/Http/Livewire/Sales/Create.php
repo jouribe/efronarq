@@ -680,6 +680,11 @@ class Create extends Component
     public bool $isOpen = false;
 
     /**
+     * @var boolean $isOpenAttachNewBill
+     */
+    public bool $isOpenAttachNewBill = false;
+
+    /**
      * @var mixed $historyPaymentAt
      */
     public $historyPaymentAt;
@@ -780,11 +785,46 @@ class Create extends Component
     public $historyPaymentId;
 
     /**
+     * @var mixed $batchNro
+     */
+    public $batchNro;
+
+    /**
+     * @var mixed $montante
+     */
+    public $montante;
+
+    /**
+     * @var mixed $montanteStr
+     */
+    public $montanteStr;
+
+    /**
      * @var string[] $listeners
      */
     protected $listeners = [
         'editHistoryPayment'
     ];
+
+    /**
+     * @var mixed $historyBill
+     */
+    public $historyBill;
+
+    /**
+     * @var mixed $currentHistoryBill
+     */
+    public $currentHistoryBill;
+
+    /**
+     * @var mixed $historyBillComment
+     */
+    public $historyBillComment;
+
+    /**
+     * @var mixed $historyBillId
+     */
+    public $historyBillId;
 
     /**
      * Component mount.
@@ -799,8 +839,6 @@ class Create extends Component
         $this->setParkingLotsPrice();
         $this->setClosetPrice();
         $this->setQuotationAgreement();
-        $this->setPullApartBill();
-        $this->setPullApartDelivery();
 
         if (!is_null($this->pullApart)) {
             $this->settingPriceFromPullApart();
@@ -812,6 +850,17 @@ class Create extends Component
         $this->settingFees();
         $this->settingPaymentType();
         $this->setDocumentControl();
+        $this->setPullApartBill();
+        $this->setPullApartDelivery();
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    public function attachNewBill(): void
+    {
+        $this->resetAttachNewBillInputFields();
+        $this->openAttachNewBillModal();
     }
 
     /**
@@ -834,9 +883,68 @@ class Create extends Component
     /**
      * The attributes that are mass assignable.
      */
+    public function openAttachNewBillModal(): void
+    {
+        $this->isOpenAttachNewBill = true;
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
     public function closeModal(): void
     {
         $this->isOpen = false;
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    public function closeAttachNewBillModal(): void
+    {
+        $this->isOpenAttachNewBill = false;
+    }
+
+    /**
+     * Store attach new bill
+     */
+    public function storeAttachNewBill(): void
+    {
+        $billPath = $this->currentHistoryBill;
+
+        if ($this->historyBill !== null && $this->historyBill !== '') {
+            $billPath = $this->historyBill->store('bills', 'public');
+        }
+
+        PullApartBillHistory::where('pull_apart_id', $this->pullApart->id)->update(['is_active' => 0]);
+
+        PullApartBillHistory::updateOrCreate([
+            'id' => $this->historyBillId
+        ], [
+            'pull_apart_id' => $this->pullApart->id,
+            'bill' => $billPath,
+            'user_id' => auth()->user()->id,
+            'is_active' => 1,
+            'comment' => $this->historyBillComment
+        ]);
+
+        $this->resetAttachNewBillInputFields();
+        $this->closeAttachNewBillModal();
+    }
+
+    /**
+     * Edit history bill
+     *
+     * @param $id
+     */
+    public function editAttachNewBill($id): void
+    {
+        $bill = PullApartBillHistory::findOrFail($id);
+
+        $this->historyBillId = $bill->id;
+        $this->currentHistoryBill = $bill->bill;
+        $this->historyBillComment = $bill->comment;
+
+        $this->openAttachNewBillModal();
     }
 
     /**
@@ -883,6 +991,17 @@ class Create extends Component
         $this->historyPaymentTicketNro = '';
         $this->historyPaymentCurrentVoucher = '';
         $this->historyPaymentVoucher = null;
+    }
+
+    /**
+     * Clear the input fields.
+     */
+    public function resetAttachNewBillInputFields(): void
+    {
+        $this->historyBillComment = '';
+        $this->historyBill = null;
+        $this->currentHistoryBill = '';
+        $this->historyBillId = null;
     }
 
     /**
@@ -947,6 +1066,9 @@ class Create extends Component
             $this->additionalTermAt = $bill->additional_term_at;
             $this->additionalTermPenalty = $bill->additional_term_penalty;
             $this->additionalTermPenaltyStr = $bill->additional_term_penalty_str;
+            $this->batchNro = $bill->batch_nro;
+            $this->montante = $bill->montante;
+            $this->montanteStr = $bill->montante_str;
             $this->footer = $bill->footer;
         }
     }
@@ -1381,12 +1503,14 @@ class Create extends Component
             'additional_term_at' => $this->additionalTermAt,
             'additional_term_penalty' => $this->additionalTermPenalty,
             'additional_term_penalty_str' => $this->additionalTermPenaltyStr,
+            'montante' => $this->montante,
+            'montante_str' => $this->montanteStr,
+            'batch_nro' => $this->batchNro,
             'footer' => $this->footer
         ]);
 
         $billName = "Minuta-{$this->pullApart->id}-" . now()->format('dmYHis') . '.docx';
 
-        session()->flash('billValidation', !is_null($this->pullApart) ? __('Minuta actualizada con éxito!') : __('Minuta creada con éxito!'));
         $this->generateBill($billName);
 
         PullApartBillHistory::create([
@@ -1396,6 +1520,7 @@ class Create extends Component
             'is_active' => true
         ]);
 
+        session()->flash('billValidation', !is_null($this->pullApart) ? __('Minuta actualizada con éxito!') : __('Minuta creada con éxito!'));
         return response()->download(storage_path('app/public/bills/') . $billName);
     }
 
@@ -1406,7 +1531,7 @@ class Create extends Component
      */
     public function generateBill($billName): void
     {
-        $file = storage_path('app/public/bill-template/MinutaModelo.docx');
+        $file = storage_path('app/public/bill-template/MinutaModelo_v2.docx');
 
         // Saving the document as OOXML file...
         try {
@@ -1415,9 +1540,37 @@ class Create extends Component
 
             $pullApart = PullApart::findOrFail($this->pullApart->id);
 
-            $phpWord->setValue('DATOS_COMPRADOR', $pullApart->visit->customer->full_name);
-            $phpWord->setValue('MONEDA_MINUTA', 'en ' . $pullApart->visit->project->bank->currency === 'PEN' ? 'soles' : 'dólares');
+            $buyerInfo = '';
+
+            ray()->clearAll();
+            ray($pullApart->visit->customer()->get());
+
+            switch ($pullApart->buyer_type) {
+                case 'Soltero(a)':
+                    $buyerInfo = $pullApart->visit->customer()->first()->full_name;
+                    $buyerInfo .= ' con Documento Nacional de Identidad N°  ' . $pullApart->visit->customer()->first()->dni;
+                    break;
+
+                case 'Sociedad Conyugal':
+                    $buyerInfo = '';
+                    break;
+
+                case 'Copropietario':
+                    $buyerInfo = 'copropietario';
+                    break;
+
+                case 'Empresa':
+                    $buyerInfo = 'empresa';
+                    break;
+            }
+
+            $phpWord->setValue('DATOS_COMPRADOR', $buyerInfo);
+            $phpWord->setValue('MONEDA_MINUTA', 'en ' . $pullApart->visit->project->bank->currency === 'PEN' ? 'MN' : 'ME');
             $phpWord->setValue('BCO_PROYECTO', $pullApart->visit->project->bank->description);
+            $phpWord->setValue('BCO_FINANCIADOR', $pullApart->visit->project->bank->description);
+            $phpWord->setValue('N_PARTIDA', $pullApart->bills->first()->batch_nro);
+            $phpWord->setValue('NRO_CTA_PROYECTO', $pullApart->visit->project->currency === 'USD' ? $pullApart->visit->project->account_nro_me : $pullApart->visit->project->account_nro_mn);
+            $phpWord->setValue('PROYECTO_MONEDA', $pullApart->visit->project->currency === 'USD' ? 'US$.' : 'S/.');
 
             if ($pullApart->payment_type === 'Directo') {
                 $phpWord->deleteBlock('F_BANCARIO');
@@ -1437,18 +1590,45 @@ class Create extends Component
             if (!$pullApart->bills->first()->delivery_term) {
                 $phpWord->deleteBlock('PLAZO_DE_ENTREGA');
             } else {
-                $phpWord->setValue('PENALIDAD', $pullApart->bills->first()->delivery_term_amount_str);
+                $phpWord->setValue('PENALIDAD', $pullApart->bills->first()->delivery_term_amount);
+                $phpWord->setValue('PENALIDAD_STR', $pullApart->bills->first()->delivery_term_amount_str);
             }
 
             if (!$pullApart->bills->first()->additional_term) {
-                $phpWord->deleteBlock('PLAZO_ADICIONAL');
+                $phpWord->deleteBlock('ADICIONAL');
             } else {
                 $phpWord->setValue('NUEVA_FECHA_DE_ENTREGA', $pullApart->bills->first()->delivery_apartment_at);
-                $phpWord->setValue('PENALIDAD_ADICIONAL', $pullApart->bills->first()->delivery_term_amount_str);
+                $phpWord->setValue('PENALIDAD_ADICIONAL', $pullApart->bills->first()->delivery_term_amount);
+                $phpWord->setValue('PENALIDAD_ADICIONAL_STR', $pullApart->bills->first()->delivery_term_amount_str);
             }
 
-            $phpWord->setValue('NOMBRE_COMPRADOR_1', 'Jorge O. Uribe');
-            $phpWord->setValue('DNI_COMPRADOR_1', '41484547');
+            if (!$pullApart->bills->first()->sanitation) {
+                $phpWord->deleteBlock('SANEAMIENTO');
+            } else {
+                $phpWord->setValue('M2_MONTANTES', $pullApart->bills->first()->montante);
+                $phpWord->setValue('M2_MONTANTES_STR', $pullApart->bills->first()->montante_str);
+            }
+
+            if ($pullApart->payment_type !== 'Directo') {
+                if ($pullApart->buyer_type === 'Soltero(a)') {
+                    $phpWord->deleteBlock('AFP_DOS_PROPIETARIOS');
+
+                    $phpWord->setValue('MONTO_AFP_1', $pullApart->fees->where('type', 'AFP')->first()->fee);
+                    $phpWord->setValue('MONTO_AFP_1_STR', 'FALTA'); // TODO: change with afp amount in letters
+                    $phpWord->setValue('DATOS_PROPIETARIO_1', $pullApart->visit->customer->full_name);
+                    $phpWord->setValue('AFP_1', 'AFP Integra'); // TODO: change with name afp
+
+                } else {
+                    if ($pullApart->buyer_type === 'Sociedad Conyugal' || $pullApart->buyer_type === 'Copropietario') {
+                        $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
+                    }
+                }
+            } else {
+                $phpWord->deleteBlock('AFP_DOS_PROPIETARIOS');
+                $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
+            }
+
+            $phpWord->setValue('FECHA_MINUTA', now()->format('j') . ' de ' . now()->format('F') . ' del ' . now()->format('Y'));
 
             $phpWord->saveAs(storage_path("app/public/bills/$billName"));
         } catch (Exception $e) {

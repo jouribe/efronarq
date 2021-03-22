@@ -77,7 +77,19 @@
 
                             <div class="p-4 w-1/2">
                                 <span class="block text-xs text-gray-500">{{ __('Currency') }}</span>
-                                <div>{{ $project->bank->currency }}</div>
+                                <div>{{ $project->currency }}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="p-4 w-1/2">
+                                <span class="block text-xs text-gray-500">{{ __('N° Cuenta corriente MN') }}</span>
+                                <div>{{ $project->account_nro_mn }}</div>
+                            </div>
+
+                            <div class="p-4 w-1/2">
+                                <span class="block text-xs text-gray-500">{{ __('N° Cuenta corriente ME') }}</span>
+                                <div>{{ $project->account_nro_me }}</div>
                             </div>
                         </div>
 
