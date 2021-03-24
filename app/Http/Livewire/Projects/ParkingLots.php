@@ -304,7 +304,7 @@ class ParkingLots extends Component
      *
      * @return mixed
      */
-    public function getPrice(): mixed
+    public function getPrice()
     {
         $price = ProjectPriceParkingLot::whereProjectId($this->project->id)->whereFloor($this->floor)->whereType($this->type)->first()->price;
 

@@ -224,7 +224,7 @@ class Closets extends Component
      *
      * @return float|int
      */
-    public function getPrice(): float|int
+    public function getPrice()
     {
         $price = ProjectPriceCloset::whereProjectId($this->project->id)->first()->price;
 

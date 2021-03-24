@@ -80,13 +80,19 @@ class Project extends Component
     public int $j = 1;
 
     /**
+     * @var mixed $visit
+     */
+    public $visit;
+
+    /**
      * Render view.
      *
      * @return Factory|View|Application
      */
     public function render()
     {
-        if (!is_null($this->project_id)) {
+        if (!is_null($this->visit)) {
+            $this->project_id = $this->visit->project_id;
             $this->getProjectApartmentList();
             $this->getProjectParkingLotList();
             $this->getProjectClosetList();

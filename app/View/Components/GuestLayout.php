@@ -14,7 +14,7 @@ class GuestLayout extends Component
      *
      * @return Application|Factory|View|\Illuminate\View\View
      */
-    public function render(): View|Factory|\Illuminate\View\View|Application
+    public function render()
     {
         return view('layouts.guest');
     }

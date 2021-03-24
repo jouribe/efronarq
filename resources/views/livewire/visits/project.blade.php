@@ -7,7 +7,7 @@
 
         <div class="p-4 w-1/2">
             <x-jet-label for="project_apartment_id">{{ __('Apartment') }}</x-jet-label>
-            <x-dropdown-list :items="$apartmentList" id="project_apartment_id" name="project_apartment_id" required/>
+            <x-dropdown-list :items="$apartmentList" id="project_apartment_id" name="project_apartment_id" :selectedId="$visit === null ? '' : $visit->project_apartment_id" required/>
         </div>
     </div>
 

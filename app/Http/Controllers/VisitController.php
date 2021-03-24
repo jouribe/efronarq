@@ -157,7 +157,31 @@ class VisitController extends Controller
      */
     public function edit(int $id)
     {
-        return view('visits.quote')->with('visit', Visit::find($id));
+        // Get all districts
+        $districts = District::all()->pluck('name', 'id');
+
+        // Origins
+        $origins = Origin::all()->pluck('name', 'id');
+
+        // Projects
+        $projects = Project::whereHas('sellers', function ($query) {
+            return $query->where('user_id', auth()->user()->id);
+        })->whereIsActive(true)
+            ->pluck('name', 'id');
+
+        // Discount
+        $discountList = [];
+
+        return view('visits.edit')->with([
+            'districts' => $districts,
+            'origins' => $origins,
+            'areaRangeList' => $this->areaRange(),
+            'financingTypeList' => $this->financingType(),
+            'projects' => $projects,
+            'boolList' => $this->boolList(),
+            'discountList' => $discountList,
+            'visit' => Visit::find($id)
+        ]);
     }
 
     /**
@@ -187,7 +211,7 @@ class VisitController extends Controller
             /** @noinspection PhpUndefinedClassInspection */
             /** @noinspection PhpFullyQualifiedNameUsageInspection */
             $pdf = \PDF::loadView('visits.quote', $data)
-                ->save(storage_path('app/public/quotations/'. $fileName));
+                ->save(storage_path('app/public/quotations/' . $fileName));
 
             VisitQuotation::create([
                 'visit_id' => $visit->id,
