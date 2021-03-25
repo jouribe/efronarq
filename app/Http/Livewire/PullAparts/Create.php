@@ -1026,8 +1026,9 @@ class Create extends Component
             ]);
 
             session()->flash('sendToApprove', __('Comment saved successfully!'));
-
             $this->emit('refreshLivewireDatatable');
+
+            $this->redirect("/pull-apart/{$this->pullApart->id}/agreement/generate");
         }
     }
 

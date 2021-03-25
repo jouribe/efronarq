@@ -16,7 +16,6 @@ use App\Traits\Lists;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Response;
 
 class VisitController extends Controller
 {
@@ -191,7 +190,7 @@ class VisitController extends Controller
      *
      * @return mixed
      */
-    public function generate($id): mixed
+    public function generate($id)
     {
         $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType',
             'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank')

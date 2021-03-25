@@ -625,7 +625,7 @@
         </h2>
 
         <div class="mb-10">
-            <livewire:tables.pull-apart-comments :pull-aprt-id="$pullApart === null ? 0 : $pullApart->id"/>
+            <livewire:tables.pull-apart-comments :pull-apart-id="$pullApart === null ? 0 : $pullApart->id"/>
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow">

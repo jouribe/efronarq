@@ -37,62 +37,6 @@ class PullApartController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
      * Generate agreement for the pull apart
      *
      * @param int $id
@@ -100,8 +44,11 @@ class PullApartController extends Controller
      */
     public function generate(int $id)
     {
+        ray()->clearAll();
+
         $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment', 'visit.apartment.apartmentType',
-            'visit.closets', 'visit.closets.closet', 'visit.parkingLots', 'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address')
+            'visit.closets', 'visit.closets.closet', 'visit.parkingLots', 'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address', 'visit.customer',
+            'visit.customer.related')
             ->whereId($id)
             ->first();
 
@@ -119,12 +66,16 @@ class PullApartController extends Controller
             $customer[] = Company::whereId($pullApart->visit->customer->company_id)->first()->toArray();
         }
 
+        ray($customer);
+
         $data = [
             'data' => [
                 'pull-apart' => $pullApart->toArray(),
                 'buyer' => [
                     'type' => $pullApart->buyer_type,
-                    'partner_type' => $pullApart->visit->customer->related()->whereCustomerId($pullApart->visit->customer->id)->first()->partner_type,
+                    'partner_type' => $pullApart->visit->customer->related()->count() > 0
+                        ? $pullApart->visit->customer->related()->whereCustomerId($pullApart->visit->customer->id)->first()->partner_type
+                        : null,
                     'info' => $customer
                 ],
                 'agreement' => $this->getModeloAgreement(),
@@ -132,14 +83,19 @@ class PullApartController extends Controller
             ]
         ];
 
-        ray()->clearAll();
 
         ray($data);
 
-//        return view('pull-apart.agreement')->with($data);
-        // PDF name -> separacion + id
+        $fileName = 'separacion-' . $pullApart->visit->id . '-' . now()->format('dmYHis') . '.pdf';
 
-        return \PDF::loadview('pull-apart.agreement', $data)->stream('separacion.pdf');
+        $pdf = \PDF::loadview('pull-apart.agreement', $data)
+            ->save(storage_path('app/public/pull-aparts/' . $fileName));
+
+        PullApart::findOrFail($pullApart->id)->update([
+            'agreement' => 'pull-aparts/' . $fileName
+        ]);
+
+        return $pdf->stream($fileName);
     }
 
     /**
