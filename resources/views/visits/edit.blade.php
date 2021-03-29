@@ -11,7 +11,9 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <x-jet-validation-errors class="mb-4"/>
 
-                <form method="POST" action="{{ route('visits.store') }}">
+                <form method="POST" action="{{ route('visits.update', $visit->id) }}">
+
+                    @method('PUT')
 
                     @csrf
 
