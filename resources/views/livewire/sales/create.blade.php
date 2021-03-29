@@ -10,9 +10,11 @@
             <a href="#" x-on:click.prevent="tab='tab3'; ; window.location.hash = 'tab3'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab3' }">
                 Convenio de Separación
             </a>
-            <a href="#" x-on:click.prevent="tab='tab4'; ; window.location.hash = 'tab4'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab4' }">
-                Control Documentario
-            </a>
+            @if($pullApart->payment_type !== 'Directo')
+                <a href="#" x-on:click.prevent="tab='tab4'; ; window.location.hash = 'tab4'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab4' }">
+                    Control Documentario
+                </a>
+            @endif
             <a href="#" x-on:click.prevent="tab='tab5'; ; window.location.hash = 'tab5'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab5' }">
                 Minuta
             </a>
@@ -589,7 +591,8 @@
             </form>
         </div>
     </div>
-    <div x-show="tab == 'tab4'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    @if($pullApart->payment_type !== 'Directo')
+        <div x-show="tab == 'tab4'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('documentsControlValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
@@ -652,6 +655,7 @@
             </form>
         </div>
     </div>
+    @endif
     <div x-show="tab == 'tab5'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
             @if(session()->has('billValidation'))

@@ -26,7 +26,7 @@
                         {{ __('Visits') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('pull-apart.index') }}" :active="request()->routeIs(['pull-apart.index'])">
+                    <x-jet-nav-link href="{{ route('pull-apart.index') }}" :active="request()->routeIs(['pull-apart.index', 'pull-apart.create'])">
                         {{ __('Pull apart') }}
                     </x-jet-nav-link>
 

@@ -1261,9 +1261,9 @@ class Create extends Component
         $this->customerEmail = $this->visit->customer->email;
         $this->customerPhone = $this->visit->customer->phone;
 
-        if ($this->visit->customer->single === 0 && is_null($this->visit->customer->company_id)) {
-            $this->buyerType = 'Sociedad Conyugal';
+        $this->buyerType = $this->pullApart->buyer_type;
 
+        if ($this->pullApart->buyer_type !== 'Soltero(a)') {
             $relatedBy = CustomerRelated::whereCustomerId($this->visit->customer->id)->first();
             $related = Customer::whereId($relatedBy->customer_related_id)->first();
 
