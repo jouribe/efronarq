@@ -1577,29 +1577,29 @@ class Create extends Component
             $phpWord->setValue('PROYECTO_MONEDA', $pullApart->visit->project->currency === 'USD' ? 'US$.' : 'S/.');
 
             if ($pullApart->payment_type === 'Directo') {
-                $phpWord->deleteBlock('F_BANCARIO');
+                $phpWord->replaceBlock('F_BANCARIO', '');
             }
 
             if (!$pullApart->bills->first()->proprietorship) {
-                $phpWord->deleteBlock('RESERVA_PROPIEDAD');
+                $phpWord->replaceBlock('RESERVA_PROPIEDAD', '');
             }
 
             $phpWord->setValue('P_DANOS_PERJUICIOS', $pullApart->bills->first()->damages);
             $phpWord->setValue('P_POR_DESOCUPACION', $pullApart->bills->first()->unemployment_str);
 
             if (!$pullApart->bills->first()->changes) {
-                $phpWord->deleteBlock('CAMBIOS');
+                $phpWord->replaceBlock('CAMBIOS', '');
             }
 
             if (!$pullApart->bills->first()->delivery_term) {
-                $phpWord->deleteBlock('PLAZO_DE_ENTREGA');
+                $phpWord->replaceBlock('PLAZO_DE_ENTREGA', '');
             } else {
                 $phpWord->setValue('PENALIDAD', $pullApart->bills->first()->delivery_term_amount);
                 $phpWord->setValue('PENALIDAD_STR', $pullApart->bills->first()->delivery_term_amount_str);
             }
 
             if (!$pullApart->bills->first()->additional_term) {
-                $phpWord->deleteBlock('ADICIONAL');
+                $phpWord->replaceBlock('ADICIONAL', '');
             } else {
                 $phpWord->setValue('NUEVA_FECHA_DE_ENTREGA', $pullApart->bills->first()->delivery_apartment_at);
                 $phpWord->setValue('PENALIDAD_ADICIONAL', $pullApart->bills->first()->delivery_term_amount);
@@ -1607,7 +1607,7 @@ class Create extends Component
             }
 
             if (!$pullApart->bills->first()->sanitation) {
-                $phpWord->deleteBlock('SANEAMIENTO');
+                $phpWord->replaceBlock('SANEAMIENTO', '');
             } else {
                 $phpWord->setValue('M2_MONTANTES', $pullApart->bills->first()->montante);
                 $phpWord->setValue('M2_MONTANTES_STR', $pullApart->bills->first()->montante_str);
@@ -1615,7 +1615,7 @@ class Create extends Component
 
             if ($pullApart->payment_type !== 'Directo') {
                 if ($pullApart->buyer_type === 'Soltero(a)') {
-                    $phpWord->deleteBlock('AFP_DOS_PROPIETARIOS');
+                    $phpWord->replaceBlock('AFP_DOS_PROPIETARIOS', '');
 
                     $phpWord->setValue('MONTO_AFP_1', $pullApart->fees->where('type', 'AFP')->first()->fee);
                     $phpWord->setValue('MONTO_AFP_1_STR', 'FALTA'); // TODO: change with afp amount in letters
@@ -1623,11 +1623,11 @@ class Create extends Component
                     $phpWord->setValue('AFP_1', 'AFP Integra'); // TODO: change with name afp
 
                 } elseif ($pullApart->buyer_type === 'Sociedad Conyugal' || $pullApart->buyer_type === 'Copropietario') {
-                    $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
+                    $phpWord->replaceBlock('AFP_UN_PROPIETARIO', '');
                 }
             } else {
-                $phpWord->deleteBlock('AFP_DOS_PROPIETARIOS');
-                $phpWord->deleteBlock('AFP_UN_PROPIETARIO');
+                $phpWord->replaceBlock('AFP_DOS_PROPIETARIOS', '');
+                $phpWord->replaceBlock('AFP_UN_PROPIETARIO', '');
             }
 
             $phpWord->setValue('FECHA_MINUTA', now()->format('j') . ' de ' . now()->format('F') . ' del ' . now()->format('Y'));

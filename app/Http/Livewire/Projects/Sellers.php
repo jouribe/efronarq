@@ -57,11 +57,7 @@ class Sellers extends Component
      */
     public function mount(): void
     {
-        ray()->clearAll();
-
         $this->userList = User::role('vendedor')->pluck('name', 'id');
-
-        ray($this->userList);
     }
 
     /**
