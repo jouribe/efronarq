@@ -6,11 +6,6 @@ use App\Models\PullApart;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use PhpOffice\PhpWord\Exception\Exception;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Style\Font;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SaleController extends Controller
 {

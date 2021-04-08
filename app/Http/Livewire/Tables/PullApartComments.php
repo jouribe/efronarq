@@ -29,8 +29,8 @@ class PullApartComments extends LivewireDatatable
     {
         return PullApartComment::query()
             ->leftJoin('users', 'pull_apart_comments.user_id', 'users.id')
-            ->groupBy('comment', 'status', 'pull_apart_comments.created_at', 'users.name')
             ->where('pull_apart_comments.pull_apart_id', $this->pullApartId)
+            ->groupBy('pull_apart_comments.comment', 'pull_apart_comments.status', 'pull_apart_comments.created_at', 'users.name')
             ->orderBy('pull_apart_comments.created_at', 'desc');
     }
 
@@ -46,7 +46,7 @@ class PullApartComments extends LivewireDatatable
             Column::name('users.name')
                 ->label(__('Name')),
 
-            Column::callback('status', function ($status) {
+            Column::callback('pull_apart_comments.status', function ($status) {
                 switch ($status) {
                     case 'Rechazado':
                         return "<span class='bg-red-500 text-white px-4 py-1 rounded-md text-xs'>$status</span>";
@@ -58,10 +58,9 @@ class PullApartComments extends LivewireDatatable
                         return "<span class='bg-blue-500 px-4 py-1 rounded-md text-white text-xs'>$status</span>";
                 }
             })
-                ->label(__('Status'))
-            ->filterable(),
+                ->label(__('Status')),
 
-            Column::name('comment')
+            Column::name('pull_apart_comments.comment')
                 ->label(__('Comment')),
 
             DateColumn::name('pull_apart_comments.created_at')

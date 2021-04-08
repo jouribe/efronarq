@@ -22,7 +22,7 @@
                     </x-jet-nav-link>
                     @endrole
 
-                    <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create', 'visits.show'])">
+                    <x-jet-nav-link href="{{ route('visits.index') }}" :active="request()->routeIs(['visits.index', 'visits.create', 'visits.show', 'visits.edit'])">
                         {{ __('Visits') }}
                     </x-jet-nav-link>
 

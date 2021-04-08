@@ -43,6 +43,7 @@ class ProjectSellers extends LivewireDatatable
     {
         return ProjectSeller::query()
             ->leftJoin('users', 'project_sellers.user_id', 'users.id')
+            ->Where('project_sellers.project_id', $this->projectId)
             ->groupBy('users.name', 'project_sellers.profit_percentage', 'project_sellers.id');
     }
 

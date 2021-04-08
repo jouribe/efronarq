@@ -93,10 +93,11 @@ class Project extends Component
     {
         if (!is_null($this->visit)) {
             $this->project_id = $this->visit->project_id;
-            $this->getProjectApartmentList();
-            $this->getProjectParkingLotList();
-            $this->getProjectClosetList();
         }
+
+        $this->getProjectApartmentList();
+        $this->getProjectParkingLotList();
+        $this->getProjectClosetList();
 
         return view('livewire.visits.project');
     }
