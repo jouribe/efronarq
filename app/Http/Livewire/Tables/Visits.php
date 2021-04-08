@@ -42,10 +42,6 @@ class Visits extends LivewireDatatable
      */
     public function builder(): Builder
     {
-        ray()->clearAll();
-
-        ray()->showQueries();
-
         return Visit::query()
             ->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
