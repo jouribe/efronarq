@@ -587,9 +587,6 @@ class Create extends Component
         $this->customerEmail = $this->visit->customer->email;
         $this->customerPhone = $this->visit->customer->phone;
 
-        ray()->clearAll();
-        ray($this->pullApart);
-
         $this->buyerType = $this->pullApart->buyer_type;
 
         if ($this->pullApart->buyer_type !== 'Soltero(a)') {
@@ -1032,7 +1029,10 @@ class Create extends Component
             session()->flash('sendToApprove', __('Comment saved successfully!'));
             $this->emit('refreshLivewireDatatable');
 
-            $this->redirect("/pull-apart/{$this->pullApart->id}/agreement/generate");
+            /** @noinspection NullPointerExceptionInspection */
+            if (auth()->user()->hasRole('vendedor')) {
+                $this->redirect("/pull-apart/{$this->pullApart->id}/agreement/generate");
+            }
         }
     }
 

@@ -85,11 +85,19 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end">
-                    <div class="p-4">
-                        <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                    <div class="flex justify-end">
+                        <div class="p-4">
+                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                        </div>
                     </div>
-                </div>
+                @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                    <div class="flex justify-end">
+                        <div class="p-4">
+                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                        </div>
+                    </div>
+                @endif
             </form>
 
         </div>
@@ -377,11 +385,19 @@
                         </div>
                     @endif
 
-                    <div class="flex justify-end">
-                        <div class="p-4">
-                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                    @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
                         </div>
-                    </div>
+                    @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
+                        </div>
+                    @endif
                 </form>
             </div>
 
@@ -424,9 +440,7 @@
                             </div>
 
                             <div class="p-4 w-1/2">
-                                <label>Valor de Venta
-                                    <Total></Total>
-                                </label>
+                                <label>Valor de Venta Total</label>
                                 <input type="text" class="form-input w-full" wire:model="priceTotalText" readonly>
                             </div>
                         </div>
@@ -543,7 +557,12 @@
                                     <x-jet-label for="feeCount">{{ __('Fee') }}</x-jet-label>
                                     <div class="flex">
                                         <x-jet-input type="number" id="feeCount" class="w-full" wire:model="feeCount" min="0"/>
-                                        <x-jet-button type="button" class="bg-blue-500 mt-1 ml-2" wire:click="generateFeeInputs">{{ __('Generate') }}</x-jet-button>
+
+                                        @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                                            <x-jet-button type="button" class="bg-blue-500 mt-1 ml-2" wire:click="generateFeeInputs">{{ __('Generate') }}</x-jet-button>
+                                        @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                                            <x-jet-button type="button" class="bg-blue-500 mt-1 ml-2" wire:click="generateFeeInputs">{{ __('Generate') }}</x-jet-button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -572,11 +591,19 @@
                         @endif
                     </div>
 
-                    <div class="flex justify-end">
-                        <div class="p-4">
-                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                    @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
                         </div>
-                    </div>
+                    @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
+                        </div>
+                    @endif
                 </form>
             </div>
 
@@ -613,11 +640,19 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end">
-                        <div class="p-4">
-                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                    @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
                         </div>
-                    </div>
+                    @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
+                        </div>
+                    @endif
                 </form>
             </div>
 
@@ -642,6 +677,7 @@
                 @endif
 
                 <form wire:submit.prevent="sendToApprove" autocomplete="off">
+
                     <div class="flex-row">
                         <div class="flex">
                             <div class="p-4 w-full">
@@ -655,18 +691,19 @@
                     <div class="flex justify-end">
                         <div class="p-4">
                             @role('admin')
-                            <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                            @if($pullApart->status === 'Pendiente Aprobación')
+                                <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                            @endif
                             @endrole
 
-                            <x-jet-button class="bg-blue-500">
-                                @role('admin')
-                                {{ __('Approve') }}
-                                @endrole
+                            @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
+                                <x-jet-button class="bg-blue-500">{{ __('Send to approve') }}   </x-jet-button>
 
-                                @unlessrole('admin')
-                                {{ __('Send to approve') }}
-                                @endunlessrole
-                            </x-jet-button>
+                            @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                                <x-jet-button class="bg-blue-500">{{ __('Approve') }}</x-jet-button>
+                            @endif
+
+
                         </div>
                     </div>
                 </form>

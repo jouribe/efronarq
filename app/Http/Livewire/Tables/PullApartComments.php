@@ -18,7 +18,7 @@ class PullApartComments extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'users.name, pull_apart_comments.created_at';
+    public $searchable = 'users.name, pull_apart_comments.status, pull_apart_comments.created_at';
 
     /**
      * Query builder
@@ -45,6 +45,10 @@ class PullApartComments extends LivewireDatatable
         return [
             Column::name('users.name')
                 ->label(__('Name')),
+
+            Column::name('pull_apart_comments.status')
+                ->hide()
+                ->label(__('Status')),
 
             Column::callback('pull_apart_comments.status', function ($status) {
                 switch ($status) {
