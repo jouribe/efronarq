@@ -17,13 +17,6 @@
                 <x-jet-label for="project_parking_lot_id.0">{{ __('Parking lot') }}</x-jet-label>
                 <div class="flex">
                     <div class="w-full pr-2">
-                        @php
-
-                        ray()->clearAll();
-                        ray($visit->parkingLots->first()->visit_id);
-
-                        @endphp
-
                         <x-dropdown-list :items="$parkingLotList" id="project_parking_lot_id.0" name="project_parking_lot_id[]" wire:model="project_parking_lot_id.0" :selectedId="$visit === null ? '' : $visit->parkingLots->first()->project_parking_lot_id"/>
                     </div>
                     <button wire:click.prevent="addParkingLot({{$i}})" class="border px-4 rounded-lg bg-blue-600 text-xl font-bold text-white">+</button>
