@@ -85,13 +85,21 @@
                     </div>
                 </div>
 
-                @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
-                    <div class="flex justify-end">
-                        <div class="p-4">
-                            <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                @if(!is_null($pullApart))
+                    @if(($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') && auth()->user()->hasRole('vendedor'))
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
                         </div>
-                    </div>
-                @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                    @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
+                        <div class="flex justify-end">
+                            <div class="p-4">
+                                <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
+                            </div>
+                        </div>
+                    @endif
+                @else
                     <div class="flex justify-end">
                         <div class="p-4">
                             <x-jet-button class="bg-blue-500">{{ __('Save') }}</x-jet-button>
@@ -99,7 +107,6 @@
                     </div>
                 @endif
             </form>
-
         </div>
 
         @if(!is_null($pullApart))
@@ -477,7 +484,7 @@
                             </div>
                         @endif
 
-                        {{-- Directo --}}
+                        Directo
                         @if($paymentType === 'Directo')
                             <div class="flex justify-end">
                                 <div class="p-4 w-1/3">
@@ -488,7 +495,7 @@
                             </div>
                         @endif
 
-                        {{-- Hipotecario --}}
+                        Hipotecario
                         @if($paymentType === 'Hipotecario' || $paymentType === 'Mixto')
                             <div class="flex">
                                 <div class="p-4 w-1/3">
@@ -691,19 +698,18 @@
                     <div class="flex justify-end">
                         <div class="p-4">
                             @role('admin')
-                            @if($pullApart->status === 'Pendiente Aprobación')
-                                <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                            @if(!is_null($pullApart))
+                                @if($pullApart->status === 'Pendiente Aprobación')
+                                    <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                                @endif
                             @endif
                             @endrole
 
                             @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
-                                <x-jet-button class="bg-blue-500">{{ __('Send to approve') }}   </x-jet-button>
-
+                                <x-jet-button class="bg-blue-500">{{ __('Send to approve') }}</x-jet-button>
                             @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
                                 <x-jet-button class="bg-blue-500">{{ __('Approve') }}</x-jet-button>
                             @endif
-
-
                         </div>
                     </div>
                 </form>

@@ -56,7 +56,7 @@
 
                             <div class="p-4 w-1/2">
                                 <x-jet-label for="secondary_email">{{ __('Secondary email') }}</x-jet-label>
-                                <x-jet-input class="form-input mt-1 w-full" name="secondary_email" id="secondary_email" type="email" value="{{ old('secondary_email') }}" required/>
+                                <x-jet-input class="form-input mt-1 w-full" name="secondary_email" id="secondary_email" type="email" value="{{ old('secondary_email') }}" />
                             </div>
                         </div>
                     </div>

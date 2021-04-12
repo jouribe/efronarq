@@ -8,6 +8,9 @@ use App\Models\CustomerDetail;
 use App\Models\District;
 use App\Models\Origin;
 use App\Models\Project;
+use App\Models\ProjectApartment;
+use App\Models\ProjectCloset;
+use App\Models\ProjectParkingLot;
 use App\Models\Visit;
 use App\Models\VisitCloset;
 use App\Models\VisitParkingLot;
@@ -111,12 +114,20 @@ class VisitController extends Controller
             'type_financing' => $request->get('type_financing')
         ]);
 
+        ProjectApartment::findOrFail($request->get('project_id'))->update([
+            'availability' => 'Reservado'
+        ]);
+
         // Create visit parking lot;
         foreach ($request->get('project_parking_lot_id') as $parking) {
             if (!is_null($parking)) {
                 VisitParkingLot::create([
                     'visit_id' => $visit->id,
                     'project_parking_lot_id' => $parking
+                ]);
+
+                ProjectParkingLot::findOrFail($parking)->update([
+                    'availability' => 'Reservado'
                 ]);
             }
         }
@@ -128,8 +139,13 @@ class VisitController extends Controller
                     'visit_id' => $visit->id,
                     'project_closet_id' => $closet
                 ]);
+
+                ProjectCloset::findOrFail($closet)->update([
+                    'availability' => 'Reservado'
+                ]);
             }
         }
+
         return view('visits.index');
     }
 
