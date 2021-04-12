@@ -693,7 +693,7 @@ class Create extends Component
      */
     public function storeGeneralPrice(): void
     {
-        PullApart::updateOrCreate([
+        $recent = PullApart::updateOrCreate([
             'id' => $this->pullApart === null ? null : $this->pullApart->id
         ], [
             'visit_id' => $this->visit->id,
@@ -701,6 +701,8 @@ class Create extends Component
             'discount' => $this->discountAmount,
             'final_price' => $this->priceTotal
         ]);
+
+        $this->pullApart = PullApart::findOrFail($recent->id);
 
         session()->flash('message', !is_null($this->pullApart) ? __('Pull apart updated successfully!') : __('Pull apart created successfully!'));
     }
