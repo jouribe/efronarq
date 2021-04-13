@@ -46,7 +46,7 @@ class ProjectClosets extends LivewireDatatable
             ->leftJoin('project_price_closets', 'project_price_closets.project_id', 'projects.id')
             ->where('project_closets.project_id', $this->projectId)
             ->groupBy('project_closets.id', 'project_closets.floor', 'project_closets.closet', 'project_closets.roofed_area', 'project_closets.availability', 'project_closets.blueprint',
-                'project_price_closets.price');
+                'project_closets.price');
     }
 
     /**
@@ -73,8 +73,8 @@ class ProjectClosets extends LivewireDatatable
             Column::name('project_closets.availability')
                 ->label(__('Availability')),
 
-            Column::callback(['project_closets.roofed_area', 'project_price_closets.price'], function ($area, $price) {
-                return '<pre>US$ ' . number_format(($area * $price), 2) . '</pre>';
+            Column::callback(['project_closets.price'], function ($price) {
+                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 

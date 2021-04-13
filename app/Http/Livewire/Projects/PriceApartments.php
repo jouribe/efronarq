@@ -143,7 +143,8 @@ class PriceApartments extends Component
 
         if (!is_null($this->project_price_apartment_id)) {
             $apartments = ProjectApartment::whereApartmentTypeId($this->project_apartment_type_id)
-                ->where('availability', '!=', 'Vendido')
+                ->whereIn('availability',['Disponible', 'Reservado'])
+                ->where('project_id', $this->project->id)
                 ->get();
 
             foreach ($apartments as $apartment) {
@@ -152,6 +153,7 @@ class PriceApartments extends Component
                 // Precio de area techada
                 $roofedAreaPrice = self::roofedAreaTotal($apartment->apartmentType->roofed_area, $apartment->project->apartmentPrices->first()->price_area);
                 // Precio de la unidad total Base (Proyecto: Construcción)
+                // TODO: validar precio en base al estado del proyecto
                 $totalPrice = self::areaPriceTotal($freeAreaPrice, $roofedAreaPrice);
 
                 $apartment->update([

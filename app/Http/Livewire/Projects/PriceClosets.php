@@ -5,6 +5,7 @@
 namespace App\Http\Livewire\Projects;
 
 use App\Models\Project;
+use App\Models\ProjectCloset;
 use App\Models\ProjectPriceCloset;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -105,6 +106,18 @@ class PriceClosets extends Component
                 'project_id' => $this->project->id,
                 'price' => $this->price
             ]);
+
+        if (!is_null($this->project_price_closet_id)) {
+            $closets = ProjectCloset::where('project_id', '=', $this->project->id)
+                ->whereIn('availability', ['Disponible', 'Reservado'])
+                ->get();
+
+            foreach ($closets as $closet) {
+                $closet->update([
+                    'price' => $this->project->closetPrices->first()->price * $closet->roofed_area
+                ]);
+            }
+        }
 
         session()->flash('message', $this->project_price_closet_id ? __('Price closet updated successfully') : __('Price closet created successfully'));
 
