@@ -484,7 +484,6 @@
                             </div>
                         @endif
 
-                        Directo
                         @if($paymentType === 'Directo')
                             <div class="flex justify-end">
                                 <div class="p-4 w-1/3">
