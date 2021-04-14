@@ -143,7 +143,7 @@ class PriceApartments extends Component
 
         if (!is_null($this->project_price_apartment_id)) {
             $apartments = ProjectApartment::whereApartmentTypeId($this->project_apartment_type_id)
-                ->whereIn('availability',['Disponible', 'Reservado'])
+                ->whereIn('availability', ['Disponible', 'Reservado'])
                 ->where('project_id', $this->project->id)
                 ->get();
 
