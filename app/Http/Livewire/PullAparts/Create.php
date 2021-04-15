@@ -712,6 +712,8 @@ class Create extends Component
         $this->pullApart = PullApart::findOrFail($recent->id);
 
         session()->flash('message', !is_null($this->pullApart) ? __('Pull apart updated successfully!') : __('Pull apart created successfully!'));
+
+        redirect()->to($this->page);
     }
 
     /**

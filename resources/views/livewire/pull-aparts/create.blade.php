@@ -494,7 +494,6 @@
                             </div>
                         @endif
 
-                        Hipotecario
                         @if($paymentType === 'Hipotecario' || $paymentType === 'Mixto')
                             <div class="flex">
                                 <div class="p-4 w-1/3">
