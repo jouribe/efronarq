@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitRequest;
+use App\Http\Requests\UpdateVisitRequest;
 use App\Models\Customer;
 use App\Models\CustomerDetail;
 use App\Models\District;
@@ -19,6 +20,7 @@ use App\Traits\Lists;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class VisitController extends Controller
 {
@@ -197,6 +199,43 @@ class VisitController extends Controller
             'discountList' => $discountList,
             'visit' => Visit::find($id)
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateVisitRequest $request
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function update(UpdateVisitRequest $request, int $id): RedirectResponse
+    {
+        $visit = Visit::findOrFail($id);
+
+        $visit->customer->update([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'phone' => $request->get('phone'),
+            'dni' => $request->get('dni'),
+            'district_id' => $request->get('district_id'),
+            'email' => $request->get('email'),
+            'secondary_email' => $request->get('secondary_email'),
+        ]);
+
+        $visit->customer->details->first()->update([
+            'area_range' => $request->get('area_range'),
+            'bedroom' => $request->get('bedroom'),
+            'bathroom' => $request->get('bathroom')
+        ]);
+
+        $visit->update([
+            'type_financing' => $request->get('type_financing'),
+            'origin_id' => $request->get('origin_id'),
+            'project_apartment_id' => $request->get('project_apartment_id'),
+            'interested' => $request->get('interested')
+        ]);
+
+        return response()->redirectToRoute('visits.index');
     }
 
     /**

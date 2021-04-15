@@ -42,7 +42,7 @@
                 <x-jet-label for="project_closet_id.0">{{ __('Closet') }}</x-jet-label>
                 <div class="flex">
                     <div class="w-full pr-2">
-                        <x-dropdown-list :items="$closetList" id="project_closet_id.0" name="project_closet_id[]" wire:model="project_closet_id.0"/>
+                        <x-dropdown-list :items="$closetList" id="project_closet_id.0" name="project_closet_id[]" wire:model="project_closet_id.0" />
                     </div>
                     <button wire:click.prevent="addCloset({{$j}})" class="border px-4 rounded-lg bg-blue-600 text-xl font-bold text-white">+</button>
                 </div>
@@ -65,7 +65,7 @@
     <div class="flex">
         <div class="p-4 w-1/2">
             <x-jet-label for="interested">{{ __('Interested?') }}</x-jet-label>
-            <x-dropdown-list :items="$boolList" id="interested" name="interested" required/>
+            <x-dropdown-list :items="$boolList" id="interested" name="interested" :selectedId="$visit === null ? '' : $visit->interested" required/>
         </div>
 
         <div class="p-4 w-1/2">
