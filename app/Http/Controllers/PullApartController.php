@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\ProjectApartment;
+use App\Models\ProjectCloset;
+use App\Models\ProjectParkingLot;
 use App\Models\PullApart;
 use App\Models\Visit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class PullApartController extends Controller
 {
@@ -83,17 +84,32 @@ class PullApartController extends Controller
             ]
         ];
 
-
-        ray($data);
-
         $fileName = 'separacion-' . $pullApart->visit->id . '-' . now()->format('dmYHis') . '.pdf';
 
         $pdf = \PDF::loadview('pull-apart.agreement', $data)
             ->save(storage_path('app/public/pull-aparts/' . $fileName));
 
-        PullApart::findOrFail($pullApart->id)->update([
+        $updated = PullApart::findOrFail($pullApart->id);
+
+        $updated->update([
             'agreement' => 'pull-aparts/' . $fileName
         ]);
+
+        ProjectApartment::findOrFail($updated->visit->project_apartment_id)->update([
+            'availability' => 'Separado'
+        ]);
+
+        foreach ($updated->visit->parkingLots as $parkingLot) {
+            ProjectParkingLot::findOrFail($parkingLot->project_parking_lot_id)->update([
+                'availability' => 'Separado'
+            ]);
+        }
+
+        foreach ($updated->visit->closets as $closet) {
+            ProjectCloset::findOrFail($closet->project_closet_id)->update([
+                'availability' => 'Separado'
+            ]);
+        }
 
         return $pdf->stream($fileName);
     }

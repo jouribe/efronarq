@@ -41,7 +41,7 @@ class PullAparts extends LivewireDatatable
             ->onlyForMe()
             ->isNotASale()
             ->groupBy('visits.id', 'projects.name', 'customers.full_name', 'project_apartments.name',
-                'pull_aparts.status', 'pull_aparts.created_at');
+                'pull_aparts.status', 'pull_aparts.created_at', 'pull_aparts.agreement');
     }
 
     /**
@@ -70,45 +70,61 @@ class PullAparts extends LivewireDatatable
             DateColumn::name('pull_aparts.created_at')
                 ->label(__('Pull apart at')),
 
-            Column::callback(['visits.id', 'pull_aparts.status'], function ($id, $status) {
+            Column::callback(['visits.id', 'pull_aparts.status', 'pull_aparts.agreement'], function ($id, $status, $agreement) {
+                $actions = '';
+
                 /** @noinspection NullPointerExceptionInspection */
                 if (auth()->user()->hasRole('vendedor')) {
                     switch ($status) {
                         case "Rechazado":
                         case "Registrado":
-                            return '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
+                            $actions = '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                             </svg>
                         </a>';
+                            break;
                         case "Aprobado":
                         case "Pendiente Aprobación":
-                            return '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
+                            $actions = '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                                 <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
                             </svg>
                         </a>';
+                            break;
                     }
                 } /** @noinspection NullPointerExceptionInspection */ elseif (auth()->user()->hasRole('admin')) {
                     switch ($status) {
                         case "Pendiente Aprobación":
-                            return '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
+                            $actions = '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                             </svg>
                         </a>';
+                            break;
                         case "Registrado":
                         case "Aprobado":
                         case "Rechazado":
-                            return '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
+                            $actions = '<a href="' . route('pull-apart.create', ['visitId' => $id]) . '" class="inline-block p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                                 <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
                             </svg>
                         </a>';
+                            break;
                     }
                 }
+
+                if ($status === 'Aprobado' && ($agreement !== null || $agreement !== '')) {
+                    $actions .= '<a href="storage/' . $agreement . '" class="inline-block p-1 text-green-600 hover:bg-green-600 hover:text-white rounded" target="_blank" title="Cotización">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+</svg>
+                        </a>';
+                }
+
+                return $actions;
             })
                 ->label(__('Actions')),
 

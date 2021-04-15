@@ -401,10 +401,17 @@ class Create extends Component
     public $pullApartStaticStatus = 'Aprobado';
 
     /**
+     * @var mixed $page
+     */
+    public $page;
+
+    /**
      * Component mount.
      */
-    public function mount(): void
+    public function mount($page): void
     {
+        $this->page = $page;
+
         $this->bankList = Bank::whereIsActive(true)->pluck('name', 'id');
 
         $this->settingData();
@@ -1034,7 +1041,7 @@ class Create extends Component
             $this->emit('refreshLivewireDatatable');
 
             /** @noinspection NullPointerExceptionInspection */
-            if (auth()->user()->hasRole('vendedor')) {
+            if ($this->pullApartStaticStatus !== 'Rechazado' && auth()->user()->hasRole('admin')) {
                 $this->redirect("/pull-apart/{$this->pullApart->id}/agreement/generate");
             }
         }
