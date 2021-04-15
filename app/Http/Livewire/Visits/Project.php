@@ -146,7 +146,7 @@ class Project extends Component
      */
     public function getProjectApartmentList(): void
     {
-        $this->apartmentList = ProjectApartment::leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id');
+        $this->apartmentList = ProjectApartment::leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')->where('project_apartments.project_id', $this->project_id);
 
         if (is_null($this->visit)) {
             $this->apartmentList = $this->apartmentList->where('project_apartments.availability', '=', 'Disponible');
