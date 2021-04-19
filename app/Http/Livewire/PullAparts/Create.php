@@ -598,7 +598,7 @@ class Create extends Component
             $this->buyerType = $this->pullApart->buyer_type;
         }
 
-        if ($this->buyerType !== 'Soltero(a)') {
+        if ($this->buyerType !== 'Soltero(a)' && $this->buyerType !== 'Empresa') {
 
             $relatedBy = CustomerRelated::whereCustomerId($this->visit->customer->id)->first();
             $related = Customer::whereId($relatedBy->customer_related_id)->first();
@@ -614,6 +614,17 @@ class Create extends Component
             $this->partTwo = $relatedBy->part_two;
             $this->documentNro = $relatedBy->document_nro;
             $this->current_document = $relatedBy->document;
+        }
+
+        if ($this->buyerType === 'Empresa') {
+            $this->customerPosition = $this->visit->customer->position;
+            $this->statusType = $this->visit->customer->single ? 'Soltero(a)' : 'Casado(a)';
+            $this->customerDocumentNro = $this->visit->customer->document_nro;
+            $this->companyName = $this->visit->customer->company->name;
+            $this->companyTaxNr = $this->visit->customer->company->tax_nro;
+            $this->companyAddress = $this->visit->customer->company->address;
+            $this->companyEmail = $this->visit->customer->company->email;
+            $this->companyPhone = $this->visit->customer->company->phone;
         }
     }
 
@@ -758,25 +769,15 @@ class Create extends Component
                     'phone' => $this->companyPhone
                 ]);
 
-                $customerCompanyByDni = Customer::whereDni($this->customerDocumentSecond)->first();
-
-                Customer::updateOrCreate([
-                    'id' => $customerCompanyByDni->id
-                ], [
-                    'first_name' => $this->customerFirstNameSecond,
-                    'last_name' => $this->customerLastNameSecond,
-                    'dni' => $this->customerDocumentSecond,
-                    'email' => $this->customerEmailSecond,
-                    'phone' => $this->customerPhoneSecond,
-                    'single' => $this->statusList === 'Soltero(a)',
-                    'address' => $this->customerAddressSecond,
+                $customer->update([
                     'position' => $this->customerPosition,
                     'company_id' => $company->id,
                     'document_nro' => $this->customerDocumentNro
                 ]);
             }
 
-            if ($this->buyerType === 'Sociedad Conyugal' || $this->buyerType = 'Copropietario') {
+            if ($this->buyerType === 'Sociedad Conyugal' || $this->buyerType === 'Copropietario') {
+
                 $customerByDni = Customer::whereDni($this->customerDocumentSecond)->first();
 
                 $customerSecond = Customer::updateOrCreate([
