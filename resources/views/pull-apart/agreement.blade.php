@@ -56,8 +56,8 @@
                     break;
 
                     case 'Empresa':
-                        $str = ucwords(trim($data['buyer']['info'][1]['name'])) . ' con RUC N° ' . ucwords(trim($data['buyer']['info'][1]['tax_nr']));
-                        $str .= ' representado por ' . ucwords(trim($data['buyer']['info'][0]['first_name'])) . ' ' . ucwords(trim($data['buyer']['info'][1]['last_name']));
+                        $str = ucwords(trim($data['buyer']['info'][1]['name'])) . ' con RUC N° ' . ucwords(trim($data['buyer']['info'][1]['tax_nro']));
+                        $str .= ' representado por ' . ucwords(trim($data['buyer']['info'][0]['first_name'])) . ' ' . ucwords(trim($data['buyer']['info'][0]['last_name']));
                         $str .= ' con número de partida N° ' . $data['buyer']['info'][0]['document_nro'];
                     break;
                 }
