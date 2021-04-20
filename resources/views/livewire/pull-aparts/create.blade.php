@@ -72,7 +72,7 @@
 
                         <div class="p-4 w-1/2">
                             <x-jet-label for="amount">{{ __('Amount') }}</x-jet-label>
-                            <x-jet-input type="text" id="amount" class="w-full" wire:model.debounce.500ms="discountAmount"/>
+                            <x-jet-input type="text" id="discountAmount" class="w-full" wire:model.debounce.500ms="discountAmount"/>
                         </div>
 
                     </div>

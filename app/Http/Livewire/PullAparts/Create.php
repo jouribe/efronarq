@@ -906,7 +906,7 @@ class Create extends Component
             $validateAmount = 0;
         }
 
-        if ($validateAmount <= 0) {
+        if ($validateAmount <= 0.05) {
 
             if (session()->has('amountValidation')) {
                 session()->forget('amountValidation');
