@@ -45,7 +45,6 @@ class PullApartController extends Controller
      */
     public function generate(int $id)
     {
-        ray()->clearAll();
 
         $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment', 'visit.apartment.apartmentType',
             'visit.closets', 'visit.closets.closet', 'visit.parkingLots', 'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address', 'visit.customer',
@@ -87,27 +86,27 @@ class PullApartController extends Controller
         $pdf = \PDF::loadview('pull-apart.agreement', $data)
             ->save(storage_path('app/public/pull-aparts/' . $fileName));
 
-//        $updated = PullApart::findOrFail($pullApart->id);
-//
-//        $updated->update([
-//            'agreement' => 'pull-aparts/' . $fileName
-//        ]);
-//
-//        ProjectApartment::findOrFail($updated->visit->project_apartment_id)->update([
-//            'availability' => 'Separado'
-//        ]);
-//
-//        foreach ($updated->visit->parkingLots as $parkingLot) {
-//            ProjectParkingLot::findOrFail($parkingLot->project_parking_lot_id)->update([
-//                'availability' => 'Separado'
-//            ]);
-//        }
-//
-//        foreach ($updated->visit->closets as $closet) {
-//            ProjectCloset::findOrFail($closet->project_closet_id)->update([
-//                'availability' => 'Separado'
-//            ]);
-//        }
+        $updated = PullApart::findOrFail($pullApart->id);
+
+        $updated->update([
+            'agreement' => 'pull-aparts/' . $fileName
+        ]);
+
+        ProjectApartment::findOrFail($updated->visit->project_apartment_id)->update([
+            'availability' => 'Separado'
+        ]);
+
+        foreach ($updated->visit->parkingLots as $parkingLot) {
+            ProjectParkingLot::findOrFail($parkingLot->project_parking_lot_id)->update([
+                'availability' => 'Separado'
+            ]);
+        }
+
+        foreach ($updated->visit->closets as $closet) {
+            ProjectCloset::findOrFail($closet->project_closet_id)->update([
+                'availability' => 'Separado'
+            ]);
+        }
 
         return $pdf->stream($fileName);
     }
