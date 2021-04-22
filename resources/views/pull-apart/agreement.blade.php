@@ -61,6 +61,8 @@
                         $str .= ' con número de partida N° ' . $data['buyer']['info'][0]['document_nro'];
                     break;
                 }
+
+            $data['agreement'] = str_replace('{PROYECTO}', $data['pull-apart']['visit']['project']['name'], $data['agreement']);
         @endphp
 
         <p>
@@ -88,11 +90,13 @@
 
     <!-- Si el Tipo de Comprador es Soltero -->
     @if($data['buyer']['type'] === 'Copropietario')
+        <div style="margin: 5px">&nbsp;</div>
         <div style="color: #333;width: 100%;margin: 0 auto;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 15px;"><br/>COMPRADOR 1</div>
+        <div style="margin: 2px">&nbsp;</div>
     @endif
 
     @if($data['buyer']['type'] !== 'Empresa')
-        <table width="100%" cellspacing="0" style="color: #696969;margin: 40px auto 30px;font-family: Helvetica,serif;font-size: 15px;border: 1px solid;">
+        <table width="100%" cellspacing="0" style="color: #696969;margin: 30px auto 30px;font-family: Helvetica,serif;font-size: 15px;border: 1px solid;">
             <tbody>
             <tr>
                 <td style="width: 25%;border-bottom: 1px solid;border-right: 1px solid;">
@@ -154,11 +158,13 @@
         </table>
 
         @if($data['buyer']['type'] === 'Sociedad Conyugal')
+            <div style="margin: 5px">&nbsp;</div>
             <div style="display: inline-block; color: #333;width: 100%;margin: 0 auto 5px;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 15px;">
                 DATOS DEL CÓNYUGE/CONVIVIENTE
             </div>
+            <div style="margin: 2px">&nbsp;</div>
 
-            <table width="100%" cellspacing="0" style="color: #696969;margin: 40px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
+            <table width="100%" cellspacing="0" style="color: #696969;margin: 10px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
                 <tbody>
                 <tr>
                     <td style="width: 25%;border-bottom: 1px solid;border-right: 1px solid;">
@@ -221,9 +227,11 @@
         @endif
 
         @if($data['buyer']['type'] === 'Copropietario')
+            <div style="margin: 5px">&nbsp;</div>
             <div style="color: #333;width: 100%;margin: 0 auto;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 15px;">COMPRADOR 2</div>
+            <div style="margin: 2px">&nbsp;</div>
 
-            <table width="100%" cellspacing="0" style="color: #696969;margin: 15px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
+            <table width="100%" cellspacing="0" style="color: #696969;margin: 10px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
                 <tbody>
                 <tr>
                     <td style="width: 25%;border-bottom: 1px solid;border-right: 1px solid;">
@@ -339,11 +347,13 @@
 @endif
 
 @if($data['buyer']['type'] === 'Empresa')
-    <!-- Si el Tipo de Comprador es Empresa -->
+        <!-- Si el Tipo de Comprador es Empresa -->
         <!-- Se deben mostrar los datos de la Empresa + los Datos del Representante Legal de la Empresa-->
         <!-- Datos de la Empresa -->
+        <div style="margin: 5px">&nbsp;</div>
         <div style="color: #333;width: 100%;margin: 0 auto;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 15px;">DATOS DE LA EMPRESA</div>
-        <table width="100%" cellspacing="0" style="color: #696969;margin: 15px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
+        <div style="margin: 2px">&nbsp;</div>
+        <table width="100%" cellspacing="0" style="color: #696969;margin: 10px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
             <tbody>
             <tr>
                 <td style="width: 25%;border-bottom: 1px solid;border-right: 1px solid;">
@@ -396,7 +406,8 @@
 
         <!-- Datos del Representante Legal -->
         <div style="color: #333;width: 100%;margin: 0 auto;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 15px;">DATOS DEL REPRESENTANTE LEGAL</div>
-        <table width="100%" cellspacing="0" style="color: #696969;margin: 15px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
+            <div style="margin: 5px">&nbsp;</div>
+        <table width="100%" cellspacing="0" style="color: #696969;margin: 10px auto 30px;border: 1px solid;font-family: Helvetica,serif;font-size: 15px;">
             <tbody>
             <tr>
                 <td style="width: 25%;border-bottom: 1px solid;border-right: 1px solid;">

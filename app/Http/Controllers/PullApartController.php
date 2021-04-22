@@ -67,8 +67,6 @@ class PullApartController extends Controller
             $customer[] = Company::whereId($pullApart->visit->customer->company_id)->first()->toArray();
         }
 
-        ray($customer);
-
         $data = [
             'data' => [
                 'pull-apart' => $pullApart->toArray(),
@@ -89,27 +87,27 @@ class PullApartController extends Controller
         $pdf = \PDF::loadview('pull-apart.agreement', $data)
             ->save(storage_path('app/public/pull-aparts/' . $fileName));
 
-        $updated = PullApart::findOrFail($pullApart->id);
-
-        $updated->update([
-            'agreement' => 'pull-aparts/' . $fileName
-        ]);
-
-        ProjectApartment::findOrFail($updated->visit->project_apartment_id)->update([
-            'availability' => 'Separado'
-        ]);
-
-        foreach ($updated->visit->parkingLots as $parkingLot) {
-            ProjectParkingLot::findOrFail($parkingLot->project_parking_lot_id)->update([
-                'availability' => 'Separado'
-            ]);
-        }
-
-        foreach ($updated->visit->closets as $closet) {
-            ProjectCloset::findOrFail($closet->project_closet_id)->update([
-                'availability' => 'Separado'
-            ]);
-        }
+//        $updated = PullApart::findOrFail($pullApart->id);
+//
+//        $updated->update([
+//            'agreement' => 'pull-aparts/' . $fileName
+//        ]);
+//
+//        ProjectApartment::findOrFail($updated->visit->project_apartment_id)->update([
+//            'availability' => 'Separado'
+//        ]);
+//
+//        foreach ($updated->visit->parkingLots as $parkingLot) {
+//            ProjectParkingLot::findOrFail($parkingLot->project_parking_lot_id)->update([
+//                'availability' => 'Separado'
+//            ]);
+//        }
+//
+//        foreach ($updated->visit->closets as $closet) {
+//            ProjectCloset::findOrFail($closet->project_closet_id)->update([
+//                'availability' => 'Separado'
+//            ]);
+//        }
 
         return $pdf->stream($fileName);
     }
@@ -126,9 +124,9 @@ class PullApartController extends Controller
 
 <p><strong>PRIMERA.-</strong> <strong>LA VENDEDORA</strong> es propietaria de un terreno de 1005.00 m2 producto de la acumulaci&oacute;n de 2 lotes, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; con frente al Jir&oacute;n Faustino S&aacute;nchez Carri&oacute;n N&deg;154 y N&deg;160-164,&nbsp; los mismos que fueron acumulados en la Partida Registral N&deg; 13939934.</p>
 
-<p>Sobre dicho <strong>TERRENO</strong>, <strong>LA VENDEDORA</strong> se encuentra construyendo un proyecto inmobiliario denominado &ldquo;Mirador&rdquo;. El proyecto comprende la construcci&oacute;n de un edificio de 14 niveles de altura m&aacute;s azotea, con 97 departamentos de vivienda (88 tipo Flat y 9 tipo D&uacute;plex). Adem&aacute;s contar&aacute; con 5 estacionamientos dobles, 92 estacionamientos simples, 15 dep&oacute;sitos y 9 closets.</p>
+<p>Sobre dicho <strong>TERRENO</strong>, <strong>LA VENDEDORA</strong> se encuentra construyendo un proyecto inmobiliario denominado &ldquo;{PROYECTO}&rdquo;. El proyecto comprende la construcci&oacute;n de un edificio de 14 niveles de altura m&aacute;s azotea, con 97 departamentos de vivienda (88 tipo Flat y 9 tipo D&uacute;plex). Adem&aacute;s contar&aacute; con 5 estacionamientos dobles, 92 estacionamientos simples, 15 dep&oacute;sitos y 9 closets.</p>
 
-<p>&ldquo;Mirador&rdquo;, se desarrollar&aacute; de acuerdo a los planos y cuadros de acabados que <strong>EL(LA)(LOS) COMPRADOR(A)(ES)</strong>&nbsp; declara(n) conocer y que formaran parte de la minuta.</p>
+<p>&ldquo;{PROYECTO}&rdquo;, se desarrollar&aacute; de acuerdo a los planos y cuadros de acabados que <strong>EL(LA)(LOS) COMPRADOR(A)(ES)</strong>&nbsp; declara(n) conocer y que formaran parte de la minuta.</p>
 
 <p>El &aacute;rea, linderos y medidas perim&eacute;tricas definitivas de los Departamentos, Estacionamientos Simples/Dobles y Dep&oacute;sitos, as&iacute; como la participaci&oacute;n de los mismos en las &aacute;reas comunes se determinar&aacute;n en la Declaratoria de F&aacute;brica, Independizaci&oacute;n y Reglamento Interno que en su oportunidad otorgar&aacute; <strong>LA VENDEDORA</strong>, debiendo cumplir &eacute;sta con la inscripci&oacute;n en el Registro de Predios de Lima.</p>
 
