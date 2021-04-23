@@ -76,7 +76,7 @@ class PullApartController extends Controller
                         : null,
                     'info' => $customer
                 ],
-                'agreement' => $this->getModeloAgreement(),
+                'agreement' => $pullApart->visit->project->agreementModels->firstOrFail()->content,
                 'title' => 'separacion-' . now()->format('d/m/Y')
             ]
         ];

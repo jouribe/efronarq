@@ -31,6 +31,9 @@
             <button data-target="panel-8" class="tab text-gray-600 py-4 px-6 block">
                 Vendedores
             </button>
+            <button data-target="panel-9" class="tab text-gray-600 py-4 px-6 block">
+                Modelos de convenio
+            </button>
         </nav>
     </div>
     <div id="panels">
@@ -174,6 +177,19 @@
         <div class="panel-8 tab-content vendors py-5">
             <div class="py-12">
                 <livewire:projects.sellers :project="$project"/>
+            </div>
+        </div>
+        <div class="panel-9 tab-content agreements py-5">
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
+                        {{ __('Agreements') }}
+                    </h2>
+
+                    <div class="bg-white rounded-lg p-10">
+                        <livewire:projects.agreement-models :project="$project"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
