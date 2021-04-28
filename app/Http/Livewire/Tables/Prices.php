@@ -8,6 +8,10 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 class Prices extends LivewireDatatable
 {
+    public $searchable = 'project_apartments.name, project_apartment_types.type_name, project_apartment_types.bedroom';
+
+    public $exportable = true;
+
     public function builder()
     {
         return ProjectApartment::query()
@@ -18,7 +22,8 @@ class Prices extends LivewireDatatable
                 'project_apartment_types.blueprint', 'project_apartments.price', 'project_apartments.availability', 'projects.currency');
     }
 
-    public function columns()
+    /** @noinspection ClassMethodNameMatchesFieldNameInspection */
+    public function columns(): array
     {
         return [
             Column::name('project_apartments.id')
@@ -69,31 +74,31 @@ class Prices extends LivewireDatatable
                 })
                 ->label('Precio venta'),
 
-            Column::callback([
-                'project_apartments.price',
-                'project_apartments.availability',
-                'projects.currency'
-            ],
-                function ($price, $availability, $currency) {
-
-                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-
-                    return $prefix . number_format($price, 2);
-                })
-                ->label('Precio construcción'),
-
-            Column::callback([
-                'project_apartments.price',
-                'project_apartments.availability',
-                'projects.currency'
-            ],
-                function ($price, $availability, $currency) {
-
-                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-
-                    return $prefix . number_format($price, 2);
-                })
-                ->label('Precio entrega')
+//            Column::callback([
+//                'project_apartments.price',
+//                'project_apartments.availability',
+//                'projects.currency'
+//            ],
+//                function ($price, $availability, $currency) {
+//
+//                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+//
+//                    return $prefix . number_format($price, 2);
+//                })
+//                ->label('Precio construcción'),
+//
+//            Column::callback([
+//                'project_apartments.price',
+//                'project_apartments.availability',
+//                'projects.currency'
+//            ],
+//                function ($price, $availability, $currency) {
+//
+//                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+//
+//                    return $prefix . number_format($price, 2);
+//                })
+//                ->label('Precio entrega')
         ];
     }
 }
