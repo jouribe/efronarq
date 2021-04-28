@@ -26,6 +26,11 @@ class PullAparts extends LivewireDatatable
     public $hideable = 'add-pull-apart';
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Query builder
      *
      * @return Builder
@@ -59,16 +64,20 @@ class PullAparts extends LivewireDatatable
                 ->label(__('Quotation')),
 
             Column::name('projects.name')
-                ->label(__('Project')),
+                ->label(__('Project'))
+                ->filterable(),
 
             Column::name('customers.full_name')
-                ->label(__('Customer')),
+                ->label(__('Customer'))
+                ->filterable(),
 
             Column::name('project_apartments.name')
-                ->label(__('Apartment')),
+                ->label(__('Apartment'))
+                ->filterable(),
 
             DateColumn::name('pull_aparts.created_at')
-                ->label(__('Pull apart at')),
+                ->label(__('Pull apart at'))
+                ->filterable(),
 
             Column::callback(['visits.id', 'pull_aparts.status', 'pull_aparts.agreement'], function ($id, $status, $agreement) {
                 $actions = '';
@@ -130,6 +139,7 @@ class PullAparts extends LivewireDatatable
 
             Column::name('pull_aparts.status')
                 ->label(__('Status'))
+                ->filterable()
         ];
     }
 }

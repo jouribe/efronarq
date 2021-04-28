@@ -36,6 +36,11 @@ class Visits extends LivewireDatatable
     public $hideable = 'add';
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Table builder.
      *
      * @return Builder
@@ -71,16 +76,19 @@ class Visits extends LivewireDatatable
                 ->label(__('ID')),
 
             DateColumn::name('visits.created_at')
-                ->label(__('Visit date')),
+                ->label(__('Visit date'))
+                ->filterable(),
 
             Column::name('customers.full_name')
                 ->label(__('Customer')),
 
             Column::name('projects.name')
-                ->label(__('Project')),
+                ->label(__('Project'))
+                ->filterable(),
 
             Column::name('origins.name')
-                ->label(__('Origin')),
+                ->label(__('Origin'))
+                ->filterable(),
 
             Column::name('project_apartments.name')
                 ->label(__('Apartment')),
@@ -100,7 +108,8 @@ class Visits extends LivewireDatatable
                 ->label(__('Action status')),
 
             Column::name('visits.status')
-                ->label(__('Status')),
+                ->label(__('Status'))
+                ->filterable(),
 
             Column::name('visits.id')
                 ->label(__('Actions'))
