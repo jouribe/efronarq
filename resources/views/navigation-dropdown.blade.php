@@ -36,7 +36,7 @@
                     </x-jet-nav-link>
                     @endrole
 
-                    <x-jet-nav-link href="#" :active="request()->routeIs('reports')">
+                    <x-jet-nav-link href="{{ route('reports.prices') }}" :active="request()->routeIs('reports')" :active="request()->routeIs(['reports.prices'])">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </div>

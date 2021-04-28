@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PullApartController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitController;
@@ -25,3 +26,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/pull-apart/{id}/agreement
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class);
 Route::middleware(['auth:sanctum', 'verified'])->resource('sales', SaleController::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/sales/{id}/bill', [SaleController::class, 'bill'])->name('sales.bill');
+
+// Reports
+Route::middleware(['auth:sanctum', 'verified'])->get('/reports/prices', [ReportController::class, 'prices'])->name('reports.prices');
