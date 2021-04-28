@@ -1,30 +1,30 @@
 <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : 'tab1' }">
     <div class="nav-ventas mx-auto nav-interno mb-4">
         <nav class="tabs flex flex-col sm:flex-row">
-            <a href="#" x-on:click.prevent="tab='tab1'; ; window.location.hash = 'tab1'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab1' }">
+            <a href="#" x-on:click.prevent="tab='tab1'; ; window.location.hash = 'tab1'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab1' }">
                 Datos del Propietario
             </a>
-            <a href="#" x-on:click.prevent="tab='tab2'; ; window.location.hash = 'tab2'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab2' }">
+            <a href="#" x-on:click.prevent="tab='tab2'; ; window.location.hash = 'tab2'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab2' }">
                 Forma de Pago
             </a>
-            <a href="#" x-on:click.prevent="tab='tab3'; ; window.location.hash = 'tab3'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab3' }">
+            <a href="#" x-on:click.prevent="tab='tab3'; ; window.location.hash = 'tab3'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab3' }">
                 Convenio de Separación
             </a>
             @if($pullApart->payment_type !== 'Directo')
-                <a href="#" x-on:click.prevent="tab='tab4'; ; window.location.hash = 'tab4'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab4' }">
+                <a href="#" x-on:click.prevent="tab='tab4'; ; window.location.hash = 'tab4'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab4' }">
                     Control Documentario
                 </a>
             @endif
-            <a href="#" x-on:click.prevent="tab='tab5'; ; window.location.hash = 'tab5'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab5' }">
+            <a href="#" x-on:click.prevent="tab='tab5'; ; window.location.hash = 'tab5'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab5' }">
                 Minuta
             </a>
-            <a href="#" x-on:click.prevent="tab='tab6'; ; window.location.hash = 'tab6'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab6' }">
+            <a href="#" x-on:click.prevent="tab='tab6'; ; window.location.hash = 'tab6'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab6' }">
                 Cambios en Acabados
             </a>
-            <a href="#" x-on:click.prevent="tab='tab7'; ; window.location.hash = 'tab7'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab7' }">
+            <a href="#" x-on:click.prevent="tab='tab7'; ; window.location.hash = 'tab7'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab7' }">
                 Historial de Pago
             </a>
-            <a href="#" x-on:click.prevent="tab='tab8'; ; window.location.hash = 'tab8'" class="tab text-gray-600 py-4 px-6 block" :class="{ 'active': tab === 'tab8' }">
+            <a href="#" x-on:click.prevent="tab='tab8'; ; window.location.hash = 'tab8'" class="text-gray-600 py-4 px-6 block" :class="{ 'border-b-2 border-blue-500': tab === 'tab8' }">
                 Entrega
             </a>
         </nav>

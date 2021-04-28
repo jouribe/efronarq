@@ -1524,6 +1524,15 @@ class Create extends Component
             'is_active' => true
         ]);
 
+        $this->pullApart->update([
+            'status' => 'Pendiente Aprobación'
+        ]);
+
+        $this->pullApart->comments->create([
+            'pull_apart_id' => $this->pullApart->id,
+            'status' => 'Pendiente Aprobación',
+        ]);
+
         session()->flash('billValidation', !is_null($this->pullApart) ? __('Minuta actualizada con éxito!') : __('Minuta creada con éxito!'));
         return response()->download(storage_path('app/public/bills/') . $billName);
     }
@@ -1661,7 +1670,8 @@ class Create extends Component
         ], [
             'signed_separation_agreement' => $quotationPath,
             'sworn_declaration' => $swornDeclarationPath,
-            'is_sale' => 1
+            'is_sale' => 1,
+            'status' => 'Registrado'
         ]);
 
         session()->flash('quotationValidation', !is_null($this->pullApart) ? __('Convenio de separación actualizado con éxito!') : __('Convenio de separación creado con éxito!'));
@@ -1695,8 +1705,10 @@ class Create extends Component
     public function storeOwner(): void
     {
         if (!is_null($this->pullApart)) {
-            PullApart::whereId($this->pullApart->id)->update([
-                'buyer_type' => $this->buyerType
+            $this->pullApart->update([
+                'buyer_type' => $this->buyerType,
+                'is_sale' => 1,
+                'status' => 'Registrado'
             ]);
         }
 
@@ -1728,25 +1740,15 @@ class Create extends Component
                     'phone' => $this->companyPhone
                 ]);
 
-                $customerCompanyByDni = Customer::whereDni($this->customerDocumentSecond)->first();
-
-                Customer::updateOrCreate([
-                    'id' => $customerCompanyByDni->id
-                ], [
-                    'first_name' => $this->customerFirstNameSecond,
-                    'last_name' => $this->customerLastNameSecond,
-                    'dni' => $this->customerDocumentSecond,
-                    'email' => $this->customerEmailSecond,
-                    'phone' => $this->customerPhoneSecond,
-                    'single' => $this->statusList === 'Soltero(a)',
-                    'address' => $this->customerAddressSecond,
+                $customer->update([
                     'position' => $this->customerPosition,
                     'company_id' => $company->id,
                     'document_nro' => $this->customerDocumentNro
                 ]);
             }
 
-            if ($this->buyerType === 'Sociedad Conyugal' || $this->buyerType = 'Copropietario') {
+            if ($this->buyerType === 'Sociedad Conyugal' || $this->buyerType === 'Copropietario') {
+
                 $customerByDni = Customer::whereDni($this->customerDocumentSecond)->first();
 
                 $customerSecond = Customer::updateOrCreate([
@@ -1876,15 +1878,17 @@ class Create extends Component
             $validateAmount = 0;
         }
 
-        if ($validateAmount <= 0) {
+        if ($validateAmount <= 0.9) {
 
             if (session()->has('amountValidation')) {
                 session()->forget('amountValidation');
             }
 
-            PullApart::whereId($this->pullApart->id)->update([
+            $this->pullApart->update([
                 'payment_type' => $this->paymentType,
                 'bank_id' => $this->bankId,
+                'is_sale' => 1,
+                'status' => 'Registrado'
             ]);
 
             $this->removeFeesIfExist();

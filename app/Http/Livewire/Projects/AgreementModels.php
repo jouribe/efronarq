@@ -11,23 +11,23 @@ use Livewire\Component;
 class AgreementModels extends Component
 {
     /**
-    * @var mixed $projectAgreementModelId
-    */
+     * @var mixed $projectAgreementModelId
+     */
     public $projectAgreementModelId;
 
     /**
-    * @var mixed $project
-    */
+     * @var mixed $project
+     */
     public $project;
 
     /**
-    * @var mixed $content
-    */
-    public $content;
+     * @var mixed $contentAgreement
+     */
+    public $contentAgreement;
 
     /**
      * Get the view / contents that represent the component.
-     w
+     * w
      * @return Application|Factory|View
      */
     public function render()
@@ -36,8 +36,8 @@ class AgreementModels extends Component
 
         $agreements = $this->project->agreementModels;
 
-        if ($agreements->count() > 0 ) {
-            $this->content = $agreements->first()->content;
+        if ($agreements->count() > 0) {
+            $this->contentAgreement = $agreements->first()->content;
             $this->projectAgreementModelId = $agreements->first()->id;
         }
 
@@ -46,11 +46,16 @@ class AgreementModels extends Component
 
     public function store(): void
     {
+        ray('id: ', $this->projectAgreementModelId);
+        ray('projectId: ', $this->project->id);
+        ray('content: ', $this->contentAgreement);
+        ray()->pause();
+
         ProjectAgreementModel::updateOrCreate([
             'id' => $this->projectAgreementModelId
         ], [
             'project_id' => $this->project->id,
-            'content' => $this->content
+            'content' => $this->contentAgreement
         ]);
     }
 }

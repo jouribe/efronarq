@@ -188,6 +188,17 @@
 
                     <div class="bg-white rounded-lg p-10">
                         <livewire:projects.agreement-models :project="$project"/>
+
+                        <script>
+                            tinymce.remove("#contentAgreement");
+
+                            tinymce.init({
+                                selector: '#contentAgreement',
+                                //toolbar: 'undo redo  | bold italic underline ',
+                                menubar: false,
+                                height: '600'
+                            })
+                        </script>
                     </div>
                 </div>
             </div>
