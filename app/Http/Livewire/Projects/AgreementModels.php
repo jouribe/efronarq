@@ -25,6 +25,7 @@ class AgreementModels extends Component
      */
     public $contentAgreement;
 
+
     /**
      * Get the view / contents that represent the component.
      * w

@@ -26,6 +26,11 @@ class Sales extends LivewireDatatable
     public $hideable = 'add-pull-apart';
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Query builder
      *
      * @return Builder

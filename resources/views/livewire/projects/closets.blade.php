@@ -7,5 +7,7 @@
         @include('projects.modals.closets-create')
     @endif
 
-    <livewire:tables.project-closets :project-id="$project->id"/>
+    <livewire:tables.project-closets
+        :project-id="$project->id"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])"/>
 </div>

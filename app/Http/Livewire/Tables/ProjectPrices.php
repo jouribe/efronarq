@@ -32,6 +32,11 @@ class ProjectPrices extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * @var mixed $listeners;
      */
     protected $listeners = [
@@ -79,12 +84,12 @@ class ProjectPrices extends LivewireDatatable
             })
                 ->label(__('Parking discount')),
 
-            Column::callback('currency', function ($currency) {
-                return $currency === 'USD'
-                    ? '<span>Dólares</span>'
-                    : '<span>Soles</span>';
-            })
-                ->label(__('Currency')),
+//            Column::callback('currency', function ($currency) {
+//                return $currency === 'USD'
+//                    ? '<span>Dólares</span>'
+//                    : '<span>Soles</span>';
+//            })
+//                ->label(__('Currency')),
 
             Column::name('id')
                 ->label(__('Actions'))

@@ -35,6 +35,11 @@ class ProjectSellers extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Build query
      *
      * @return Builder

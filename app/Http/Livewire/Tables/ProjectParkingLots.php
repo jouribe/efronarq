@@ -38,6 +38,11 @@ class ProjectParkingLots extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Query Builder
      *
      * @return Builder

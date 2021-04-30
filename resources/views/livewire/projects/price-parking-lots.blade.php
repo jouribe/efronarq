@@ -7,5 +7,7 @@
         @include('projects.modals.price-parking-lots-create')
     @endif
 
-    <livewire:tables.project-price-parking-lots :project-id="$project->id"/>
+    <livewire:tables.project-price-parking-lots
+        :project-id="$project->id"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])" />
 </div>

@@ -7,5 +7,7 @@
         @include('projects.modals.price-apartments-create')
     @endif
 
-    <livewire:tables.project-price-apartments :project-id="$project->id"/>
+    <livewire:tables.project-price-apartments
+        :project-id="$project->id"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])" />
 </div>

@@ -7,5 +7,7 @@
         @include('projects.modals.address-create')
     @endif
 
-    <livewire:tables.project-addresses :project-id="$project->id"/>
+    <livewire:tables.project-addresses
+        :project-id="$project->id"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])"/>
 </div>

@@ -35,6 +35,11 @@ class ProjectPriceParkingLots extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Query Builder.
      *
      * @return Builder
@@ -43,7 +48,6 @@ class ProjectPriceParkingLots extends LivewireDatatable
     {
         return ProjectPriceParkingLot::query()->whereProjectId($this->projectId);
     }
-
 
     /**
      * Table columns

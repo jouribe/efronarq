@@ -7,5 +7,8 @@
         @include('projects.modals.price-closets-create')
     @endif
 
-    <livewire:tables.project-price-closets :project-id="$project->id" :hide-create="$project->closetPrices->count() > 0"/>
+    <livewire:tables.project-price-closets
+        :project-id="$project->id"
+        :hide-create="$project->closetPrices->count() > 0"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])"/>
 </div>

@@ -32,6 +32,11 @@ class ProjectPriceClosets extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * @var mixed $listeners
      */
     protected $listeners = [

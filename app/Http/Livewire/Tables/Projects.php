@@ -43,6 +43,11 @@ class Projects extends LivewireDatatable
     public $route;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Table columns
      *
      * @return array

@@ -35,6 +35,11 @@ class ProjectClosets extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var bool $isAdmin
+     */
+    public bool $isAdmin;
+
+    /**
      * Query builder
      *
      * @return Builder

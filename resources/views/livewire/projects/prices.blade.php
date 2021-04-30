@@ -7,6 +7,9 @@
         @include('projects.modals.prices-create')
     @endif
 
-    <livewire:tables.project-prices :project-id="$project->id" :hide-create="$project->prices->count() > 0"/>
+    <livewire:tables.project-prices
+        :project-id="$project->id"
+        :hide-create="$project->prices->count() > 0"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])" />
 
 </div>

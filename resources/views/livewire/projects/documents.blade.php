@@ -7,5 +7,7 @@
         @include('projects.modals.documents-create')
     @endif
 
-    <livewire:tables.project-documents :project-id="$project->id"/>
+    <livewire:tables.project-documents
+        :project-id="$project->id"
+        :is-admin="auth()->user()->hasRole(['admin', 'asistente'])"/>
 </div>
