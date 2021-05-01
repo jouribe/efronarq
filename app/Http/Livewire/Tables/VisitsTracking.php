@@ -59,7 +59,7 @@ class VisitsTracking extends LivewireDatatable
      */
     public function columns(): array
     {
-        return [
+        $columns = [
             DateColumn::name('created_at')
                 ->label(__('Created at')),
 
@@ -88,11 +88,20 @@ class VisitsTracking extends LivewireDatatable
                         return $status;
                 }
             })
-                ->label(__('Status')),
-
-            Column::name('id')
-                ->label(__('Actions'))
-                ->view('visits.actions.tracking'),
+                ->label(__('Status'))
         ];
+
+        /** @noinspection NullPointerExceptionInspection */
+        if (auth()->user()->hasRole(['admin', 'asistente'])) {
+            $columns = \Arr::add(
+                $columns,
+                null,
+                Column::name('id')
+                    ->label(__('Actions'))
+                    ->view('visits.actions.tracking'),
+            );
+        }
+
+        return $columns;
     }
 }

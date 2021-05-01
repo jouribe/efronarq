@@ -50,8 +50,8 @@ class ProjectClosets extends LivewireDatatable
             ->leftJoin('projects', 'projects.id', 'project_closets.project_id')
             ->leftJoin('project_price_closets', 'project_price_closets.project_id', 'projects.id')
             ->where('project_closets.project_id', $this->projectId)
-            ->groupBy('project_closets.id', 'project_closets.floor', 'project_closets.closet', 'project_closets.roofed_area', 'project_closets.availability', 'project_closets.blueprint',
-                'project_closets.price');
+            ->groupBy('project_closets.id', 'project_closets.floor', 'project_closets.closet', 'project_closets.roofed_area',
+                'project_closets.availability', 'project_closets.blueprint', 'project_closets.price', 'projects.currency');
     }
 
     /**
@@ -78,8 +78,10 @@ class ProjectClosets extends LivewireDatatable
             Column::name('project_closets.availability')
                 ->label(__('Availability')),
 
-            Column::callback(['project_closets.price'], function ($price) {
-                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
+            Column::callback(['project_closets.price', 'projects.currency'], function ($price, $currency) {
+                $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                return '<pre>' . $prefix . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 

@@ -51,7 +51,9 @@ class ProjectPriceClosets extends LivewireDatatable
      */
     public function builder(): Builder
     {
-        return ProjectPriceCloset::query()->whereProjectId($this->projectId);
+        return ProjectPriceCloset::query()
+            ->leftJoin('projects', 'project_price_closets.project_id', 'projects.id')
+            ->where('project_price_closets.project_id', $this->projectId);
     }
 
     /**
@@ -64,8 +66,10 @@ class ProjectPriceClosets extends LivewireDatatable
     public function columns(): array
     {
         return [
-            Column::callback('price', function ($price) {
-                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
+            Column::callback(['price', 'projects.currency'], function ($price, $currency) {
+                $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                return '<pre>' . $prefix . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Storage or closet value per area') . ' (m2)'),
 

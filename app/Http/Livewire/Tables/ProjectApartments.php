@@ -51,9 +51,12 @@ class ProjectApartments extends LivewireDatatable
             ->leftJoin('project_price_apartments', function ($join) {
                 $join->on('project_price_apartments.project_apartment_type_id', 'project_apartment_types.id');
             })
+            ->leftJoin('projects', 'project_apartments.project_id', 'projects.id')
             ->where('project_apartments.project_id', $this->projectId)
-            ->groupBy('availability', 'project_apartment_types.type_name', 'start_floor', 'project_apartment_types.roofed_area', 'project_apartment_types.free_area',
-                'project_price_apartments.price_area', 'parking_lots', 'closets', 'order', 'id', 'project_apartments.name', 'project_apartments.price');
+            ->groupBy('project_apartments.availability', 'project_apartment_types.type_name', 'project_apartments.start_floor',
+                'project_apartment_types.roofed_area','project_apartment_types.free_area', 'project_price_apartments.price_area',
+                'project_apartments.parking_lots','project_apartments.closets', 'project_apartments.order', 'project_apartments.id',
+                'project_apartments.name', 'project_apartments.price', 'projects.currency');
     }
 
     /**
@@ -66,33 +69,35 @@ class ProjectApartments extends LivewireDatatable
     public function columns(): array
     {
         return [
-            Column::name('availability')
+            Column::name('project_apartments.availability')
                 ->label(__('Availability')),
 
             Column::name('project_apartment_types.type_name')
                 ->label(__('Type')),
 
-            Column::name('start_floor')
+            Column::name('project_apartments.start_floor')
                 ->label(__('Floor')),
 
             Column::name('project_apartments.name')
                 ->label(__('Apartment name')),
 
-            Column::callback('project_apartments.price', function ($price) {
-                return '<pre>US$ ' . number_format((float)$price, 2) . '</pre>';
+            Column::callback(['project_apartments.price', 'projects.currency'], function ($price, $currency) {
+                $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                return '<pre>' . $prefix . number_format((float)$price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 
-            Column::name('parking_lots')
+            Column::name('project_apartments.parking_lots')
                 ->label(__('Parking lots')),
 
-            Column::name('closets')
+            Column::name('project_apartments.closets')
                 ->label(__('Closets')),
 
-            Column::name('order')
+            Column::name('project_apartments.order')
                 ->label(__('Order')),
 
-            Column::name('id')
+            Column::name('project_apartments.id')
                 ->label(__('Actions'))
                 ->view('projects.actions.apartment')
         ];

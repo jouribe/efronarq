@@ -20,7 +20,7 @@ class ProjectParkingLots extends LivewireDatatable
     /**
      * @var mixed $searchable
      */
-    public $searchable = 'floor, type, parking_lot, availability';
+    public $searchable = 'project_parking_lots.floor, project_parking_lots.type, project_parking_lots.parking_lot, project_parking_lots.availability';
 
     /**
      * @var mixed $hideable
@@ -59,10 +59,13 @@ class ProjectParkingLots extends LivewireDatatable
             })
             ->leftJoin('project_addresses', 'project_addresses.id', 'project_parking_lots.address_id')
             ->where('project_parking_lots.project_id', $this->projectId)
-            ->groupBy('project_parking_lots.id', 'project_parking_lots.floor', 'project_parking_lots.parking_lot', 'project_parking_lots.roofed_area', 'project_parking_lots.free_area',
-                'project_parking_lots.type', 'project_parking_lots.availability', 'project_parking_lots.discount', 'project_parking_lots.closet', 'project_price_parking_lots.type',
-                'project_price_parking_lots.floor', 'project_price_parking_lots.price', 'project_prices.free_area', 'project_prices.discount_presale', 'project_prices.delivery_increment',
-                'project_prices.parking_discount', 'project_parking_lots.blueprint', 'project_parking_lots.price');
+            ->groupBy('project_parking_lots.id', 'project_parking_lots.floor', 'project_parking_lots.parking_lot',
+                'project_parking_lots.roofed_area', 'project_parking_lots.free_area', 'project_parking_lots.type',
+                'project_parking_lots.availability', 'project_parking_lots.discount', 'project_parking_lots.closet',
+                'project_price_parking_lots.type', 'project_price_parking_lots.floor', 'project_price_parking_lots.price',
+                'project_prices.free_area', 'project_prices.discount_presale', 'project_prices.delivery_increment',
+                'project_prices.parking_discount', 'project_parking_lots.blueprint', 'project_parking_lots.price',
+                'projects.currency');
     }
 
     /**
@@ -103,8 +106,10 @@ class ProjectParkingLots extends LivewireDatatable
             //            BooleanColumn::name('closet')
             //                ->label(__('Closet')),
 
-            Column::callback('project_parking_lots.price', function ($price) {
-                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
+            Column::callback(['project_parking_lots.price', 'projects.currency'], function ($price, $currency) {
+                $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                return '<pre>' . $prefix . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Sale value')),
 

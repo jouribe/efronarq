@@ -46,7 +46,9 @@ class ProjectPriceParkingLots extends LivewireDatatable
      */
     public function builder(): Builder
     {
-        return ProjectPriceParkingLot::query()->whereProjectId($this->projectId);
+        return ProjectPriceParkingLot::query()
+            ->leftJoin('projects', 'project_price_parking_lots.project_id', 'projects.id')
+            ->where('project_price_parking_lots.project_id', $this->projectId);
     }
 
     /**
@@ -65,8 +67,10 @@ class ProjectPriceParkingLots extends LivewireDatatable
             Column::name('type')
                 ->label(__('Type')),
 
-            Column::callback('price', function ($price) {
-                return '<pre>US$ ' . number_format($price, 2) . '</pre>';
+            Column::callback(['price', 'projects.currency'], function ($price, $currency) {
+                $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                return '<pre>' . $prefix . number_format($price, 2) . '</pre>';
             })
                 ->label(__('Price')),
 

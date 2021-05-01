@@ -42,11 +42,11 @@
                         </div>
                     </div>
 
-                    <div class="p-4">
-                        <x-jet-label for="currency">{{ __('Currency') }}</x-jet-label>
-                        <x-dropdown-list :items="$currencyTypesList" id="currency" wire:model="currency" />
-                        @error('currency') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
-                    </div>
+                    {{--<div class="p-4">--}}
+                    {{--    <x-jet-label for="currency">{{ __('Currency') }}</x-jet-label>--}}
+                    {{--    <x-dropdown-list :items="$currencyTypesList" id="currency" wire:model="currency" />--}}
+                    {{--    @error('currency') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror--}}
+                    {{--</div>--}}
 
                     <div class="flex justify-between p-4">
                         <x-jet-button type="button" wire:click="closeModal()">{{ __('Close') }}</x-jet-button>

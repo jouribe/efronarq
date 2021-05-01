@@ -48,7 +48,7 @@ class Visits extends LivewireDatatable
     public function builder(): Builder
     {
         return Visit::query()
-            ->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
+            //->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
@@ -56,8 +56,10 @@ class Visits extends LivewireDatatable
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
             //->latestTracking()
             ->onlyForMe()
-            ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested', 'visits.status',
-                'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status');
+            ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested',
+                'visits.status', 'project_apartments.name',
+            //'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status'
+            );
     }
 
     /**
@@ -98,14 +100,14 @@ class Visits extends LivewireDatatable
             })
                 ->label(__('Interested')),
 
-            Column::name('visit_tracking.action')
-                ->label(__('Next action')),
-
-            DateColumn::name('visit_tracking.action_at')
-                ->label(__('Action at')),
-
-            Column::name('visit_tracking.status')
-                ->label(__('Action status')),
+            //            Column::name('visit_tracking.action')
+            //                ->label(__('Next action')),
+            //
+            //            DateColumn::name('visit_tracking.action_at')
+            //                ->label(__('Action at')),
+            //
+            //            Column::name('visit_tracking.status')
+            //                ->label(__('Action status')),
 
             Column::name('visits.status')
                 ->label(__('Status'))

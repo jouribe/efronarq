@@ -128,11 +128,10 @@ class Prices extends Component
     {
         // Validation
         $this->validate([
-            'free_area' => 'required|integer',
-            'discount_presale' => 'required|integer',
-            'delivery_increment' => 'required|integer',
-            'parking_discount' => 'required|integer',
-            'currency' => 'required'
+            'free_area' => 'required',
+            'discount_presale' => 'required',
+            'delivery_increment' => 'required',
+            'parking_discount' => 'required'
         ]);
 
         // Save project address
@@ -144,8 +143,7 @@ class Prices extends Component
                 'free_area' => $this->free_area,
                 'discount_presale' => $this->discount_presale,
                 'delivery_increment' => $this->delivery_increment,
-                'parking_discount' => $this->parking_discount,
-                'currency' => $this->currency
+                'parking_discount' => $this->parking_discount
             ]);
 
         session()->flash('message', $this->project_price_id ? __('General price updated successfully') : __('General price created successfully'));

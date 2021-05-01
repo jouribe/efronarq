@@ -7,5 +7,7 @@
         @include('visits.modals.tracking-create')
     @endif
 
-    <livewire:tables.visits-tracking :visit-id="$visit->id" :hideable="auth()->user()->hasRole('vendedor') ? 'add-modal' : null"/>
+    <livewire:tables.visits-tracking
+        :visit-id="$visit->id"
+        :hideable="auth()->user()->hasRole('vendedor') ? 'add-modal' : null"/>
 </div>
