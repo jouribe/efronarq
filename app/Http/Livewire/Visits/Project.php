@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Visits;
 use App\Models\ProjectApartment;
 use App\Models\ProjectCloset;
 use App\Models\ProjectParkingLot;
+use App\Models\Promotion;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -93,6 +94,10 @@ class Project extends Component
     {
         if (!is_null($this->visit)) {
             $this->project_id = $this->visit->project_id;
+        }
+
+        if(!is_null($this->project_id)) {
+            $this->discountList = Promotion::whereProjectId($this->project_id)->pluck('name', 'id');
         }
 
         $this->getProjectApartmentList();
