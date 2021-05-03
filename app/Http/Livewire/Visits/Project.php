@@ -97,7 +97,10 @@ class Project extends Component
         }
 
         if(!is_null($this->project_id)) {
-            $this->discountList = Promotion::whereProjectId($this->project_id)->pluck('name', 'id');
+            $this->discountList = Promotion::whereProjectId($this->project_id)
+                ->where('start_at' , '<=', now())
+                ->where('end_at', '>=', now())
+                ->pluck('name', 'id');
         }
 
         $this->getProjectApartmentList();
