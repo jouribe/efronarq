@@ -79,31 +79,47 @@ class Prices extends LivewireDatatable
                 ->label('Precio venta')
                 ->filterable(),
 
-            //            Column::callback([
-            //                'project_apartments.price',
-            //                'project_apartments.availability',
-            //                'projects.currency'
-            //            ],
-            //                function ($price, $availability, $currency) {
-            //
-            //                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-            //
-            //                    return $prefix . number_format($price, 2);
-            //                })
-            //                ->label('Precio construcción'),
-            //
-            //            Column::callback([
-            //                'project_apartments.price',
-            //                'project_apartments.availability',
-            //                'projects.currency'
-            //            ],
-            //                function ($price, $availability, $currency) {
-            //
-            //                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-            //
-            //                    return $prefix . number_format($price, 2);
-            //                })
-            //                ->label('Precio entrega')
+            Column::callback([
+                'project_apartments.price',
+                'project_apartments.availability',
+                'projects.currency',
+                'project_apartment_types.roofed_area'
+            ],
+                function ($price, $availability, $currency, $roofed) {
+
+                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                    switch ($availability) {
+                        case "Vendido":
+                        case "Separado":
+                            return strtoupper($availability);
+                        default:
+                            return $prefix . number_format($price, 2);
+                    }
+                })
+                ->label('Precio construcción')
+                ->filterable(),
+
+            Column::callback([
+                'project_apartments.price',
+                'project_apartments.availability',
+                'projects.currency',
+                'project_apartment_types.free_area'
+            ],
+                function ($price, $availability, $currency, $free) {
+
+                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+
+                    switch ($availability) {
+                        case "Vendido":
+                        case "Separado":
+                            return strtoupper($availability);
+                        default:
+                            return $prefix . number_format($price, 2);
+                    }
+                })
+                ->label('Precio entrega')
+                ->filterable()
         ];
     }
 }
