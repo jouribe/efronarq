@@ -36,9 +36,18 @@
                     </x-jet-nav-link>
                     @endrole
 
-                    <x-jet-nav-link href="{{ route('reports.prices') }}" :active="request()->routeIs('reports')" :active="request()->routeIs(['reports.prices'])">
-                        {{ __('Reports') }}
-                    </x-jet-nav-link>
+                    <x-jet-dropdown>
+                        <x-slot name="trigger">
+                            <x-jet-nav-link href="javascript:" :active="request()->routeIs('reports')" :active="request()->routeIs(['reports.prices'])">
+                                {{ __('Reports') }}
+                            </x-jet-nav-link>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-jet-dropdown-link href="{{ route('reports.prices') }}">{{ __('Lista de Precios') }}</x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="{{ route('reports.documents') }}">{{ __('Lista de Documentos') }}</x-jet-dropdown-link>
+                        </x-slot>
+                    </x-jet-dropdown>
                 </div>
             </div>
 

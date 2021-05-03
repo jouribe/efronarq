@@ -33,3 +33,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('promotions', [PromotionCon
 
 // Reports
 Route::middleware(['auth:sanctum', 'verified'])->get('/reports/prices', [ReportController::class, 'prices'])->name('reports.prices');
+Route::middleware(['auth:sanctum', 'verified'])->get('/reports/documents', [ReportController::class, 'documents'])->name('reports.documents');

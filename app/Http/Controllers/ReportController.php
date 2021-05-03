@@ -8,4 +8,9 @@ class ReportController extends Controller
     {
         return view('reports.prices');
     }
+
+    public function documents()
+    {
+        return view('reports.documents');
+    }
 }
