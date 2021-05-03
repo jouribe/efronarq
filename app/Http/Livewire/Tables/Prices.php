@@ -31,19 +31,23 @@ class Prices extends LivewireDatatable
                 ->hide(),
 
             Column::name('project_apartments.name')
-                ->label(__('Apartment')),
+                ->label(__('Apartment'))
+                ->filterable(),
 
             Column::name('project_apartment_types.type_name')
-                ->label(__('Type')),
+                ->label(__('Type'))
+                ->filterable(),
 
             Column::name('project_apartment_types.bedroom')
                 ->label('Nro. Dormitorios'),
 
             Column::name('project_apartment_types.roofed_area')
-                ->label('A. Techada (m2)'),
+                ->label('A. Techada (m2)')
+                ->filterable(),
 
             Column::name('project_apartment_types.free_area')
-                ->label('A. Libre (m2)'),
+                ->label('A. Libre (m2)')
+                ->filterable(),
 
             Column::callback(['project_apartment_types.roofed_area', 'project_apartment_types.free_area'], function ($roofed, $free) {
                 return number_format($roofed + $free, 2);
@@ -72,33 +76,34 @@ class Prices extends LivewireDatatable
                             return $prefix . number_format($price, 2);
                     }
                 })
-                ->label('Precio venta'),
+                ->label('Precio venta')
+                ->filterable(),
 
-//            Column::callback([
-//                'project_apartments.price',
-//                'project_apartments.availability',
-//                'projects.currency'
-//            ],
-//                function ($price, $availability, $currency) {
-//
-//                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-//
-//                    return $prefix . number_format($price, 2);
-//                })
-//                ->label('Precio construcción'),
-//
-//            Column::callback([
-//                'project_apartments.price',
-//                'project_apartments.availability',
-//                'projects.currency'
-//            ],
-//                function ($price, $availability, $currency) {
-//
-//                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
-//
-//                    return $prefix . number_format($price, 2);
-//                })
-//                ->label('Precio entrega')
+            //            Column::callback([
+            //                'project_apartments.price',
+            //                'project_apartments.availability',
+            //                'projects.currency'
+            //            ],
+            //                function ($price, $availability, $currency) {
+            //
+            //                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+            //
+            //                    return $prefix . number_format($price, 2);
+            //                })
+            //                ->label('Precio construcción'),
+            //
+            //            Column::callback([
+            //                'project_apartments.price',
+            //                'project_apartments.availability',
+            //                'projects.currency'
+            //            ],
+            //                function ($price, $availability, $currency) {
+            //
+            //                    $prefix = $currency === 'PEN' ? 'S/. ' : 'US$. ';
+            //
+            //                    return $prefix . number_format($price, 2);
+            //                })
+            //                ->label('Precio entrega')
         ];
     }
 }
