@@ -94,7 +94,7 @@
                             {{ __('Banks') }}
                         </x-jet-dropdown-link>
 
-                        <x-jet-dropdown-link href="#">
+                        <x-jet-dropdown-link href="{{ route('origins.index') }}">
                             {{ __('Origin') }}
                         </x-jet-dropdown-link>
 
@@ -102,7 +102,7 @@
                             {{ __('Users') }}
                         </x-jet-dropdown-link>
 
-                        <x-jet-dropdown-link href="#">
+                        <x-jet-dropdown-link href="{{ route('promotions.index') }}">
                             {{ __('Promotions') }}
                         </x-jet-dropdown-link>
                         @endrole

@@ -160,10 +160,22 @@ class Project extends Model
     }
 
     /**
+     * Agreement model
+     *
      * @return HasMany
      */
     public function agreementModels(): HasMany
     {
         return $this->hasMany(ProjectAgreementModel::class);
+    }
+
+    /**
+     * Promotion
+     *
+     * @return HasMany
+     */
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class);
     }
 }
