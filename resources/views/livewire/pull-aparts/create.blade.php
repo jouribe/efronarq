@@ -7,16 +7,6 @@
 
         <div class="bg-white p-6 rounded-lg shadow mb-10">
 
-            @if(session()->has('message'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('message') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <form wire:submit.prevent="storeGeneralPrice" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
@@ -107,6 +97,16 @@
                     </div>
                 @endif
             </form>
+
+            @if(session()->has('message'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('message') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
 
         @if(!is_null($pullApart))
@@ -115,15 +115,6 @@
             </h2>
 
             <div class="bg-white p-6 rounded-lg shadow mb-10">
-                @if(session()->has('customerUpdated'))
-                    <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('customerUpdated') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 <form wire:submit.prevent="storeOwner" autocomplete="off">
                     <div class="flex-col">
@@ -406,6 +397,16 @@
                         </div>
                     @endif
                 </form>
+
+                @if(session()->has('customerUpdated'))
+                    <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ session('customerUpdated') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
@@ -413,26 +414,6 @@
             </h2>
 
             <div class="bg-white p-6 rounded-lg shadow mb-10">
-
-                @if(session()->has('amountValidation'))
-                    <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('amountValidation') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                @if(session()->has('feeSuccess'))
-                    <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('feeSuccess') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 <form wire:submit.prevent="storePullApartFee" autocomplete="off">
                     <div class="flex-row">
@@ -610,6 +591,27 @@
                         </div>
                     @endif
                 </form>
+
+                @if(session()->has('amountValidation'))
+                    <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ session('amountValidation') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if(session()->has('feeSuccess'))
+                    <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ session('feeSuccess') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
@@ -617,15 +619,6 @@
             </h2>
 
             <div class="bg-white p-6 rounded-lg shadow mb-10">
-                @if(session()->has('datesUpdated'))
-                    <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('datesUpdated') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 <form wire:submit.prevent="storeAgreementAndSignMinute" autocomplete="off">
                     <div class="flex-row">
@@ -659,6 +652,17 @@
                         </div>
                     @endif
                 </form>
+
+                @if(session()->has('datesUpdated'))
+                    <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ session('datesUpdated') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
@@ -670,16 +674,6 @@
             </div>
 
             <div class="bg-white p-6 rounded-lg shadow">
-
-                @if(session()->has('sendToApprove'))
-                    <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('sendToApprove') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 <form wire:submit.prevent="sendToApprove" autocomplete="off">
 
@@ -711,6 +705,16 @@
                         </div>
                     </div>
                 </form>
+
+                @if(session()->has('sendToApprove'))
+                    <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ session('sendToApprove') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         @endif
 

@@ -32,15 +32,6 @@
 
     <div x-show="tab == 'tab1'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('customerUpdated'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('customerUpdated') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
             <form wire:submit.prevent="storeOwner" autocomplete="off">
                 <div class="flex-col">
                     <div class="p-4 w-1/2">
@@ -314,28 +305,20 @@
                     </div>
                 </div>
             </form>
+
+            @if(session()->has('customerUpdated'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('customerUpdated') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     <div x-show="tab == 'tab2'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('amountValidation'))
-                <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('amountValidation') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            @if(session()->has('feeSuccess'))
-                <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('feeSuccess') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
             <form wire:submit.prevent="storePullApartFee" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
@@ -502,20 +485,29 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-    <div x-show="tab == 'tab3'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('quotationValidation'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+
+            @if(session()->has('amountValidation'))
+                <div class="p-6 bg-red-500 border-t-4 border-red-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
                     <div class="flex">
                         <div>
-                            <p class="text-sm">{{ session('quotationValidation') }}</p>
+                            <p class="text-sm">{{ session('amountValidation') }}</p>
                         </div>
                     </div>
                 </div>
             @endif
-
+            @if(session()->has('feeSuccess'))
+                <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('feeSuccess') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+    <div x-show="tab == 'tab3'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white p-6 rounded-lg shadow mb-10">
             <form wire:submit.prevent="storeQuotation" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
@@ -589,21 +581,21 @@
                     </div>
                 </div>
             </form>
+
+            @if(session()->has('quotationValidation'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('quotationValidation') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     @if($pullApart->payment_type !== 'Directo')
         <div x-show="tab == 'tab4'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('documentsControlValidation'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('documentsControlValidation') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <form wire:submit.prevent="storeDocumentControl" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex">
@@ -653,21 +645,21 @@
                     </div>
                 @endif
             </form>
+
+            @if(session()->has('documentsControlValidation'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('documentsControlValidation') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     @endif
     <div x-show="tab == 'tab5'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('billValidation'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('billValidation') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <form wire:submit.prevent="storeSaleBill" autocomplete="off">
                 <div class="flex flex-row">
                     <div class="w-1/2">
@@ -861,19 +853,20 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-    <div x-show="tab == 'tab6'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('changesValidation'))
+
+            @if(session()->has('billValidation'))
                 <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
                     <div class="flex">
                         <div>
-                            <p class="text-sm">{{ session('changesValidation') }}</p>
+                            <p class="text-sm">{{ session('billValidation') }}</p>
                         </div>
                     </div>
                 </div>
             @endif
+        </div>
+    </div>
+    <div x-show="tab == 'tab6'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white p-6 rounded-lg shadow mb-10">
             <form wire:submit.prevent="storeChanges" autocomplete="off">
                 <div class="flex-row">
                     <div class="flex w-full">
@@ -965,6 +958,16 @@
                     <livewire:tables.pull-apart-changes :pull-apart-id="$pullApart->id"/>
                 </div>
             </form>
+
+            @if(session()->has('changesValidation'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('changesValidation') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     <div x-show="tab == 'tab7'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -1076,16 +1079,6 @@
     </div>
     <div x-show="tab == 'tab8'" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow mb-10">
-            @if(session()->has('saleDeliveryValidation'))
-                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ session('saleDeliveryValidation') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <form wire:submit.prevent="storeSaleDelivery" autocomplete="off">
                 <div class="flex flex-col">
                     <div class="flex flex-row">
@@ -1153,6 +1146,16 @@
                     </div>
                 </div>
             </form>
+
+            @if(session()->has('saleDeliveryValidation'))
+                <div class="p-6 bg-blue-500 border-t-4 border-blue-800 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
+                    <div class="flex">
+                        <div>
+                            <p class="text-sm">{{ session('saleDeliveryValidation') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
