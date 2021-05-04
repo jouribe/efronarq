@@ -14,38 +14,43 @@ use Spatie\Permission\Models\Role;
 class Index extends Component
 {
     /**
-    * @var mixed $userId
-    */
+     * @var mixed $userId
+     */
     public $userId;
 
     /**
-    * @var mixed $name
-    */
+     * @var mixed $name
+     */
     public $name;
 
     /**
-    * @var mixed $password
-    */
+     * @var mixed $password
+     */
     public $password;
 
     /**
-    * @var mixed $password_confirmation
-    */
+     * @var mixed $password_confirmation
+     */
     public $password_confirmation;
 
     /**
-    * @var mixed $email
-    */
+     * @var mixed $email
+     */
     public $email;
 
     /**
-    * @var mixed $role
-    */
+     * @var mixed $phone
+     */
+    public $phone;
+
+    /**
+     * @var mixed $role
+     */
     public $role;
 
     /**
-    * @var mixed $roleList
-    */
+     * @var mixed $roleList
+     */
     public $roleList;
 
     /**
@@ -75,7 +80,7 @@ class Index extends Component
     /**
      * Mount component
      */
-    public function mount():void
+    public function mount(): void
     {
         $this->roleList = Role::all()->pluck('name', 'id');
     }
@@ -103,6 +108,8 @@ class Index extends Component
     public function closeModal(): void
     {
         $this->isOpen = false;
+
+        $this->resetInputFields();
     }
 
     /**
@@ -113,6 +120,7 @@ class Index extends Component
         $this->userId = null;
         $this->name = '';
         $this->email = '';
+        $this->phone = '';
         $this->password = '';
         $this->password_confirmation = '';
     }
@@ -125,7 +133,7 @@ class Index extends Component
         // Validation
         $this->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email',
             'password' => 'required|confirmed',
             'role' => 'required'
         ]);
@@ -137,10 +145,11 @@ class Index extends Component
             [
                 'name' => $this->name,
                 'email' => $this->email,
+                'phone' => $this->phone,
                 'password' => Hash::make($this->password)
             ]);
 
-        if(!is_null($this->userId) && $user->hasAnyRole()) {
+        if (!is_null($this->userId) && $user->hasAnyRole()) {
             foreach ($user->roles()->get() as $role) {
                 $user->removeRole($role->name);
             }
@@ -166,6 +175,7 @@ class Index extends Component
         $this->userId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->phone = $user->phone;
         $this->role = $user->roles()->first()->id;
 
         $this->openModal();

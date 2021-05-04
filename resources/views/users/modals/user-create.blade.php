@@ -30,6 +30,12 @@
                         </div>
                     </div>
 
+                    <div class="p-4 w-full">
+                        <x-jet-label for="phone">{{ __('Phone') }}</x-jet-label>
+                        <x-jet-input type="tel" id="phone" class="w-full" required wire:model="phone"/>
+                        @error('phone') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                    </div>
+
                     <div class="flex">
                         <div class="p-4 w-full">
                             <x-jet-label for="password">{{ __('Password') }}</x-jet-label>

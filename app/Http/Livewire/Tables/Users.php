@@ -39,7 +39,7 @@ class Users extends LivewireDatatable
         return User::query()
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'model_has_roles.role_id', 'roles.id')
-            ->groupBy('users.id', 'users.name', 'users.email', 'roles.name');
+            ->groupBy('users.id', 'users.name', 'users.email', 'roles.name', 'users.phone');
     }
 
     /**
@@ -62,6 +62,9 @@ class Users extends LivewireDatatable
 
             Column::name('users.email')
                 ->label(__('Email')),
+
+            Column::name('users.phone')
+                ->label(__('Phone')),
 
             Column::name('users.id')
                 ->label(__('Actions'))
