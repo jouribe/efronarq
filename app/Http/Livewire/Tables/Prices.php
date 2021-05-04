@@ -10,7 +10,7 @@ class Prices extends LivewireDatatable
 {
     public $searchable = 'project_apartments.name, project_apartment_types.type_name, project_apartment_types.bedroom';
 
-    public $exportable = true;
+    public $exportable = false;
 
     public function builder()
     {

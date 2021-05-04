@@ -10,7 +10,7 @@ class Documents extends LivewireDatatable
 {
     public $searchable = 'projects.name, project_documents.type, project_documents.name';
 
-    public $exportable = true;
+    public $exportable = false;
 
     public function builder()
     {

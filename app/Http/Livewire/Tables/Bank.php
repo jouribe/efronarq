@@ -16,14 +16,29 @@ class Bank extends LivewireDatatable
     public $model = BankModel::class;
 
     /**
+     * @var mixed $hideable
+     */
+    public $hideable = 'add-modal';
+
+    /**
+     * @var mixed $event
+     */
+    public $event = 'createBank';
+
+    /**
+     * @var bool $hideCreate
+     */
+    public bool $hideCreate = false;
+
+    /**
      * @var string $searchable
      */
-    public $searchable = "name, contact_name";
+    public $searchable = "name, contact_name, contact_phone, contact_email";
 
     /**
      * @var bool $exportable
      */
-    public $exportable = true;
+    public $exportable = false;
 
     /**
      * @var string $sort
@@ -37,10 +52,6 @@ class Bank extends LivewireDatatable
     public function columns(): array
     {
         return [
-            NumberColumn::name('id')
-                ->label('ID')
-                ->hide(),
-
             Column::name('name')
                 ->label(__('Name')),
 
@@ -57,7 +68,11 @@ class Bank extends LivewireDatatable
                 ->label(__('Currency')),
 
             DateColumn::name('created_at')
-                ->label(__('Created At'))
+                ->label(__('Created At')),
+
+            Column::name('id')
+                ->label(__('Actions'))
+                ->view('banks.actions.banks')
         ];
     }
 }
