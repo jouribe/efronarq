@@ -132,3 +132,36 @@ fieldset .acciones button {
 .tab-content.panel-venta {
     margin-top: 45px;
 }
+nav .max-w-7xl.mx-auto.px-4 .flex.justify-between.h-16 .flex .hidden.space-x-8 .relative {
+    display: flex;
+}
+
+nav .max-w-7xl.mx-auto.px-4 .flex.justify-between.h-16 .flex .hidden.space-x-8 .relative a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500 {
+    display: flex;
+    height: 100%;
+}
+nav .max-w-7xl.mx-auto.px-4 .flex.justify-between.h-16 .flex .hidden.space-x-8 .relative .absolute.z-50.mt-2.w-48.rounded-md.shadow-lg.origin-top-right.right-0 {
+    top: 60px;
+    right: auto;
+}
+.table-cell.overflow-hidden.align-top {
+    vertical-align: middle;
+}
+
+.table-cell.overflow-hidden.align-top .flex.flex-col input.m-1.text-sm.leading-4.flex-grow.form-input {
+    width: 95%;
+    margin: 10px auto;
+}
+
+.table-cell.overflow-hidden.align-top .flex.flex-col {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    height: 100%;
+}
+.py-12 .max-w-7xl.mx-auto {
+    padding: 0;
+    max-width: 95%;
+    margin: 0 auto;
+}
