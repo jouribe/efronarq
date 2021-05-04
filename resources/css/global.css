@@ -134,6 +134,7 @@ fieldset .acciones button {
 }
 nav .max-w-7xl.mx-auto.px-4 .flex.justify-between.h-16 .flex .hidden.space-x-8 .relative {
     display: flex;
+    align-content: center;
 }
 
 nav .max-w-7xl.mx-auto.px-4 .flex.justify-between.h-16 .flex .hidden.space-x-8 .relative a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500 {
