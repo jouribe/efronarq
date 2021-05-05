@@ -66,6 +66,12 @@ class PullApartController extends Controller
             $customer[] = Company::whereId($pullApart->visit->customer->company_id)->first()->toArray();
         }
 
+        $agreementFromDb = $pullApart->visit->project->agreementModels->first()->content;
+
+        if (is_null($agreementFromDb)) {
+            $agreementFromDb = $this->getModeloAgreement();
+        }
+
         $data = [
             'data' => [
                 'pull-apart' => $pullApart->toArray(),
@@ -76,7 +82,7 @@ class PullApartController extends Controller
                         : null,
                     'info' => $customer
                 ],
-                'agreement' => $pullApart->visit->project->agreementModels->firstOrFail()->content,
+                'agreement' => $agreementFromDb,
                 'title' => 'separacion-' . now()->format('d/m/Y')
             ]
         ];
