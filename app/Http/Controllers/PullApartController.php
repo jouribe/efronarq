@@ -66,10 +66,12 @@ class PullApartController extends Controller
             $customer[] = Company::whereId($pullApart->visit->customer->company_id)->first()->toArray();
         }
 
-        $agreementFromDb = $pullApart->visit->project->agreementModels->first()->content;
+        $agreementFromDb = $pullApart->visit->project->agreementModels->first();
 
         if (is_null($agreementFromDb)) {
             $agreementFromDb = $this->getModeloAgreement();
+        } else {
+            $agreementFromDb = $agreementFromDb->content;
         }
 
         $data = [
