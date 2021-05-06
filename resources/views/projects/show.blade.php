@@ -134,12 +134,12 @@
             </div>
         </div>
         <div class="panel-2 tab-content apartment-types py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.apartment-types :project="$project"/>
             </div>
         </div>
         <div class="panel-3 tab-content prices py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.prices :project="$project"/>
             </div>
             <div class="pb-12">
@@ -155,32 +155,32 @@
             </div>
         </div>
         <div class="panel-4 tab-content apartments py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.apartments :project="$project"/>
             </div>
         </div>
         <div class="panel-5 tab-content parking-lots py-5">
-            <div class="py-12">
+            <div class="pb-12 bt-10">
                 <livewire:projects.parking-lots :project="$project"/>
             </div>
         </div>
         <div class="panel-6 tab-content closets py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.closets :project="$project"/>
             </div>
         </div>
         <div class="panel-7 tab-content documents py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.documents :project="$project"/>
             </div>
         </div>
         <div class="panel-8 tab-content vendors py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <livewire:projects.sellers :project="$project"/>
             </div>
         </div>
         <div class="panel-9 tab-content agreements py-5">
-            <div class="py-12">
+            <div class="pb-12 pt-10">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
                         {{ __('Agreements') }}
