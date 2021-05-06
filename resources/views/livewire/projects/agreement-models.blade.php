@@ -1,6 +1,6 @@
 <form wire:submit.prevent="store" enctype="multipart/form-data">
     <div class="w-full pb-10">
-        <input class="editor" id="contentAgreement" wire:model="contentAgreement">
+        <input class="editor" id="content" wire:model="content">
     </div>
 
     <div class="flex justify-end">

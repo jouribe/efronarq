@@ -21,10 +21,9 @@ class AgreementModels extends Component
     public $project;
 
     /**
-     * @var mixed $contentAgreement
+     * @var mixed $content
      */
-    public $contentAgreement;
-
+    public $content;
 
     /**
      * Get the view / contents that represent the component.
@@ -38,7 +37,7 @@ class AgreementModels extends Component
         $agreements = $this->project->agreementModels;
 
         if ($agreements->count() > 0) {
-            $this->contentAgreement = $agreements->first()->content;
+            $this->content = $agreements->first()->content;
             $this->projectAgreementModelId = $agreements->first()->id;
         }
 
@@ -49,14 +48,14 @@ class AgreementModels extends Component
     {
         ray('id: ', $this->projectAgreementModelId);
         ray('projectId: ', $this->project->id);
-        ray('content: ', $this->contentAgreement);
+        ray('content: ', $this->content);
         ray()->pause();
 
         ProjectAgreementModel::updateOrCreate([
             'id' => $this->projectAgreementModelId
         ], [
             'project_id' => $this->project->id,
-            'content' => $this->contentAgreement
+            'content' => $this->content
         ]);
     }
 }

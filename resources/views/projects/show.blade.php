@@ -190,10 +190,8 @@
                         <livewire:projects.agreement-models :project="$project"/>
 
                         <script>
-                            tinymce.remove("#contentAgreement");
-
                             tinymce.init({
-                                selector: '#contentAgreement',
+                                selector: '#content',
                                 //toolbar: 'undo redo  | bold italic underline ',
                                 menubar: false,
                                 height: '600'
