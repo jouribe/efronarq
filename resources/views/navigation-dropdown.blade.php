@@ -114,6 +114,10 @@
                         <x-jet-dropdown-link href="{{ route('promotions.index') }}">
                             {{ __('Promotions') }}
                         </x-jet-dropdown-link>
+
+                        <x-jet-dropdown-link href="{{ route('exchanges.index') }}">
+                            {{ __('Tipo de cambio') }}
+                        </x-jet-dropdown-link>
                         @endrole
 
                         <div class="border-t border-gray-100"></div>

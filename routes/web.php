@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\OriginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromotionController;
@@ -30,6 +31,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/sales/{id}/bill', [SaleCo
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('origins', [OriginController::class, 'index'])->name('origins.index');
 Route::middleware(['auth:sanctum', 'verified'])->get('promotions', [PromotionController::class, 'index'])->name('promotions.index');
+Route::middleware(['auth:sanctum', 'verified'])->get('exchanges', [ExchangeController::class, 'index'])->name('exchanges.index');
 
 // Reports
 Route::middleware(['auth:sanctum', 'verified'])->get('/reports/prices', [ReportController::class, 'prices'])->name('reports.prices');
