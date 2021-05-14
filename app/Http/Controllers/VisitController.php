@@ -259,7 +259,7 @@ class VisitController extends Controller
             $data = [
                 'visit' => $visit->toArray(),
                 'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id,
-                'discount' => $visit->promotion === null ? 0 : $visit->promotion->discount
+                'discount' => $visit->promotion_id === null ? 0 : $visit->promotion->discount
             ];
 
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';

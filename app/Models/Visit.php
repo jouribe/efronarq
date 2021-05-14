@@ -27,7 +27,7 @@ class Visit extends Model
         'project_apartment_id',
         'origin_id',
         'interested',
-        'discount',
+        'promotion_id',
         'status',
         'type_financing'
     ];

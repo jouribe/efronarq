@@ -7,7 +7,7 @@
 
 
     @if(!is_null($visit->quotation))
-        <div class="py-12">
+        <div class="pt-12 pb-10">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white p-6 rounded-lg shadow">
                     <h2 class="px-4 text-lg">{{ __('Quote summary') }}</h2>
@@ -83,7 +83,7 @@
         </div>
     @endif
 
-    <div class="py-12">
+    <div class="pt-12 pb-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded-lg shadow">
 
