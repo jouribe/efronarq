@@ -113,7 +113,8 @@ class VisitController extends Controller
             'project_apartment_id' => $request->get('project_apartment_id'),
             'origin_id' => $request->get('origin_id'),
             'interested' => $request->get('interested'),
-            'type_financing' => $request->get('type_financing')
+            'type_financing' => $request->get('type_financing'),
+            'promotion_id' => $request->get('discount')
         ]);
 
         ProjectApartment::findOrFail($request->get('project_id'))->update([
@@ -232,7 +233,8 @@ class VisitController extends Controller
             'type_financing' => $request->get('type_financing'),
             'origin_id' => $request->get('origin_id'),
             'project_apartment_id' => $request->get('project_apartment_id'),
-            'interested' => $request->get('interested')
+            'interested' => $request->get('interested'),
+            'promotion_id' => $request->get('discount')
         ]);
 
         return response()->redirectToRoute('visits.index');
@@ -257,7 +259,7 @@ class VisitController extends Controller
             $data = [
                 'visit' => $visit->toArray(),
                 'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id,
-                'discount' => 0
+                'discount' => $visit->promotion->count() == 0 ? 0 : $visit->promotion->discount
             ];
 
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';

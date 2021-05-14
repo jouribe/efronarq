@@ -7,15 +7,15 @@
 
 <table width="100%" style="color: #696969;">
     <tbody>
-{{--    <tr>--}}
-{{--        <td width="30%">--}}
-{{--            <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">--}}
-{{--        </td>--}}
-{{--        <td width="40%"></td>--}}
-{{--        <td width="30%" style="text-align: right;">--}}
-{{--            <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">--}}
-{{--        </td>--}}
-{{--    </tr>--}}
+        <tr>
+            <td width="30%">
+                <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
+            </td>
+            <td width="40%"></td>
+            <td width="30%" style="text-align: right;">
+                <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">
+            </td>
+        </tr>
     <tr>
         <td colspan="3" align="right" style="font-family: Helvetica,serif;font-size: 19px;font-weight: bold;">
             Cotización Nº {{$visit['id']}}
@@ -79,7 +79,7 @@
     @if(!is_null($visit['apartment']))
 
         @php
-            $total_apartment_price = $visit['apartment']['price'];
+            $total_apartment_price = $visit['apartment']['price'] * (1 - ($discount/100));
         @endphp
 
         <tr>
@@ -92,7 +92,7 @@
                 {{ $visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area'] }}
             </td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ __('US$') }} {{number_format($visit['apartment']['price'] , 2) }}
+                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_apartment_price , 2) }}
             </td>
         </tr>
     @endif
@@ -118,7 +118,7 @@
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['free_area'] + $value['parking_lot']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ __('US$') }} {{ number_format(  $value['parking_lot']['price'], 2) }}
+                    {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format(  $value['parking_lot']['price'], 2) }}
                 </td>
             </tr>
         @endforeach
@@ -145,7 +145,7 @@
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ __('US$') }} {{ number_format(  $value['closet']['price'] , 2) }}
+                    {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format(  $value['closet']['price'] , 2) }}
                 </td>
             </tr>
         @endforeach
@@ -156,7 +156,7 @@
         <td style="border-bottom: 1px solid; text-align:left;padding-left: 20px;"> Subtotal</td>
         <td colspan="5" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
         <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-            {{ __('US$') }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}
+            {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}
         </td>
     </tr>
 
@@ -165,7 +165,7 @@
             <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> $promocion->nombre</td>
             <td colspan="4" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ __('US$') }} {{ number_format($discount, 2) }}
+                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($discount, 2) }}
             </td>
         </tr>
     @endif
@@ -173,7 +173,7 @@
     <tr style="font-weight: bold;">
         <td style="text-align:left;padding-left: 20px;"> Total a pagar</td>
         <td colspan="5"></td>
-        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ __('US$') }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}</td>
+        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}</td>
     </tr>
 
     </tbody>
@@ -233,7 +233,7 @@
         <td style="font-size: 14px;"><span style="font-weight: bold;">Nombre:</span> {{ auth()->user()->name }}</td>
     </tr>
     <tr>
-        <td style="font-size: 14px;"><span style="font-weight: bold;">Teléfono:</span> 789874587</td>
+        <td style="font-size: 14px;"><span style="font-weight: bold;">Teléfono:</span> {{ auth()->user()->phone }}</td>
     </tr>
     <tr>
         <td style="font-size: 14px;"><span style="font-weight: bold;">Correo:</span> {{ auth()->user()->email }}</td>

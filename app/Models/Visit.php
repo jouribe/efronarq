@@ -43,6 +43,16 @@ class Visit extends Model
     }
 
     /**
+     * Promotion
+     *
+     * @return BelongsTo
+     */
+    public function promotion(): BelongsTo
+    {
+        return $this->belongsTo(Promotion::class);
+    }
+
+    /**
      * Project apartment.
      *
      * @return BelongsTo
