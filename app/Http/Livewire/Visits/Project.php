@@ -86,6 +86,19 @@ class Project extends Component
     public $visit;
 
     /**
+    * @var mixed $interested
+    */
+    public $interested;
+
+    /**
+    * @var mixed $exchangeRateList
+    */
+    public $exchangeRateList = [
+        'PEN' => 'Soles',
+        'USD' => 'Dólares'
+    ];
+
+    /**
      * Render view.
      *
      * @return Factory|View|Application

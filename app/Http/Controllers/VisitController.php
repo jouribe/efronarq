@@ -249,7 +249,7 @@ class VisitController extends Controller
      */
     public function generate($id)
     {
-        $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType',
+        $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType', 'promotion',
             'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank')
             ->find($id);
 
@@ -259,7 +259,7 @@ class VisitController extends Controller
             $data = [
                 'visit' => $visit->toArray(),
                 'title' => 'Cotización - ' . now()->format('dmYHis') . '-' . $visit->id,
-                'discount' => $visit->promotion->count() == 0 ? 0 : $visit->promotion->discount
+                'discount' => $visit->promotion === null ? 0 : $visit->promotion->discount
             ];
 
             $fileName = 'cotizacion-' . now()->format('dmYHis') . '-' . $visit->id . '.pdf';

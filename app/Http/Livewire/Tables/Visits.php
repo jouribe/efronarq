@@ -23,7 +23,7 @@ class Visits extends LivewireDatatable
     /**
      * @var mixed $exportable
      */
-    public $exportable = true;
+    public $exportable = false;
 
     /**
      * @var mixed $route
