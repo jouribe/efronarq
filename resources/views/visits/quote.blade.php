@@ -79,7 +79,9 @@
     @if(!is_null($visit['apartment']))
 
         @php
-            $total_apartment_price = $visit['apartment']['price'] * (1 - ($discount/100));
+            $total_apartment_price = $visit['apartment']['price'];
+            $totalApartmentPriceWithDiscount = $visit['apartment']['price'] * (1 - ($discount/100));
+            $discountAmount = ($visit['apartment']['price'] * $discount) / 100
         @endphp
 
         <tr>
@@ -92,7 +94,7 @@
                 {{ $visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area'] }}
             </td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_apartment_price , 2) }}
+                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($visit['apartment']['price'] , 2) }}
             </td>
         </tr>
     @endif
@@ -162,10 +164,10 @@
 
     @if($discount !== 0)
         <tr>
-            <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> {{ __('Promoción') }}</td>
+            <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> {{ $discount_name }}</td>
             <td colspan="4" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ number_format($discount, 2) }} %
+                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($discountAmount, 2) }}
             </td>
         </tr>
     @endif
@@ -173,7 +175,7 @@
     <tr style="font-weight: bold;">
         <td style="text-align:left;padding-left: 20px;"> Total a pagar</td>
         <td colspan="5"></td>
-        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}</td>
+        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $totalApartmentPriceWithDiscount + $total_parking_price, 2) }}</td>
     </tr>
 
     </tbody>
