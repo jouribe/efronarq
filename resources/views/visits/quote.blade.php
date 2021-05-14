@@ -162,10 +162,10 @@
 
     @if($discount !== 0)
         <tr>
-            <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> $promocion->nombre</td>
+            <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> {{ __('Promoción') }}</td>
             <td colspan="4" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($discount, 2) }}
+                {{ number_format($discount, 2) }} %
             </td>
         </tr>
     @endif
