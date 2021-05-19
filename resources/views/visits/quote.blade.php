@@ -9,7 +9,9 @@
     <tbody>
         <tr>
             <td width="30%">
-                <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
+                @if(is_null($visit['project']['logo']))
+                    <img src="storage/{{$visit['project']['logo']}}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
+                @endif
             </td>
             <td width="40%"></td>
             <td width="30%" style="text-align: right;">
