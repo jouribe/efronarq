@@ -523,7 +523,9 @@
             </span>
             </td>
             <td style="text-align: left;border-bottom: 1px solid;border-right: 1px solid;">
-                <span style="display: inline-block;width: auto;margin: 5px;">{{ $data['pull-apart']['visit']['apartment']['name'] }}</span>
+                <span style="display: inline-block;width: auto;margin: 5px;">
+                    {{ $data['pull-apart']['visit']['apartment']['name'] }} piso {{ $data['pull-apart']['visit']['apartment']['start_floor'] }}
+                </span>
             </td>
             <td style="text-align: left;border-bottom: 1px solid;">
             <span style="display: inline-block;width: auto;margin: 5px;">
