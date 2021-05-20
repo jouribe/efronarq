@@ -9,7 +9,7 @@
     <tbody>
         <tr>
             <td width="30%">
-                @if(is_null($visit['project']['logo']))
+                @if(!is_null($visit['project']['logo']))
                     <img src="storage/{{ $visit['project']['logo'] }}" width="200" height="80" alt="{{ $visit['project']['name'] }}">
                 @endif
             </td>
@@ -81,9 +81,26 @@
     @if(!is_null($visit['apartment']))
 
         @php
-            $total_apartment_price = $visit['apartment']['price'];
-            $totalApartmentPriceWithDiscount = $visit['apartment']['price'] * (1 - ($discount/100));
-            $discountAmount = ($visit['apartment']['price'] * $discount) / 100
+            $prefix = $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.';
+
+            $exchangeRate = 1;
+
+            if (!is_null($visit['exchange'])) {
+                switch ($prefix) {
+                    case 'S/.':
+                        $prefix = 'US$.';
+                        $exchangeRate /= $visit['exchange']['sale'];
+                        break;
+                    case 'US$.':
+                        $prefix = 'S/.';
+                         $exchangeRate *= $visit['exchange']['buy'];
+                        break;
+                }
+            }
+
+            $total_apartment_price = $visit['apartment']['price'] * $exchangeRate;
+            $totalApartmentPriceWithDiscount = $visit['apartment']['price'] * $exchangeRate * (1 - ($discount/100));
+            $discountAmount = (($visit['apartment']['price'] * $discount) / 100) * $exchangeRate;
         @endphp
 
         <tr>
@@ -96,7 +113,7 @@
                 {{ $visit['apartment']['apartment_type']['free_area'] + $visit['apartment']['apartment_type']['roofed_area'] }}
             </td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($visit['apartment']['price'] , 2) }}
+                {{ $prefix }} {{ number_format($visit['apartment']['price'] * $exchangeRate , 2) }}
             </td>
         </tr>
     @endif
@@ -122,7 +139,7 @@
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['parking_lot']['free_area'] + $value['parking_lot']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format(  $value['parking_lot']['price'], 2) }}
+                    {{ $prefix }} {{ number_format($value['parking_lot']['price'] * $exchangeRate, 2) }}
                 </td>
             </tr>
         @endforeach
@@ -149,7 +166,7 @@
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;">{{ $value['closet']['roofed_area'] }}</td>
                 <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                    {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format(  $value['closet']['price'] , 2) }}
+                    {{ $prefix }} {{ number_format($value['closet']['price'] * $exchangeRate, 2) }}
                 </td>
             </tr>
         @endforeach
@@ -160,7 +177,7 @@
         <td style="border-bottom: 1px solid; text-align:left;padding-left: 20px;"> Subtotal</td>
         <td colspan="5" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
         <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-            {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $total_apartment_price + $total_parking_price, 2) }}
+            {{ $prefix }} {{ number_format(($total_closet_price * $exchangeRate) + $total_apartment_price + ($total_parking_price * $exchangeRate), 2) }}
         </td>
     </tr>
 
@@ -169,7 +186,7 @@
             <td style="border-bottom: 1px solid #696969;text-align:left; color:#da1a00;padding: 3px 0 3px 20px;" colspan="2"> {{ $discount_name }}</td>
             <td colspan="4" style="border-bottom: 1px solid;padding: 3px 0;border-right: 1px solid;"></td>
             <td style="border-bottom: 1px solid;text-align:right; padding: 3px 20px 3px 0;">
-                {{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($discountAmount, 2) }}
+                {{ $prefix }} {{ number_format($discountAmount, 2) }}
             </td>
         </tr>
     @endif
@@ -177,7 +194,7 @@
     <tr style="font-weight: bold;">
         <td style="text-align:left;padding-left: 20px;"> Total a pagar</td>
         <td colspan="5"></td>
-        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ $visit['project']['currency'] === 'PEN' ? 'S/.' : 'US$.' }} {{ number_format($total_closet_price + $totalApartmentPriceWithDiscount + $total_parking_price, 2) }}</td>
+        <td style="text-align:right; padding: 3px 20px 3px 0;">{{ $prefix }} {{ number_format(($total_closet_price * $exchangeRate) + $totalApartmentPriceWithDiscount + ($total_parking_price * $exchangeRate), 2) }}</td>
     </tr>
 
     </tbody>

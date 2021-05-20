@@ -29,7 +29,8 @@ class Visit extends Model
         'interested',
         'promotion_id',
         'status',
-        'type_financing'
+        'type_financing',
+        'exchange_id'
     ];
 
     /**
@@ -140,6 +141,16 @@ class Visit extends Model
     public function seller(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Exchange rate.
+     *
+     * @return BelongsTo
+     */
+    public function exchange(): BelongsTo
+    {
+        return $this->belongsTo(Exchange::class);
     }
 
     /**

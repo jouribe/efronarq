@@ -187,8 +187,8 @@
                     </div>
 
                     <div class="p-4 w-1/4">
-                        <span class="block text-xs text-gray-500">{{ __('Financing type') }}</span>
-                        <div>{{ $visit->type_financing }}</div>
+                        <span class="block text-xs text-gray-500">{{ __('Cambio tipo de moneda?') }}</span>
+                        <div>{{ !is_null($visit->exchange_id) ? 'Si' : 'No' }}</div>
                     </div>
                 </div>
 

@@ -77,11 +77,11 @@
 
     @if($interested)
         <div class="flex flex-col">
-            <h2 class="px-4 text-lg pt-10">{{ __('En qué moneda deseas cotizar?') }}</h2>
+            <h2 class="px-4 text-lg pt-10">{{ __('¿Desea cotizar en otra moneda?') }}</h2>
             <hr class="mx-4 pb-6">
 
             <div class="p-4 w-1/4">
-                <x-jet-label for="exchange">{{ __('Tipo de cambio') }}</x-jet-label>
+                <x-jet-label for="exchange">{{ __('Cotizar en otra moneda') }}</x-jet-label>
                 <x-dropdown-list :items="$exchangeRateList" id="exchange" required name="exchange"/>
                 @error('exchange') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
             </div>

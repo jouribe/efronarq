@@ -94,8 +94,8 @@ class Project extends Component
     * @var mixed $exchangeRateList
     */
     public $exchangeRateList = [
-        'PEN' => 'Soles',
-        'USD' => 'Dólares'
+        1 => 'Si',
+        0 => 'No'
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Exchange extends Model
 {
@@ -15,4 +16,14 @@ class Exchange extends Model
         'buy',
         'sale'
     ];
+
+    /**
+     * Visits.
+     *
+     * @return HasMany
+     */
+    public function visits(): HasMany
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

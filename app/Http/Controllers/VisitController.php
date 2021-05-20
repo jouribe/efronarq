@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateVisitRequest;
 use App\Models\Customer;
 use App\Models\CustomerDetail;
 use App\Models\District;
+use App\Models\Exchange;
 use App\Models\Origin;
 use App\Models\Project;
 use App\Models\ProjectApartment;
@@ -74,10 +75,11 @@ class VisitController extends Controller
      *
      * @param StoreVisitRequest $request
      *
-     * @return Application|Factory|View
+     * @return RedirectResponse
      */
-    public function store(StoreVisitRequest $request)
+    public function store(StoreVisitRequest $request): RedirectResponse
     {
+
         // Verify if user exists
         $exist = Customer::whereDni($request->get('dni'))->first();
 
@@ -105,6 +107,12 @@ class VisitController extends Controller
             $exist = $customer;
         }
 
+        $exchange = null;
+
+        if ($request->has('exchange') && $request->get('exchange') === '1') {
+            $exchange = Exchange::orderByDesc('created_at')->first(['id']);
+        }
+
         // Create visit
         $visit = Visit::create([
             'customer_id' => $exist->id,
@@ -114,7 +122,8 @@ class VisitController extends Controller
             'origin_id' => $request->get('origin_id'),
             'interested' => $request->get('interested'),
             'type_financing' => $request->get('type_financing'),
-            'promotion_id' => $request->get('discount')
+            'promotion_id' => $request->get('discount'),
+            'exchange_id' => $exchange->id
         ]);
 
         ProjectApartment::findOrFail($request->get('project_id'))->update([
@@ -149,7 +158,7 @@ class VisitController extends Controller
             }
         }
 
-        return view('visits.index');
+        return redirect()->route('visits.index');
     }
 
     /**
@@ -250,7 +259,7 @@ class VisitController extends Controller
     public function generate($id)
     {
         $visit = Visit::with('project', 'customer', 'apartment', 'closets', 'parkingLots', 'apartment.apartmentType', 'promotion',
-            'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank')
+            'apartment.apartmentType.priceApartments', 'parkingLots.parkingLot', 'closets.closet', 'project.bank', 'exchange')
             ->find($id);
 
         $quotation = VisitQuotation::whereVisitId($visit->id)->first();
