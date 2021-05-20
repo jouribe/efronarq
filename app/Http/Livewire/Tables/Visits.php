@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\Visit;
+use Arr;
 use Illuminate\Database\Eloquent\Builder;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
@@ -48,18 +49,18 @@ class Visits extends LivewireDatatable
     public function builder(): Builder
     {
         return Visit::query()
-            //->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
+            ->leftJoin('visit_tracking', 'visit_tracking.visit_id', 'visits.id')
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('customers', 'visits.customer_id', 'customers.id')
             ->leftJoin('origins', 'visits.origin_id', 'origins.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
+            ->leftJoin('users', 'visits.user_id', 'users.id')
             //->latestTracking()
             ->onlyForMe()
             ->groupBy('visits.id', 'visits.created_at', 'projects.name', 'customers.full_name', 'origins.name', 'visits.interested',
-                'visits.status', 'project_apartments.name',
-            //'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status'
-            );
+                'visits.status', 'project_apartments.name', 'visit_tracking.action', 'visit_tracking.action_at', 'visit_tracking.status',
+                'users.name');
     }
 
     /**
@@ -71,7 +72,7 @@ class Visits extends LivewireDatatable
      */
     public function columns(): array
     {
-        return [
+        $columns = [
             Column::callback('visits.id', function ($id) {
                 return $id;
             })
@@ -100,14 +101,14 @@ class Visits extends LivewireDatatable
             })
                 ->label(__('Interested')),
 
-            //            Column::name('visit_tracking.action')
-            //                ->label(__('Next action')),
-            //
-            //            DateColumn::name('visit_tracking.action_at')
-            //                ->label(__('Action at')),
-            //
-            //            Column::name('visit_tracking.status')
-            //                ->label(__('Action status')),
+            Column::name('visit_tracking.action')
+                ->label(__('Next action')),
+
+            DateColumn::name('visit_tracking.action_at')
+                ->label(__('Action at')),
+
+            Column::name('visit_tracking.status')
+                ->label(__('Action status')),
 
             Column::name('visits.status')
                 ->label(__('Status'))
@@ -117,5 +118,7 @@ class Visits extends LivewireDatatable
                 ->label(__('Actions'))
                 ->view('visits.actions.table-actions')
         ];
+
+        return $columns;
     }
 }

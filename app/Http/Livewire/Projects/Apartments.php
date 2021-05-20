@@ -171,10 +171,21 @@ class Apartments extends Component
             'order' => 'required|integer'
         ]);
 
+        ray()->clearAll();
+
         $apartmentPrice = ProjectApartmentType::whereId($this->project_apartment_type_id)
             ->first()
             ->priceApartments
             ->first();
+
+        $apartmentPrices = ProjectApartmentType::whereId($this->project_apartment_type_id)->first()->priceApartments()->get();
+
+        foreach ($apartmentPrices as $apartmentPrice) {
+            ray($apartmentPrice);
+        }
+
+        ray($apartmentPrices);
+        ray()->pause();
 
         if (is_null($this->price)) {
             $this->price = $this->getPricePerApartment(Project::whereId($this->project->id)->first());
