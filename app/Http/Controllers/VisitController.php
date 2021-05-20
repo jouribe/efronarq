@@ -123,7 +123,7 @@ class VisitController extends Controller
             'interested' => $request->get('interested'),
             'type_financing' => $request->get('type_financing'),
             'promotion_id' => $request->get('discount'),
-            'exchange_id' => $exchange->id
+            'exchange_id' => $exchange === null ? null : $exchange->id
         ]);
 
         ProjectApartment::findOrFail($request->get('project_id'))->update([
