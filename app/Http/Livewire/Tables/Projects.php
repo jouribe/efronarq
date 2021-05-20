@@ -69,10 +69,10 @@ class Projects extends LivewireDatatable
             })
                 ->label(__('Status')),
 
-            BooleanColumn::callback(['is_active'], function ($is_active) {
+            BooleanColumn::callback(['is_active', 'id'], function ($is_active, $id) {
                 return !$is_active
-                    ? '<span class="text-red-500 font-bold">' . __('No') . '</span>'
-                    : '<span class="text-green-500 font-bold">' . __('Yes') . '</span>';
+                    ? '<a class="text-red-500 font-bold" href="javascript:" wire:click="active('.$id.')">' . __('No') . '</a>'
+                    : '<a class="text-green-500 font-bold" href="javascript:" wire:click="active('.$id.')">' . __('Yes') . '</a>';
             })
                 ->label(__('Active?')),
 
@@ -94,8 +94,10 @@ class Projects extends LivewireDatatable
      */
     public function active($id): void
     {
-        Project::whereId($id)->update([
-            'is_active' => true
+        $project = Project::whereId($id);
+
+        $project->update([
+            'is_active' => !$project->first()->is_active
         ]);
     }
 }

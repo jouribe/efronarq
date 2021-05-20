@@ -1,9 +1,9 @@
 <div class="flex space-x-1 justify-center">
-    <button wire:click="active({{ $value }})" class="p-1 text-green-600 hover:bg-green-600 hover:text-white rounded">
-        <svg class="w-5 h-5"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-    </button>
+{{--    <button wire:click="active({{ $value }})" class="p-1 text-green-600 hover:bg-green-600 hover:text-white rounded">--}}
+{{--        <svg class="w-5 h-5"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
+{{--            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />--}}
+{{--        </svg>--}}
+{{--    </button>--}}
 
     <a href="{{ route('projects.show', [$value]) }}" class="p-1 text-yellow-600 hover:bg-yellow-600 hover:text-white rounded">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
