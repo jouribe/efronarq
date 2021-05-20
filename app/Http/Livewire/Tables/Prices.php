@@ -36,23 +36,19 @@ class Prices extends LivewireDatatable
                 ->filterable(),
 
             Column::name('project_apartments.name')
-                ->label(__('Apartment'))
-                ->filterable(),
+                ->label(__('Apartment')),
 
             Column::name('project_apartment_types.type_name')
-                ->label(__('Type'))
-                ->filterable(),
+                ->label(__('Type')),
 
             Column::name('project_apartment_types.bedroom')
                 ->label('Nro. Dormitorios'),
 
             Column::name('project_apartment_types.roofed_area')
-                ->label('A. Techada (m2)')
-                ->filterable(),
+                ->label('A. Techada (m2)'),
 
             Column::name('project_apartment_types.free_area')
-                ->label('A. Libre (m2)')
-                ->filterable(),
+                ->label('A. Libre (m2)'),
 
             Column::callback(['project_apartment_types.roofed_area', 'project_apartment_types.free_area'], function ($roofed, $free) {
                 return number_format($roofed + $free, 2);
@@ -87,8 +83,7 @@ class Prices extends LivewireDatatable
                             return $prefix . number_format($price, 2);
                     }
                 })
-                ->label('Precio venta')
-                ->filterable(),
+                ->label('Precio venta'),
 
             Column::callback([
                 'project_apartments.price',
@@ -108,8 +103,7 @@ class Prices extends LivewireDatatable
                             return $prefix . number_format($price, 2);
                     }
                 })
-                ->label('Precio construcción')
-                ->filterable(),
+                ->label('Precio construcción'),
 
             Column::callback([
                 'project_apartments.price',
@@ -130,7 +124,6 @@ class Prices extends LivewireDatatable
                     }
                 })
                 ->label('Precio entrega')
-                ->filterable()
         ];
     }
 }

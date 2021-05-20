@@ -30,8 +30,7 @@ class Documents extends LivewireDatatable
                 ->filterable(),
 
             Column::name('project_documents.type')
-                ->label(__('Type'))
-                ->filterable(),
+                ->label(__('Type')),
 
             Column::name('project_documents.name')
                 ->label(__('Document'))

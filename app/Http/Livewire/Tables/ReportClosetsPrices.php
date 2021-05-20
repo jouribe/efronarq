@@ -24,16 +24,13 @@ class ReportClosetsPrices extends LivewireDatatable
                 ->filterable(),
 
             Column::name('project_closets.floor')
-                ->label(__('Floor'))
-                ->filterable(),
+                ->label(__('Floor')),
 
             Column::name('project_closets.closet')
-                ->label(__('Closet'))
-                ->filterable(),
+                ->label(__('Closet')),
 
             Column::name('project_closets.roofed_area')
-                ->label(__('A. Techada (m2)'))
-                ->filterable(),
+                ->label(__('A. Techada (m2)')),
 
             Column::callback('project_closets.blueprint', function ($blueprint) {
                 return '<a href="/storage/' . $blueprint . '" class="text-blue-500" target="_blank">
@@ -63,8 +60,7 @@ class ReportClosetsPrices extends LivewireDatatable
                             return $prefix . number_format($price, 2);
                     }
                 })
-                ->label('Precio venta')
-                ->filterable(),
+                ->label('Precio venta'),
         ];
     }
 }

@@ -24,20 +24,16 @@ class ReportParkingLootsPrices extends LivewireDatatable
                 ->filterable(),
 
             Column::name('project_parking_lots.floor')
-                ->label(__('Floor'))
-                ->filterable(),
+                ->label(__('Floor')),
 
             Column::name('project_parking_lots.type')
-                ->label(__('Type'))
-                ->filterable(),
+                ->label(__('Type')),
 
             Column::name('project_parking_lots.roofed_area')
-                ->label(__('A. Techada (m2)'))
-                ->filterable(),
+                ->label(__('A. Techada (m2)')),
 
             Column::name('project_parking_lots.free_area')
-                ->label(__('A. Libre (m2)'))
-                ->filterable(),
+                ->label(__('A. Libre (m2)')),
 
             Column::callback(['project_parking_lots.roofed_area', 'project_parking_lots.free_area'], function ($roofed, $free) {
                 return number_format($roofed + $free, 2);
@@ -76,8 +72,7 @@ class ReportParkingLootsPrices extends LivewireDatatable
                             return $prefix . number_format($price, 2);
                     }
                 })
-                ->label('Precio venta')
-                ->filterable(),
+                ->label('Precio venta'),
         ];
     }
 }
