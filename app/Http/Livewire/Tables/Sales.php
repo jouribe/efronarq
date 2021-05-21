@@ -31,6 +31,11 @@ class Sales extends LivewireDatatable
     public bool $isAdmin;
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder
      *
      * @return Builder

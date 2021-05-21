@@ -28,6 +28,11 @@ class Origins extends LivewireDatatable
      */
     public $searchable = 'name';
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return Origin::query();

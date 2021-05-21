@@ -10,6 +10,11 @@ class ReportParkingLootsPrices extends LivewireDatatable
 {
     public $searchable = 'projects.name, project_parking_lots.floor, project_parking_lots.type';
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return ProjectParkingLot::query()

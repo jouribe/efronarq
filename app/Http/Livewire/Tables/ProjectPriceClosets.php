@@ -45,6 +45,11 @@ class ProjectPriceClosets extends LivewireDatatable
     ];
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder.
      *
      * @return Builder

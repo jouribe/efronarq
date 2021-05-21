@@ -12,6 +12,11 @@ class Documents extends LivewireDatatable
 
     public $exportable = false;
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return ProjectDocument::query()

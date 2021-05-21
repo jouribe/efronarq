@@ -5,5 +5,7 @@
         </h2>
     </x-slot>
 
-    <livewire:pull-aparts.create :visit="$visit" :page="request()->fullUrl()" />
+    <livewire:pull-aparts.create
+        :visit="$visit" :page="request()->fullUrl()" />
+
 </x-app-layout>

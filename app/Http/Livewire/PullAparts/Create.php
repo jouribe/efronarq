@@ -406,6 +406,19 @@ class Create extends Component
     public $page;
 
     /**
+     * @var mixed $agreementModelList
+     */
+    public $agreementModelList = [
+        'Modelo A' => 'Modelo A',
+        'Modelo B' => 'Modelo B'
+    ];
+
+    /**
+     * @var mixed $agreementModel
+     */
+    public $agreementModel;
+
+    /**
      * Component mount.
      */
     public function mount($page): void

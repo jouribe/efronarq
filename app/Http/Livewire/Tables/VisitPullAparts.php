@@ -21,6 +21,11 @@ class VisitPullAparts extends LivewireDatatable
     public $searchable = 'visits.id, projects.name, customers.full_name';
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder.
      *
      * @return Builder

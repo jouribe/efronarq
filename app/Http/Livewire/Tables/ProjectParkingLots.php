@@ -43,6 +43,11 @@ class ProjectParkingLots extends LivewireDatatable
     public bool $isAdmin;
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query Builder
      *
      * @return Builder

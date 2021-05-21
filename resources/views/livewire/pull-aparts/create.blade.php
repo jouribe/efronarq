@@ -614,22 +614,27 @@
             </div>
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
-                {{ __('Fechas') }}
+                {{ __('Fechas y Modelo de convenio') }}
             </h2>
 
             <div class="bg-white p-6 rounded-lg shadow mb-10">
 
                 <form wire:submit.prevent="storeAgreementAndSignMinute" autocomplete="off">
                     <div class="flex-row">
-
                         <div class="flex">
-                            <div class="p-4 w-1/2">
+                            <div class="p-4 w-1/3">
+                                <x-jet-label for="agreementModel">{{ __('Modelo de convenio') }}</x-jet-label>
+                                <x-dropdown-list :items="$agreementModelList" id="agreementModel" required wire:model="agreementModel"/>
+                                @error('agreementModel') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="p-4 w-1/3">
                                 <x-jet-label for="separationAgreementAt">{{ __('Separation agreement at') }}</x-jet-label>
                                 <x-jet-input type="date" id="separationAgreementAt" class="w-full" required wire:model="separationAgreementAt"/>
                                 @error('separationAgreementAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="p-4 w-1/2">
+                            <div class="p-4 w-1/3">
                                 <x-jet-label for="signatureMinuteAt">{{ __('Signature minute at') }}</x-jet-label>
                                 <x-jet-input type="date" id="signatureMinuteAt" class="w-full" required wire:model="signatureMinuteAt"/>
                                 @error('signatureMinuteAt') <span class="text-red-600 text-xs font-bold">{{ $message }}</span> @enderror
