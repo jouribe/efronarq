@@ -4,6 +4,7 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\Http\Livewire\Tables\ProjectPriceApartments;
 use App\Models\Project;
 use App\Models\ProjectApartment;
 use App\Models\ProjectApartmentType;
@@ -171,63 +172,56 @@ class Apartments extends Component
             'order' => 'required|integer'
         ]);
 
-        ray()->clearAll();
-
-        $apartmentPrice = ProjectApartmentType::whereId($this->project_apartment_type_id)
-            ->first()
-            ->priceApartments
-            ->first();
-
         $apartmentPrices = ProjectApartmentType::whereId($this->project_apartment_type_id)->first()->priceApartments()->get();
 
-        foreach ($apartmentPrices as $apartmentPrice) {
-            ray($apartmentPrice);
-        }
-
-        ray($apartmentPrices);
-        ray()->pause();
-
         if (is_null($this->price)) {
-            $this->price = $this->getPricePerApartment(Project::whereId($this->project->id)->first());
+            $this->price = $this->getPricePerApartment(Project::whereId($this->project->id)->first(), $apartmentPrices);
         }
 
-        if ($this->end_floor > $apartmentPrice->end_floor) {
-            $this->errorMessage = 'Este valor no concuerda con la lista de precios por tipo de departamento.';
-        } else {
-            if ($this->project_apartment_id) {
-                // Update project apartment
-                ProjectApartment::whereId($this->project_apartment_id)->update([
-                    'project_id' => $this->project->id,
-                    'apartment_type_id' => $this->project_apartment_type_id,
-                    'availability' => $this->availability,
-                    'start_floor' => $this->start_floor,
-                    'end_floor' => $this->end_floor,
-                    'parking_lots' => $this->parking_lots,
-                    'closets' => $this->closets,
-                    'order' => $this->order,
-                    'price' => $this->price
-                ]);
-            } else {
-                for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
-                    ProjectApartment::create([
+        foreach ($apartmentPrices as $apartmentPrice) {
+            if($this->start_floor >= $apartmentPrice->start_floor && $apartmentPrice->end_floor >= $this->end_floor) {
+                if ($this->project_apartment_id) {
+                    // Update project apartment
+                    ProjectApartment::whereId($this->project_apartment_id)->update([
                         'project_id' => $this->project->id,
                         'apartment_type_id' => $this->project_apartment_type_id,
                         'availability' => $this->availability,
-                        'start_floor' => $i,
-                        'end_floor' => $i,
+                        'start_floor' => $this->start_floor,
+                        'end_floor' => $this->end_floor,
                         'parking_lots' => $this->parking_lots,
                         'closets' => $this->closets,
-                        'order' => $this->order + ($i - 1),
+                        'order' => $this->order,
                         'price' => $this->price
                     ]);
+                } else {
+                    $intOrder = 0;
+
+                    for ($i = $this->start_floor; $i <= $this->end_floor; $i++) {
+                        ProjectApartment::create([
+                            'project_id' => $this->project->id,
+                            'apartment_type_id' => $this->project_apartment_type_id,
+                            'availability' => $this->availability,
+                            'start_floor' => $i,
+                            'end_floor' => $i,
+                            'parking_lots' => $this->parking_lots,
+                            'closets' => $this->closets,
+                            'order' => $this->order + $intOrder,
+                            'price' => $this->price
+                        ]);
+                        ++$intOrder;
+                    }
                 }
+
+                session()->flash('message', $this->project_apartment_id
+                    ? __('Apartment updated successfully.')
+                    : __('Apartment created successfully.'));
+
+                $this->closeModal();
+                $this->resetInputFields();
+                $this->emit('refreshLivewireDatatable');
+            } else {
+                $this->errorMessage = 'Este valor no concuerda con la lista de precios por tipo de departamento.';
             }
-
-            session()->flash('message', $this->project_apartment_id ? __('Apartment updated successfully.') : __('Apartment created successfully.'));
-
-            $this->closeModal();
-            $this->resetInputFields();
-            $this->emit('refreshLivewireDatatable');
         }
     }
 
@@ -282,16 +276,35 @@ class Apartments extends Component
      * Get price per apartment
      *
      * @param Project $project
+     * @param $apartmentPrices
      * @return float
      */
-    public function getPricePerApartment(Project $project): float
+    public function getPricePerApartment(Project $project, $apartmentPrices): float
     {
-        // Precio de area libre
-        $freeAreaPrice = self::freeAreaTotal($project->prices->first()->free_area, $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->free_area,
-            $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->priceApartments->first()->price_area);
-        // Precio de area techada
-        $roofedAreaPrice = self::roofedAreaTotal($project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->roofed_area,
-            $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->priceApartments->first()->price_area);
+        $freeAreaPrice = 0;
+        $roofedAreaPrice = 0;
+
+        foreach ($apartmentPrices as $apartmentPrice) {
+            if($this->start_floor >= $apartmentPrice->start_floor && $apartmentPrice->end_floor >= $this->end_floor) {
+                ray($project->prices->first()->free_area);
+                ray();
+                ray($apartmentPrice);
+
+                // Precio de area libre
+                $freeAreaPrice = self::freeAreaTotal(
+                    $project->prices->first()->free_area,
+                    $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->free_area,
+                    $apartmentPrice->price_area
+                );
+
+                // Precio de area techada
+                $roofedAreaPrice = self::roofedAreaTotal(
+                    $project->apartmentTypes()->whereId($this->project_apartment_type_id)->first()->roofed_area,
+                    $apartmentPrice->price_area
+                );
+            }
+        }
+
         // Precio de la unidad total Base (Proyecto: Construcción)
         return self::areaPriceTotal($freeAreaPrice, $roofedAreaPrice);
     }

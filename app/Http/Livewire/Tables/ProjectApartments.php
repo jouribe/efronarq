@@ -56,7 +56,7 @@ class ProjectApartments extends LivewireDatatable
             ->groupBy('project_apartments.availability', 'project_apartment_types.type_name', 'project_apartments.start_floor',
                 'project_apartment_types.roofed_area','project_apartment_types.free_area', 'project_price_apartments.price_area',
                 'project_apartments.parking_lots','project_apartments.closets', 'project_apartments.order', 'project_apartments.id',
-                'project_apartments.name', 'project_apartments.price', 'projects.currency');
+                'project_apartments.name', 'project_apartments.price', 'projects.currency')->distinct();
     }
 
     /**

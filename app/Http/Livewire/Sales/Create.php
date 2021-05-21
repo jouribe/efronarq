@@ -1009,8 +1009,6 @@ class Create extends Component
      */
     public function setDocumentControl(): void
     {
-        ray()->clearAll();
-
         if ($this->pullApart->documents->count() > 0) {
             $documentType = Document::where('id', $this->pullApart->documents->first()->document_id)->first()->type;
 
@@ -1554,9 +1552,6 @@ class Create extends Component
             $pullApart = PullApart::findOrFail($this->pullApart->id);
 
             $buyerInfo = '';
-
-            ray()->clearAll();
-            ray($pullApart->visit->customer()->get());
 
             switch ($pullApart->buyer_type) {
                 case 'Soltero(a)':

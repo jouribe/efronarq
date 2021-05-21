@@ -32,8 +32,6 @@ class AgreementModels extends Component
      */
     public function render()
     {
-        ray()->clearAll();
-
         $agreements = $this->project->agreementModels;
 
         if ($agreements->count() > 0) {
