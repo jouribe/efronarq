@@ -286,10 +286,6 @@ class Apartments extends Component
 
         foreach ($apartmentPrices as $apartmentPrice) {
             if($this->start_floor >= $apartmentPrice->start_floor && $apartmentPrice->end_floor >= $this->end_floor) {
-                ray($project->prices->first()->free_area);
-                ray();
-                ray($apartmentPrice);
-
                 // Precio de area libre
                 $freeAreaPrice = self::freeAreaTotal(
                     $project->prices->first()->free_area,

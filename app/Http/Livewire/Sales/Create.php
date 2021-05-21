@@ -1638,7 +1638,7 @@ class Create extends Component
 
             $phpWord->saveAs(storage_path("app/public/bills/$billName"));
         } catch (Exception $e) {
-            ray($e);
+            echo $e;
         }
     }
 

@@ -2,13 +2,16 @@
 
 namespace App\Http\Livewire\Tables;
 
+use App\Exports\ProjectsExport;
 use App\Models\Project;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Projects extends LivewireDatatable
 {
@@ -36,6 +39,11 @@ class Projects extends LivewireDatatable
      * @var mixed $hideable
      */
     public $hideable = 'add';
+
+    /**
+     * @var bool $customExport
+     */
+    public bool $customExport = true;
 
     /**
      * @var mixed
@@ -99,5 +107,15 @@ class Projects extends LivewireDatatable
         $project->update([
             'is_active' => !$project->first()->is_active
         ]);
+    }
+
+    /**
+     * Export projects.
+     *
+     * @return BinaryFileResponse
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new ProjectsExport, 'proyectos.xlsx');
     }
 }

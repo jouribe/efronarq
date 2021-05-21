@@ -33,9 +33,9 @@
             <div class="flex items-center space-x-1">
                 <x-icons.cog wire:loading class="h-9 w-9 animate-spin text-gray-400"/>
 
-                @if($exportable)
+                @if($customExport)
                     <div x-data="{ init() {
-                    window.livewire.on('startDownload', link => window.open(link,'_blank'))
+                    window.livewire.on('export', link => window.open(link,'_blank'))
                 } }" x-init="init">
                         <button wire:click="export"
                                 class="flex items-center space-x-2 px-3 border border-green-500 rounded-md bg-white text-green-500 text-xs leading-4 font-medium uppercase tracking-wider hover:bg-green-500 hover:text-white focus:outline-none">

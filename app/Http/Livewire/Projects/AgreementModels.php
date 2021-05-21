@@ -44,11 +44,6 @@ class AgreementModels extends Component
 
     public function store(): void
     {
-        ray('id: ', $this->projectAgreementModelId);
-        ray('projectId: ', $this->project->id);
-        ray('content: ', $this->content);
-        ray()->pause();
-
         ProjectAgreementModel::updateOrCreate([
             'id' => $this->projectAgreementModelId
         ], [
