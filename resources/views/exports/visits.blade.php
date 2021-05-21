@@ -1,52 +1,62 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: Calibri;font-size: 11px;text-align: center;color: #000;">
-	<thead>
-	  <tr style="background-color: #B4C6E7;vertical-align: middle;height: 60px;">
-	    <th colspan="3">Logo Efron</th>
-	    <th colspan="11" style="font-size: 14px;">Reporte de Visitas</th>
-	    <th colspan="3">&nbsp;</th>
-	  </tr>
-	  <tr>
-	  	<th colspan="17">&nbsp;</th>
-	  </tr>
-	    <tr style="background-color: #B4C6E7;vertical-align: middle;height: 20px;">
-		    <th style="border: 1px solid;">Visita</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Vendedor</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Fecha de visita</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Origen</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">DNI</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Nombres y Apellidos</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Correo</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Teléfono</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Proyecto</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Departamento</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Interesado</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Financiamiento</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Próxima acción</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Fecha de acción</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Estado de Acción</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Comentario de Acción</th>
-		    <th style="border-top: 1px solid;border-bottom: 1px solid;border-right: 1px solid;">Estado</th>
-		  </tr>
-	</thead>
-	<tbody>
-	  <tr>
-	    <td style="border: 1px solid;border-top: 0;">12</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Cynthia Clavo</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">21/05/2021</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Facebook</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">85236985</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Pedro Pérez</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">pedroperez@test.com</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">935236325</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Mirador</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">7701</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Si</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Crédito Hipotecario</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Llamar</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">23/05/2021</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Pendiente</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Llamar para confirmar</td>
-	    <td style="border-top: 0;border-bottom: 1px solid;border-right: 1px solid;">Visita</td>
-	  </tr>
-	</tbody>
+    <thead>
+    <tr style="background-color: #B4C6E7;vertical-align: middle;height: 60px;">
+        <th style="background-color: #B4C6E7;" colspan="3"><img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq"></th>
+        <th colspan="11" style="font-size: 14px; background-color: #B4C6E7;">Reporte de Visitas</th>
+        <th style="background-color: #B4C6E7;" colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+        <th colspan="17">&nbsp;</th>
+    </tr>
+    <tr style="background-color: #B4C6E7;vertical-align: middle;height: 20px;">
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Visita</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Vendedor</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Fecha de visita</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Origen</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">DNI</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Nombres y Apellidos</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Correo</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Teléfono</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Proyecto</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Departamento</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Interesado</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Financiamiento</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Próxima acción</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Fecha de acción</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Estado de Acción</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Comentario de Acción</th>
+        <th style="background-color: #B4C6E7;border: 1px solid #999999;">Estado</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($visits as $visit)
+        <tr>
+            <td style="border: 1px solid #999999;border-top: 0 solid transparent;">{{ $visit->id }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->user->name }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->created_at }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->origin->name }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->customer->dni }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->customer->full_name }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->customer->email }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->customer->phone }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->project->name }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->apartment->name }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->interested ? 'Si' : 'No' }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->type_financing }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">
+                {{ $visit->tracking->count() > 0 ? $visit->tracking->last()->action : '' }}
+            </td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">
+                {{ $visit->tracking->count() > 0 ? $visit->tracking->last()->action_at : '' }}
+            </td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">
+                {{ $visit->tracking->count() > 0 ? $visit->tracking->last()->status : '' }}
+            </td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">
+                {{ $visit->tracking->count() > 0 ? $visit->tracking->last()->comments : '' }}
+            </td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->status  }}</td>
+        </tr>
+    @endforeach
+    </tbody>
 </table>

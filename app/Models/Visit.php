@@ -104,6 +104,16 @@ class Visit extends Model
     }
 
     /**
+     * User
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Origin.
      *
      * @return BelongsTo

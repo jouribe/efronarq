@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire\Tables;
 
+use App\Exports\VisitsExport;
 use App\Models\Visit;
 use Arr;
 use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Visits extends LivewireDatatable
 {
@@ -44,7 +47,7 @@ class Visits extends LivewireDatatable
     /**
      * @var mixed $customExport
      */
-    public $customExport = false;
+    public $customExport = true;
 
     /**
      * Table builder.
@@ -126,5 +129,13 @@ class Visits extends LivewireDatatable
         ];
 
         return $columns;
+    }
+
+    /**
+     * @return BinaryFileResponse
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new VisitsExport, 'visits.xlsx');
     }
 }
