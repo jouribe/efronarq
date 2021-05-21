@@ -8,7 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <livewire:tables.pull-aparts :is-admin="auth()->user()->hasRole(['admin', 'asistente'])" />
+            <livewire:tables.pull-aparts
+                :is-admin="auth()->user()->hasRole(['admin', 'asistente'])"/>
 
         </div>
     </div>

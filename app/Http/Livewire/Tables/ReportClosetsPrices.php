@@ -10,6 +10,11 @@ class ReportClosetsPrices extends LivewireDatatable
 {
     public $searchable = 'projects.name, project_closets.floor, project_closets.closet';
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return ProjectCloset::query()

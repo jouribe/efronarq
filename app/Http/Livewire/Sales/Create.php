@@ -1577,7 +1577,9 @@ class Create extends Component
             $phpWord->setValue('BCO_PROYECTO', $pullApart->visit->project->bank->description);
             $phpWord->setValue('BCO_FINANCIADOR', $pullApart->visit->project->bank->description);
             $phpWord->setValue('N_PARTIDA', $pullApart->bills->first()->batch_nro);
-            $phpWord->setValue('NRO_CTA_PROYECTO', $pullApart->visit->project->currency === 'USD' ? $pullApart->visit->project->account_nro_me : $pullApart->visit->project->account_nro_mn);
+            $phpWord->setValue('NRO_CTA_PROYECTO', $pullApart->visit->project->currency === 'USD'
+                ? $pullApart->visit->project->account_nro_me
+                : $pullApart->visit->project->account_nro_mn);
             $phpWord->setValue('PROYECTO_MONEDA', $pullApart->visit->project->currency === 'USD' ? 'US$.' : 'S/.');
 
             if ($pullApart->payment_type === 'Directo') {
@@ -1669,7 +1671,9 @@ class Create extends Component
             'status' => 'Registrado'
         ]);
 
-        session()->flash('quotationValidation', !is_null($this->pullApart) ? __('Convenio de separación actualizado con éxito!') : __('Convenio de separación creado con éxito!'));
+        session()->flash('quotationValidation', !is_null($this->pullApart)
+            ? __('Convenio de separación actualizado con éxito!')
+            : __('Convenio de separación creado con éxito!'));
     }
 
     /**

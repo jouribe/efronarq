@@ -20,11 +20,16 @@ class PullApartSales extends LivewireDatatable
     public $searchable = 'pull_aparts.id, projects.name, customers.full_name';
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder.
      *
      * @return Builder
      */
-    public function builder() : Builder
+    public function builder(): Builder
     {
         return PullApart::query()
             ->leftJoin('visits', 'pull_aparts.visit_id', 'visits.id')

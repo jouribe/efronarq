@@ -42,6 +42,11 @@ class Visits extends LivewireDatatable
     public bool $isAdmin;
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Table builder.
      *
      * @return Builder
