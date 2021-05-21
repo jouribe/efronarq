@@ -30,6 +30,11 @@ class Users extends LivewireDatatable
     public $searchable = 'users.name, roles.name';
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query Builder
      *
      * @return Builder

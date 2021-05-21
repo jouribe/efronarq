@@ -25,6 +25,11 @@ class Exchanges extends LivewireDatatable
      */
     public bool $hideCreate = false;
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return Exchange::query();

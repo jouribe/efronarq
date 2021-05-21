@@ -46,6 +46,11 @@ class Bank extends LivewireDatatable
     public $sort = "name|asc";
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * @return array
      * @noinspection ClassMethodNameMatchesFieldNameInspection
      */

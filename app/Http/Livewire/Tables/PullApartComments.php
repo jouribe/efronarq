@@ -21,6 +21,11 @@ class PullApartComments extends LivewireDatatable
     public $searchable = 'users.name, pull_apart_comments.status, pull_apart_comments.created_at';
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder
      *
      * @return Builder

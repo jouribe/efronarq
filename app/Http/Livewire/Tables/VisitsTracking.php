@@ -42,6 +42,11 @@ class VisitsTracking extends LivewireDatatable
     public bool $hideCreate = false;
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Query builder
      *
      * @return Builder

@@ -37,7 +37,12 @@ class ProjectPrices extends LivewireDatatable
     public bool $isAdmin;
 
     /**
-     * @var mixed $listeners;
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
+     * @var mixed $listeners
      */
     protected $listeners = [
         'refreshLivewireDatatable',
@@ -84,12 +89,12 @@ class ProjectPrices extends LivewireDatatable
             })
                 ->label(__('Parking discount')),
 
-//            Column::callback('currency', function ($currency) {
-//                return $currency === 'USD'
-//                    ? '<span>Dólares</span>'
-//                    : '<span>Soles</span>';
-//            })
-//                ->label(__('Currency')),
+            //            Column::callback('currency', function ($currency) {
+            //                return $currency === 'USD'
+            //                    ? '<span>Dólares</span>'
+            //                    : '<span>Soles</span>';
+            //            })
+            //                ->label(__('Currency')),
 
             Column::name('id')
                 ->label(__('Actions'))
@@ -104,6 +109,6 @@ class ProjectPrices extends LivewireDatatable
      */
     public function generalPriceCreated(): void
     {
-        $this->hideCreate = ! $this->hideCreate;
+        $this->hideCreate = !$this->hideCreate;
     }
 }

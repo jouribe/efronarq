@@ -40,6 +40,11 @@ class ProjectSellers extends LivewireDatatable
     public bool $isAdmin;
 
     /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
+    /**
      * Build query
      *
      * @return Builder

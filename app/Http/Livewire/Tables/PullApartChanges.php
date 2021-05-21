@@ -19,6 +19,11 @@ class PullApartChanges extends LivewireDatatable
      */
     public $searchable = 'estimate_days, delivery_at, id, payment_at';
 
+    /**
+     * @var mixed $customExport
+     */
+    public $customExport = false;
+
     public function builder()
     {
         return PullApartChange::query()
