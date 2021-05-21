@@ -80,6 +80,10 @@
             <h2 class="px-4 text-lg pt-10">{{ __('¿Desea cotizar en otra moneda?') }}</h2>
             <hr class="mx-4 pb-6">
 
+            <div class="px-4 py-2 w-full">
+                Moneda actual del proyecto: <strong>{{ $projectCurrency === 'PEN' ? 'Soles (S/.)' : 'Dólares (US$.)' }}</strong>
+            </div>
+
             <div class="p-4 w-1/4">
                 <x-jet-label for="exchange">{{ __('Cotizar en otra moneda') }}</x-jet-label>
                 <x-dropdown-list :items="$exchangeRateList" id="exchange" required name="exchange"/>

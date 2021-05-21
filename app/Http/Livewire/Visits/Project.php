@@ -99,6 +99,11 @@ class Project extends Component
     ];
 
     /**
+     * @var mixed $projectCurrency
+     */
+    public $projectCurrency;
+
+    /**
      * Render view.
      *
      * @return Factory|View|Application
@@ -114,6 +119,8 @@ class Project extends Component
                 ->where('start_at' , '<=', now())
                 ->where('end_at', '>=', now())
                 ->pluck('name', 'id');
+
+            $this->projectCurrency = \App\Models\Project::whereId($this->project_id)->first()->currency;
         }
 
         $this->getProjectApartmentList();

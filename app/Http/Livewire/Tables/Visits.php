@@ -113,7 +113,8 @@ class Visits extends LivewireDatatable
                 ->label(__('Action at')),
 
             Column::name('visit_tracking.status')
-                ->label(__('Action status')),
+                ->label(__('Action status'))
+                ->filterable(),
 
             Column::name('visits.status')
                 ->label(__('Status'))
