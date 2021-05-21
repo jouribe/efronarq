@@ -28,7 +28,8 @@ class PullApart extends Model
         'agreement',
         'sworn_declaration',
         'is_sale',
-        'signed_separation_agreement'
+        'signed_separation_agreement',
+        'agreement_model'
     ];
 
     /**

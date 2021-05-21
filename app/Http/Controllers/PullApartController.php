@@ -12,6 +12,7 @@ use App\Models\Visit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 
 class PullApartController extends Controller
 {
@@ -46,8 +47,9 @@ class PullApartController extends Controller
     public function generate(int $id)
     {
 
-        $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment', 'visit.apartment.apartmentType',
-            'visit.closets', 'visit.closets.closet', 'visit.parkingLots', 'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address', 'visit.customer',
+        $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment',
+            'visit.apartment.apartmentType', 'visit.closets', 'visit.closets.closet', 'visit.parkingLots',
+            'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address', 'visit.customer',
             'visit.customer.related')
             ->whereId($id)
             ->first();
@@ -66,13 +68,16 @@ class PullApartController extends Controller
             $customer[] = Company::whereId($pullApart->visit->customer->company_id)->first()->toArray();
         }
 
-        $agreementFromDb = $pullApart->visit->project->agreementModels->first();
+//        $agreementFromDb = $pullApart->visit->project->agreementModels->first();
+//
+//        if (is_null($agreementFromDb)) {
+//            $agreementFromDb = $this->getModeloAgreement();
+//        } else {
+//            $agreementFromDb = $agreementFromDb->content;
+//        }
 
-        if (is_null($agreementFromDb)) {
-            $agreementFromDb = $this->getModeloAgreement();
-        } else {
-            $agreementFromDb = $agreementFromDb->content;
-        }
+        $agreementText = $this->getModeloAgreement();
+        $agreementText = Str::replace('{AGREEMENT_MODEL}', $this->getModel('model'), $agreementText);
 
         $data = [
             'data' => [
@@ -84,7 +89,7 @@ class PullApartController extends Controller
                         : null,
                     'info' => $customer
                 ],
-                'agreement' => $agreementFromDb,
+                'agreement' => $agreementText,
                 'title' => 'separacion-' . now()->format('d/m/Y')
             ]
         ];
@@ -143,7 +148,7 @@ class PullApartController extends Controller
 
 <p><strong>TERCERA.-</strong> Con la finalidad de separar los <strong>INMUEBLES</strong>,&nbsp; <strong>EL (LA)(LOS) COMPRADOR(A)(ES</strong>) se compromete(n), en un plazo no mayor de dos (02) d&iacute;as &uacute;tiles a partir de la fecha de este documento, a cancelar mediante dep&oacute;sito en la cuenta corriente MN N&ordm; 000- 4309260 que <strong>LA VENDEDORA</strong> mantiene&nbsp; en el Scotiabank la suma consignada en el numeral 4 del Anexo I. Dicho importe as&iacute; como otros abonos que pudiese hacer <strong>EL(LA)(LOS)COMPRADOR(A)(ES)</strong>&nbsp; en calidad de separaci&oacute;n, no generar&aacute; intereses. De concretarse la compra-venta se imputar&aacute;n al pago de la cuota inicial.</p>
 
-<p><strong>CUARTA</strong>.-&nbsp; De no suscribirse la minuta hasta la fecha indicada en el numeral 6 del Anexo I, el presente Convenio quedar&aacute; sin efecto, quedando en beneficio de <strong>LA VENDEDORA</strong> el importe total que <strong>EL(LA)(LOS)COMPRADOR(A)(ES)</strong> hayan abonado a la fecha, por concepto de gastos administrativos.</p>
+<p><strong>CUARTA</strong>.-&nbsp; {AGREEMENT_MODEL}</p>
 
 <p><strong>QUINTA.-&nbsp; </strong>Las partes declaran que sus domicilios son los que figuran en la introducci&oacute;n del presente Contrato y que ninguna variaci&oacute;n en los mismos surtir&aacute; efectos si no es comunicada notarialmente a la contraparte dentro de los cinco (05) d&iacute;as de producido el cambio, debiendo quedar ubicado el nuevo domicilio necesariamente en la ciudad de Lima.</p>
 
@@ -159,5 +164,14 @@ class PullApartController extends Controller
 
 HTML;
 
+    }
+
+    public function getModel($model): string
+    {
+        if ($model === 'Modelo A') {
+            return "De no suscribirse la minuta hasta la fecha indicada en el numeral 6 del Anexo I, el presente Convenio quedar&aacute; sin efecto, quedando en beneficio de <strong>LA VENDEDORA</strong> el importe total que <strong>EL(LA)(LOS)COMPRADOR(A)(ES)</strong> hayan abonado a la fecha, por concepto de gastos administrativos";
+        }
+
+        return "En caso que <strong>EL(LA)(LOS)COMPRADOR(A)(ES)</strong> hubiese(n) solicitado un cr&eacute;dito bancario para la cancelaci&oacute;n del saldo de precio y, habiendo presentado toda la documentaci&oacute;n requerida por el banco para tal efecto, su solicitud fuera rechazada, <strong>LA VENDEDORA</strong> reintegrar&aacute;, en un plazo m&aacute;ximo de 5 d&iacute;as h&aacute;biles, el &iacute;ntegro del monto recibido hasta ese momento menos S/300 (Trescientos con 00/100 soles) por concepto de gastos administrativos y dejando sin efecto este convenio. El rechazo del cr&eacute;dito quedara en evidencia cuando se reciba una comunicaci&oacute;n escrita o correo electr&oacute;nico de la entidad bancaria respectiva indicando lo anterior como m&aacute;ximo hasta la fecha de firma de la presente minuta.</p><p>En cualquier otro caso o de no suscribirse la minuta hasta la fecha indicada en el numeral 6 del Anexo I, el presente Convenio quedar&aacute; sin efecto, quedando en beneficio de <strong>LA VENDEDORA</strong> el importe total que <strong>EL(LA)(LOS)COMPRADOR(A)(ES)</strong> hayan abonado a la fecha, por concepto de gastos administrativos.";
     }
 }

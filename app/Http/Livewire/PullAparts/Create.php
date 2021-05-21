@@ -1020,6 +1020,7 @@ class Create extends Component
     public function storeAgreementAndSignMinute(): void
     {
         PullApart::whereId($this->pullApart->id)->update([
+            'agreement_model' => $this->agreementModel,
             'separation_agreement_at' => $this->separationAgreementAt,
             'signature_minute_at' => $this->signatureMinuteAt
         ]);
