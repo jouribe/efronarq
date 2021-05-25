@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Tables;
 
+use App\Exports\ClosetPricesExport;
 use App\Models\ProjectCloset;
+use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportClosetsPrices extends LivewireDatatable
 {
@@ -13,7 +16,7 @@ class ReportClosetsPrices extends LivewireDatatable
     /**
      * @var mixed $customExport
      */
-    public $customExport = false;
+    public $customExport = true;
 
     public function builder()
     {
@@ -67,5 +70,15 @@ class ReportClosetsPrices extends LivewireDatatable
                 })
                 ->label('Precio venta'),
         ];
+    }
+
+    /**
+     * Export
+     *
+     * @return BinaryFileResponse
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new ClosetPricesExport, 'precios-depositos.xlsx');
     }
 }

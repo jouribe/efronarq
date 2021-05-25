@@ -1,7 +1,9 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: Calibri;font-size: 11px;text-align: center;color: #000;">
     <thead>
     <tr style="background-color: #B4C6E7;vertical-align: middle;height: 60px;">
-        <th style="background-color: #B4C6E7;" colspan="3"><img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq"></th>
+        <th style="background-color: #B4C6E7;" colspan="3">
+            <img src="images/atomikal-logo-blanco.png" style="" alt="EfronArq">
+        </th>
         <th colspan="11" style="font-size: 14px; background-color: #B4C6E7;">Reporte de Visitas</th>
         <th style="background-color: #B4C6E7;" colspan="3">&nbsp;</th>
     </tr>

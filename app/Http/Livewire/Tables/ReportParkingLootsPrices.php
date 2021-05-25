@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Tables;
 
+use App\Exports\ParkingLotPricesExport;
 use App\Models\ProjectParkingLot;
+use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportParkingLootsPrices extends LivewireDatatable
 {
@@ -13,7 +16,7 @@ class ReportParkingLootsPrices extends LivewireDatatable
     /**
      * @var mixed $customExport
      */
-    public $customExport = false;
+    public $customExport = true;
 
     public function builder()
     {
@@ -79,5 +82,15 @@ class ReportParkingLootsPrices extends LivewireDatatable
                 })
                 ->label('Precio venta'),
         ];
+    }
+
+    /**
+     * Export
+     *
+     * @return BinaryFileResponse
+     */
+    public function export(): BinaryFileResponse
+    {
+        return Excel::download(new ParkingLotPricesExport, 'precios-estacionamiento.xlsx');
     }
 }
