@@ -38,7 +38,7 @@
     </div>
     <div id="panels">
         <div class="panel-1 tab-content active general py-5">
-            <div class="py-12">
+            <div class="pt-12 pb-10">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="flex-row p-4">

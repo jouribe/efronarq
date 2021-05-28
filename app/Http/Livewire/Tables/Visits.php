@@ -4,8 +4,8 @@ namespace App\Http\Livewire\Tables;
 
 use App\Exports\VisitsExport;
 use App\Models\Visit;
-use Arr;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
@@ -127,6 +127,11 @@ class Visits extends LivewireDatatable
                 ->label(__('Actions'))
                 ->view('visits.actions.table-actions')
         ];
+
+        /** @noinspection NullPointerExceptionInspection */
+        if(auth()->user()->hasRole(['admin', 'asistente'])) {
+            array_unshift($columns, Column::name('users.name')->label(__('Customer')));
+        }
 
         return $columns;
     }

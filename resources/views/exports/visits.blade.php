@@ -57,7 +57,7 @@
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">
                 {{ $visit->tracking->count() > 0 ? $visit->tracking->last()->comments : '' }}
             </td>
-            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->status  }}</td>
+            <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $visit->status }}</td>
         </tr>
     @endforeach
     </tbody>
