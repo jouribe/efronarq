@@ -19,6 +19,7 @@
                             <x-jet-label for="floor">{{ __('Floor') }}</x-jet-label>
                             <x-dropdown-list :items="$floorList" id="floor" wire:model="floor"/>
                             @error('floor') <span class="text-red-600 text-xs font-bold">* {{ __('required') }}</span> @enderror
+                            @if(session()->has('floor_error')) <span class="text-red-600 text-xs font-bold">{{ session('floor_error') }}</span> @endif
                         </div>
 
                         <div class="p-4 w-1/2">

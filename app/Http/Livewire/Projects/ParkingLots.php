@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -227,6 +228,14 @@ class ParkingLots extends Component
             'closet' => 'required',
             'blueprint' => 'nullable|file|max:10240', // 10MB Max
         ]);
+
+        $parkingLotFloor = ProjectPriceParkingLot::whereProjectId($this->project->id)
+            ->whereFloor($this->floor);
+
+        if (!$parkingLotFloor->exists()) {
+            session()->flash('floor_error', 'No se registró un estacionamiento en este piso!');
+            return;
+        }
 
         if($this->blueprint !== null && $this->blueprint !== '') {
             $this->current_blueprint = $this->blueprint->store('parking-lot-blueprints', 'public');
