@@ -48,10 +48,11 @@ class PullAparts extends LivewireDatatable
             ->leftJoin('projects', 'visits.project_id', 'projects.id')
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
+            ->leftJoin('users', 'visits.user_id', 'users.id')
             ->onlyForMe()
             ->isNotASale()
             ->groupBy('visits.id', 'projects.name', 'customers.full_name', 'project_apartments.name',
-                'pull_aparts.status', 'pull_aparts.created_at', 'pull_aparts.agreement');
+                'pull_aparts.status', 'pull_aparts.created_at', 'pull_aparts.agreement', 'users.name');
     }
 
     /**
@@ -64,7 +65,7 @@ class PullAparts extends LivewireDatatable
     public function columns(): array
     {
         /** @noinspection DuplicatedCode */
-        return [
+        $columns = [
             Column::name('visits.id')
                 ->label(__('Quotation')),
 
@@ -146,5 +147,12 @@ class PullAparts extends LivewireDatatable
                 ->label(__('Status'))
                 ->filterable()
         ];
+
+        /** @noinspection NullPointerExceptionInspection */
+        if(auth()->user()->hasRole(['admin', 'user'])) {
+            array_unshift($columns, Column::name('users.name')->label('Vendedor')->filterable());
+        }
+
+        return $columns;
     }
 }
