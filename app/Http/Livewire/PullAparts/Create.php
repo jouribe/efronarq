@@ -419,6 +419,14 @@ class Create extends Component
     public $agreementModel;
 
     /**
+     * @var string[] $listeners
+     */
+    protected $listeners = [
+        'pullApartReject',
+        'sendToApprove'
+    ];
+
+    /**
      * Component mount.
      */
     public function mount($page): void
@@ -478,6 +486,7 @@ class Create extends Component
     public function settingDateAgreementAndSignMinute(): void
     {
         if (!is_null($this->pullApart)) {
+            $this->agreementModel = $this->pullApart->agreement_model;
             $this->separationAgreementAt = $this->pullApart->separation_agreement_at;
             $this->signatureMinuteAt = $this->pullApart->signature_minute_at;
         }

@@ -679,7 +679,7 @@
 
             <div class="bg-white p-6 rounded-lg shadow">
 
-                <form wire:submit.prevent="sendToApprove" autocomplete="off">
+{{--                <form onsubmit="approvePullApart()" autocomplete="off">--}}
 
                     <div class="flex-row">
                         <div class="flex">
@@ -696,19 +696,39 @@
                             @role('admin')
                             @if(!is_null($pullApart))
                                 @if($pullApart->status === 'Pendiente Aprobación')
-                                    <x-jet-button type="button" class="bg-red-500" wire:click="pullApartReject()">{{ __('Reject') }}</x-jet-button>
+                                    <x-jet-button type="button" class="bg-red-500" onclick="rejectPullApart()">{{ __('Reject') }}</x-jet-button>
+                                    <script>
+                                        function rejectPullApart() {
+                                            if (confirm('Desea rechazar la separación?')) {
+                                                window.livewire.emit('pullApartReject')
+                                            }
+                                        }
+                                    </script>
                                 @endif
                             @endif
                             @endrole
 
                             @if(auth()->user()->hasRole('vendedor') && ($pullApart->status === 'Registrado' || $pullApart->status === 'Rechazado') )
-                                <x-jet-button class="bg-blue-500">{{ __('Send to approve') }}</x-jet-button>
+                                <x-jet-button type="button" class="bg-blue-500" onclick="approvePullApart('Confirma que desea enviar a aprobación la separación?')">
+                                    {{ __('Send to approve') }}
+                                </x-jet-button>
                             @elseif(auth()->user()->hasRole(['admin', 'asistente']) && ($pullApart->status === 'Pendiente Aprobación'))
-                                <x-jet-button class="bg-blue-500">{{ __('Approve') }}</x-jet-button>
+                                <x-jet-button type="button" class="bg-blue-500" onclick="approvePullApart('Confirma que desea aprobar la separación?')">
+                                    {{ __('Approve') }}
+                                </x-jet-button>
                             @endif
+
+                            <script>
+                                function approvePullApart(msg)
+                                {
+                                    if(confirm(msg)) {
+                                        window.livewire.emit('sendToApprove');
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
-                </form>
+{{--                </form>--}}
 
                 @if(session()->has('sendToApprove'))
                     <div class="p-6 bg-blue-100 border-t-4 border-blue-500 rounded-b text-white shadow-md mb-2 mx-4 mt-4" role="alert">
