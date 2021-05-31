@@ -617,7 +617,7 @@ class Create extends Component
     {
         $this->discountType = $this->pullApart->discount_type;
         $this->discountAmount = $this->pullApart->discount;
-        $this->priceTotal = $this->pullApart->final_price;
+        $this->priceTotal = $this->pullApart->final_price * $this->exchangeRate;
         $this->priceTotalText = $this->currencyPrefix . number_format($this->priceTotal, 2);
         $this->balance = $this->currencyPrefix . number_format($this->priceTotal - $this->amount, 2);
     }
