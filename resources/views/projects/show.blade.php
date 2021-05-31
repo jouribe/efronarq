@@ -183,20 +183,30 @@
             <div class="pb-12 pt-10">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-2">
-                        {{ __('Agreements') }}
+                        {{ __('Agreement') }}
                     </h2>
 
                     <div class="bg-white rounded-lg p-10">
                         <livewire:projects.agreement-models :project="$project"/>
 
-                        <script>
-                            tinymce.init({
-                                selector: '#content',
-                                //toolbar: 'undo redo  | bold italic underline ',
-                                menubar: false,
-                                height: '600'
-                            })
-                        </script>
+{{--                        <script>--}}
+{{--                            tinymce.init({--}}
+{{--                                selector: '.content',--}}
+{{--                                //toolbar: 'undo redo  | bold italic underline ',--}}
+{{--                                menubar: false,--}}
+{{--                                height: '600',--}}
+{{--                                inline: true,--}}
+{{--                                forced_root_block: false,--}}
+{{--                                setup: function (editor) {--}}
+{{--                                    editor.on('init change', function () {--}}
+{{--                                        editor.save()--}}
+{{--                                    })--}}
+{{--                                    editor.on('change', function (e) {--}}
+{{--                                    @this.set('privacyPolicy.description', editor.getContent());--}}
+{{--                                    })--}}
+{{--                                },--}}
+{{--                            })--}}
+{{--                        </script>--}}
                     </div>
                 </div>
             </div>

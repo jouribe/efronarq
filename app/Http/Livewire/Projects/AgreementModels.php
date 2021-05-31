@@ -21,9 +21,19 @@ class AgreementModels extends Component
     public $project;
 
     /**
-     * @var mixed $content
+     * @var $content
      */
     public $content;
+
+    public function mount(): void
+    {
+        $agreements = $this->project->agreementModels;
+
+        if ($agreements) {
+            $this->content = $agreements->first()->content;
+            $this->projectAgreementModelId = $agreements->first()->id;
+        }
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -32,13 +42,6 @@ class AgreementModels extends Component
      */
     public function render()
     {
-        $agreements = $this->project->agreementModels;
-
-        if ($agreements->count() > 0) {
-            $this->content = $agreements->first()->content;
-            $this->projectAgreementModelId = $agreements->first()->id;
-        }
-
         return view('livewire.projects.agreement-models');
     }
 

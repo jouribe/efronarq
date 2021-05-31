@@ -130,7 +130,7 @@ class Visits extends LivewireDatatable
 
         /** @noinspection NullPointerExceptionInspection */
         if(auth()->user()->hasRole(['admin', 'asistente'])) {
-            array_unshift($columns, Column::name('users.name')->label(__('Customer')));
+            array_unshift($columns, Column::name('users.name')->label(__('Vendedor')));
         }
 
         return $columns;
