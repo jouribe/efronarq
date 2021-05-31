@@ -419,6 +419,16 @@ class Create extends Component
     public $agreementModel;
 
     /**
+     * @var mixed $currencyPrefix
+     */
+    public $currencyPrefix;
+
+    /**
+     * @var mixed $exchangeRate
+     */
+    public $exchangeRate;
+
+    /**
      * @var string[] $listeners
      */
     protected $listeners = [
@@ -431,6 +441,24 @@ class Create extends Component
      */
     public function mount($page): void
     {
+        $projectCurrency = $this->visit->project->currency === 'PEN' ? 'S/. ' : 'US$. ';
+        $this->exchangeRate = 1;
+
+        if (!is_null($this->visit->exchange_id)) {
+            switch ($projectCurrency) {
+                case 'S/. ':
+                    $projectCurrency = 'US$. ';
+                    $this->exchangeRate /= $this->visit->exchange->sale;
+                    break;
+                case 'US$. ':
+                    $projectCurrency = 'S/. ';
+                    $this->exchangeRate *= $this->visit->exchange->buy;
+                    break;
+            }
+        }
+
+        $this->currencyPrefix = $projectCurrency;
+
         $this->page = $page;
 
         $this->bankList = Bank::whereIsActive(true)->pluck('name', 'id');
@@ -528,7 +556,7 @@ class Create extends Component
                 $this->generateFeeInputs();
 
                 foreach ($fees as $key => $value) {
-                    $this->fee[$key] = 'US$ ' . number_format($value->fee, 2);
+                    $this->fee[$key] = $this->currencyPrefix . number_format($value->fee, 2);
                     $this->feeAt[$key] = $value->fee_at;
                     $this->feeMilestone[$key] = $value->milestone;
                 }
@@ -578,7 +606,7 @@ class Create extends Component
             $finalPrice = $this->pullApart->final_price;
         }
 
-        $this->balance = $this->feeBalance = 'US$ ' . number_format($finalPrice - ($amount + $afpAmount + $creditAmount), 2);
+        $this->balance = $this->feeBalance = $this->currencyPrefix . number_format($finalPrice - ($amount + $afpAmount + $creditAmount), 2);
     }
 
     /**
@@ -590,8 +618,8 @@ class Create extends Component
         $this->discountType = $this->pullApart->discount_type;
         $this->discountAmount = $this->pullApart->discount;
         $this->priceTotal = $this->pullApart->final_price;
-        $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
-        $this->balance = 'US$ ' . number_format($this->priceTotal - $this->amount, 2);
+        $this->priceTotalText = $this->currencyPrefix . number_format($this->priceTotal, 2);
+        $this->balance = $this->currencyPrefix . number_format($this->priceTotal - $this->amount, 2);
     }
 
     /**
@@ -599,8 +627,8 @@ class Create extends Component
      */
     public function settingPriceFromForm(): void
     {
-        $this->priceTotal = $this->priceApartment + $this->priceParkingLots + $this->priceClosets;
-        $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
+        $this->priceTotal = ($this->priceApartment + $this->priceParkingLots + $this->priceClosets) * $this->exchangeRate;
+        $this->priceTotalText = $this->currencyPrefix . number_format($this->priceTotal, 2);
     }
 
     /**
@@ -657,7 +685,7 @@ class Create extends Component
     {
         $this->priceTotal = $this->setTotalPriceOfSale((float)$this->discountAmount);
 
-        $this->priceTotalText = 'US$ ' . number_format($this->priceTotal, 2);
+        $this->priceTotalText = $this->currencyPrefix . number_format($this->priceTotal, 2);
     }
 
     /**
@@ -665,8 +693,8 @@ class Create extends Component
      */
     public function setApartmentPrice(): void
     {
-        $this->priceApartment = $this->visit->apartment->price;
-        $this->priceApartmentText = 'US$ ' . number_format($this->priceApartment, 2);
+        $this->priceApartment = $this->visit->apartment->price * $this->exchangeRate;
+        $this->priceApartmentText = $this->currencyPrefix . number_format($this->priceApartment, 2);
     }
 
     /**
@@ -680,6 +708,8 @@ class Create extends Component
             foreach ($this->visit->parkingLots as $parkingLot) {
                 $this->priceParkingLots += $parkingLot->parkingLot->price;
             }
+
+            $this->priceParkingLots *= $this->exchangeRate;
         }
     }
 
@@ -694,6 +724,8 @@ class Create extends Component
             foreach ($this->visit->closets as $closet) {
                 $this->priceClosets += $closet->closet->price;
             }
+
+            $this->priceClosets *= $this->exchangeRate;
         }
     }
 
@@ -875,7 +907,7 @@ class Create extends Component
             $feeAmount = ($this->priceTotal - ($amount + $afpAmount + $creditAmount)) / $this->feeCount;
 
             foreach ($this->inputs as $key => $value) {
-                $this->fee[$key] = 'US$ ' . number_format($feeAmount, 2);
+                $this->fee[$key] = $this->currencyPrefix . number_format($feeAmount, 2);
 
                 if (!is_null($this->amountAt)) {
                     $this->feeAt[$key] = Carbon::parse($this->amountAt)->addMonthsNoOverflow($key + 1)->format('Y-m-d');
@@ -918,7 +950,7 @@ class Create extends Component
 
         if (!is_null($this->fee)) {
             foreach ($this->fee as $value) {
-                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace($this->currencyPrefix, '', $value));
 
                 $validateAmount -= $fee;
             }
@@ -956,7 +988,7 @@ class Create extends Component
                 ]);
             } else {
                 if ($this->feeBalance !== '') {
-                    $feeBalance = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $this->feeBalance));
+                    $feeBalance = (float)preg_replace("/[^-0-9.]/", "", str_replace($this->currencyPrefix, '', $this->feeBalance));
                 }
 
                 PullApartFee::create([
@@ -1000,7 +1032,7 @@ class Create extends Component
             // register all fees only if payment type not is Hipotecario.
             foreach ($this->fee as $key => $value) {
 
-                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace('US$ ', '', $value));
+                $fee = (float)preg_replace("/[^-0-9.]/", "", str_replace($this->currencyPrefix, '', $value));
 
                 $milestone = null;
 
