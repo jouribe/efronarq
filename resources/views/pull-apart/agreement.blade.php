@@ -588,32 +588,53 @@
         3. PRECIO DEL INMUEBLE MATERIA DE COMPRA VENTA
     </div>
 
-    <table width="100%" cellspacing="0" style="color: #696969;margin: 40px auto 30px;border: 1px solid;border-bottom: 0;font-family: Helvetica,serif;font-size: 15px;">
-        <tbody>
-        <tr>
-            <td style="text-align: left;border-bottom: 1px solid;border-right: 1px solid;width: 25%;">
-                <span style="display: inline-block;width: auto;margin: 5px;font-weight: bold;">Precio total (US$ incl. IGV):</span>
-            </td>
-            <td colspan="2" style="text-align: left;border-bottom: 1px solid;">
-                <span style=" display: inline-block;width: auto;margin: 5px;">US$ {{ number_format($data['pull-apart']['final_price'], 2) }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;border-right: 1px solid; width: 25%; border-bottom: 1px solid;">
-                <span style="display: inline-block;width: auto;margin: 5px;font-weight: bold;">Detalle del Precio (incl. IGV):</span>
-            </td>
-            <td style="text-align: left;border-right: 1px solid;width: 25%;border-bottom: 1px solid;">
-                <span style="display: inline-block;width: auto;margin: 5px;">Departamento</span></td>
-            <td style="text-align: left;width: 25%;border-bottom: 1px solid;">
-                <span style="display: inline-block;width: auto;margin: 5px;">
-                    @php
-                        $discount = $data['pull-apart']['visit']['apartment']['price'] * ($data['pull-apart']['discount'] / 100);
+    @php
+        $prefix = $data['pull-apart']['visit']['project']['currency'] === 'PEN' ? 'S/.' : 'US$.';
 
-                        if($data['pull-apart']['discount_type'] === 1) {
-                            $discount = $data['pull-apart']['discount'];
-                        }
+        $exchangeRate = 1;
+
+        if (!is_null($data['pull-apart']['visit']['exchange'])) {
+            switch ($prefix) {
+                case 'S/.':
+                    $prefix = 'US$.';
+                    $exchangeRate /= $data['pull-apart']['visit']['exchange']['sale'];
+                    break;
+                case 'US$.':
+                    $prefix = 'S/.';
+                    $exchangeRate *= $data['pull-apart']['visit']['exchange']['buy'];
+                    break;
+            }
+        }
+    @endphp
+
+<table width="100%" cellspacing="0" style="color: #696969;margin: 40px auto 30px;border: 1px solid;border-bottom: 0;font-family: Helvetica,serif;font-size: 15px;">
+    <tbody>
+    <tr>
+        <td style="text-align: left;border-bottom: 1px solid;border-right: 1px solid;width: 25%;">
+            <span style="display: inline-block;width: auto;margin: 5px;font-weight: bold;">Precio total (US$ incl. IGV):</span>
+        </td>
+        <td colspan="2" style="text-align: left;border-bottom: 1px solid;">
+            <span style=" display: inline-block;width: auto;margin: 5px;">
+                {{ $prefix }} {{ number_format($data['pull-apart']['final_price'] * $exchangeRate, 2) }}
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: left;border-right: 1px solid; width: 25%; border-bottom: 1px solid;">
+            <span style="display: inline-block;width: auto;margin: 5px;font-weight: bold;">Detalle del Precio (incl. IGV):</span>
+        </td>
+        <td style="text-align: left;border-right: 1px solid;width: 25%;border-bottom: 1px solid;">
+            <span style="display: inline-block;width: auto;margin: 5px;">Departamento</span></td>
+        <td style="text-align: left;width: 25%;border-bottom: 1px solid;">
+            <span style="display: inline-block;width: auto;margin: 5px;">
+                @php
+                    $discount = $data['pull-apart']['visit']['apartment']['price'] * $exchangeRate * ($data['pull-apart']['discount'] / 100);
+
+                    if($data['pull-apart']['discount_type'] === 1) {
+                        $discount = $data['pull-apart']['discount'];
+                    }
                     @endphp
-                    US$ {{ number_format($data['pull-apart']['visit']['apartment']['price'] - $discount , 2) }}
+                    {{ $prefix  }} {{ number_format(($data['pull-apart']['visit']['apartment']['price'] * $exchangeRate)- $discount, 2) }}
                 </span>
             </td>
         </tr>
@@ -626,7 +647,9 @@
                     <td style="text-align: left;border-right: 1px solid;width: 25%;border-bottom: 1px solid;">
                         <span style="display: inline-block;width: auto;margin: 5px;">Estacionamiento {{ $key + 1 }}</span></td>
                     <td style="text-align: left;width: 25%;border-bottom: 1px solid;">
-                        <span style="display: inline-block;width: auto;margin: 5px;">US$ {{ number_format($value['parking_lot']['price'], 2) }}</span>
+                        <span style="display: inline-block;width: auto;margin: 5px;">
+                            {{ $prefix }} {{ number_format($value['parking_lot']['price'] * $exchangeRate, 2) }}
+                        </span>
                     </td>
                 </tr>
             @endforeach
@@ -640,7 +663,9 @@
                     <td style="text-align: left;border-right: 1px solid;width: 25%;border-bottom: 1px solid;">
                         <span style="display: inline-block;width: auto;margin: 5px;">Depósito {{ $key + 1 }}</span></td>
                     <td style="text-align: left;width: 25%;border-bottom: 1px solid;">
-                        <span style="display: inline-block;width: auto;margin: 5px;">US$ {{ number_format($value['closet']['price'], 2) }}</span>
+                        <span style="display: inline-block;width: auto;margin: 5px;">
+                            {{ $prefix }} {{ number_format($value['closet']['price'] * $exchangeRate, 2) }}
+                        </span>
                     </td>
                 </tr>
             @endforeach
@@ -651,11 +676,11 @@
     <!-- 4. MONTO DE SEPARACIÓN (S/.) -->
     <div
         style="background-color: #d0d0d0;color: #333;width: 98%;font-family: Helvetica,serif;font-weight: bold;font-size: 14px;height: 18px;margin: 0 auto 30px;padding: 5px 10px 5px 5px;">
-        <span style="display:inline-block;width: 50%;">4. MONTO DE SEPARACIÓN (US$)</span>
+        <span style="display:inline-block;width: 50%;">4. MONTO DE SEPARACIÓN ({{ $prefix }})</span>
         <span style="display:inline-block;width: 49%;text-align: right;">
         @foreach($data['pull-apart']['fees'] as $key => $value)
                 @if($value['type'] === 'Monto Separación')
-                    US$ {{ number_format($value['fee'], 2) }}
+                    {{ $prefix }} {{ number_format($value['fee'], 2) }}
                 @endif
             @endforeach
     </span>
@@ -664,7 +689,7 @@
     <!-- 5. FORMA DE PAGO (S/.) -->
     <!-- Se debe mostrar la forma de pago seleccionada en la separación -->
     <div style="display: inline-block; background-color: #d0d0d0;color: #333;width: 99%;margin: 0 auto 10px;font-family: Helvetica,serif;font-weight: bold;padding: 5px;font-size: 14px;">
-        5. FORMA DE PAGO (US$)
+        5. FORMA DE PAGO ({{ $prefix }})
     </div>
 
 @if($data['pull-apart']['payment_type'])
@@ -716,10 +741,14 @@
                                     <span style="display: inline-block;width: auto;margin: 5px;">{{ $value['type'] }}</span>
                                 </td>
                                 <td>
-                                    <span style="display: inline-block;width: auto;margin: 5px;">US$ {{ number_format($value['fee'],2) }}</span>
+                                    <span style="display: inline-block;width: auto;margin: 5px;">
+                                        {{ $prefix }} {{ number_format($value['fee'], 2) }}
+                                    </span>
                                 </td>
                                 <td>
-                                    <span style="display: inline-block;width: auto;margin: 5px;">{{ \Carbon\Carbon::parse($value['fee_at'])->format('m/d/Y') }}</span>
+                                    <span style="display: inline-block;width: auto;margin: 5px;">
+                                        {{ \Carbon\Carbon::parse($value['fee_at'])->format('m/d/Y') }}
+                                    </span>
                                 </td>
                                 <td>
                                     <span style="display: inline-block;width: auto;margin: 5px;">{{ $value['milestone'] }}</span>

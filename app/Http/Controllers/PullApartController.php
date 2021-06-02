@@ -50,7 +50,7 @@ class PullApartController extends Controller
         $pullApart = PullApart::with('fees', 'bank', 'visit', 'visit.project', 'visit.project.addresses', 'visit.apartment',
             'visit.apartment.apartmentType', 'visit.closets', 'visit.closets.closet', 'visit.parkingLots',
             'visit.parkingLots.parkingLot', 'visit.parkingLots.parkingLot.address', 'visit.customer',
-            'visit.customer.related')
+            'visit.customer.related', 'visit.exchange')
             ->whereId($id)
             ->first();
 
@@ -90,11 +90,11 @@ class PullApartController extends Controller
                     'info' => $customer
                 ],
                 'agreement' => $agreementText,
-                'title' => 'separacion-' . now()->format('d/m/Y')
+                'title' => 'separation-' . now()->format('d/m/Y')
             ]
         ];
 
-        $fileName = 'separacion-' . $pullApart->visit->id . '-' . now()->format('dmYHis') . '.pdf';
+        $fileName = 'separation-' . $pullApart->visit->id . '-' . now()->format('dmYHis') . '.pdf';
 
         $pdf = \PDF::loadview('pull-apart.agreement', $data)
             ->save(storage_path('app/public/pull-aparts/' . $fileName));
