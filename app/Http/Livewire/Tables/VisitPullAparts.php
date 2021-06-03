@@ -38,11 +38,12 @@ class VisitPullAparts extends LivewireDatatable
             ->leftJoin('project_apartments', 'visits.project_apartment_id', 'project_apartments.id')
             ->leftJoin('project_apartment_types', 'project_apartments.apartment_type_id', 'project_apartment_types.id')
             ->leftJoin('pull_aparts', 'visits.id', 'pull_aparts.visit_id')
+            ->leftJoin('exchanges', 'visits.exchange_id', 'exchanges.id')
             ->whereNotIn('visits.id', DB::table('pull_aparts')->select('visit_id'))
             ->where('visits.status', 'Cotización')
             ->onlyForMe()
             ->groupBy('visits.id', 'projects.name', 'customers.first_name', 'customers.full_name', 'project_apartments.name',
-                'project_apartments.price');
+                'project_apartments.price', 'visits.exchange_id', 'projects.currency', 'exchanges.sale', 'exchanges.buy');
     }
 
     /**
@@ -67,8 +68,33 @@ class VisitPullAparts extends LivewireDatatable
             Column::name('project_apartments.name')
                 ->label(__('Apartment')),
 
-            Column::callback(['project_apartments.price'], function ($apartmentPrice) {
-                return '<code> US$ ' . number_format($apartmentPrice, 2) . '</code>';
+            Column::callback([
+                'project_apartments.price',
+                'visits.exchange_id',
+                'projects.currency',
+                'exchanges.sale',
+                'exchanges.buy'
+            ], function ($apartmentPrice, $exchange, $currency, $sale, $buy) {
+
+                $prefix = $currency === 'PEN' ? 'S/.' : 'US$.';
+
+                $exchangeRate = 1;
+
+                if (!is_null($exchange)) {
+                    switch ($prefix) {
+                        case 'S/.':
+                            $prefix = 'US$.';
+                            $exchangeRate /= $sale;
+                            break;
+                        case 'US$.':
+                            $prefix = 'S/.';
+                            $exchangeRate *= $buy;
+                            break;
+                    }
+                }
+
+
+                return '<code>' . $prefix . number_format($apartmentPrice * $exchangeRate, 2) . '</code>';
             })
                 ->label(__('Total')),
 
