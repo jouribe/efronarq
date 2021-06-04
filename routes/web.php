@@ -36,3 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('exchanges', [ExchangeContr
 // Reports
 Route::middleware(['auth:sanctum', 'verified'])->get('/reports/prices', [ReportController::class, 'prices'])->name('reports.prices');
 Route::middleware(['auth:sanctum', 'verified'])->get('/reports/documents', [ReportController::class, 'documents'])->name('reports.documents');
+
+// Import
+Route::middleware(['auth:sanctum', 'verified'])->get('/visits/import/data', [VisitController::class, 'import']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/visits/tracking/import/data', [VisitController::class, 'tracking']);

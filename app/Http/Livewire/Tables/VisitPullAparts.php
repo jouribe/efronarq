@@ -75,26 +75,24 @@ class VisitPullAparts extends LivewireDatatable
                 'exchanges.sale',
                 'exchanges.buy'
             ], function ($apartmentPrice, $exchange, $currency, $sale, $buy) {
-
-                $prefix = $currency === 'PEN' ? 'S/.' : 'US$.';
+                $prefix = $currency === 'PEN ' ? 'S/.' : 'US$. ';
 
                 $exchangeRate = 1;
 
-                if (!is_null($exchange)) {
+                if ($exchange !== "" && !is_null($exchange)) {
                     switch ($prefix) {
-                        case 'S/.':
-                            $prefix = 'US$.';
+                        case 'S/. ':
+                            $prefix = 'US$. ';
                             $exchangeRate /= $sale;
                             break;
-                        case 'US$.':
-                            $prefix = 'S/.';
+                        case 'US$. ':
+                            $prefix = 'S/. ';
                             $exchangeRate *= $buy;
                             break;
                     }
                 }
 
-
-                return '<code>' . $prefix . number_format($apartmentPrice * $exchangeRate, 2) . '</code>';
+                return '<code>' . $prefix . number_format((float)$apartmentPrice * $exchangeRate, 2) . '</code>';
             })
                 ->label(__('Total')),
 

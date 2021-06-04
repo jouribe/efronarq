@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitRequest;
 use App\Http\Requests\UpdateVisitRequest;
+use App\Imports\VisitsImport;
+use App\Imports\VisitTrackingImport;
 use App\Models\Customer;
 use App\Models\CustomerDetail;
 use App\Models\District;
@@ -22,6 +24,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VisitController extends Controller
 {
@@ -292,5 +295,21 @@ class VisitController extends Controller
         }
 
         return response()->file('storage/' . $quotation->file);
+    }
+
+    /**
+     * Import visit data.
+     */
+    public function import(): void
+    {
+        Excel::import(new VisitsImport, 'imports/efron_visitas.xlsx', 'public', \Maatwebsite\Excel\Excel::XLSX);
+    }
+
+    /**
+     * Import visit tracking.
+     */
+    public function tracking(): void
+    {
+        Excel::import(new VisitTrackingImport, 'imports/efron_seguimiento.xlsx', 'public', \Maatwebsite\Excel\Excel::XLSX);
     }
 }

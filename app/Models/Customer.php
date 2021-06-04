@@ -30,7 +30,8 @@ class Customer extends Model
         'customer_type',
         'position',
         'single',
-        'document_nro'
+        'document_nro',
+        'prueba'
     ];
 
     /**

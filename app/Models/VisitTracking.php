@@ -24,7 +24,7 @@ class VisitTracking extends Model
         'action_at',
         'action',
         'comments',
-        'status'
+        'status',
     ];
 
     /**
