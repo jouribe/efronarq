@@ -205,9 +205,9 @@ class Create extends Component
     public string $customerEmail;
 
     /**
-     * @var string $customerPhone
+     * @var mixed $customerPhone
      */
-    public string $customerPhone;
+    public $customerPhone;
 
     /**
      * @var mixed $customerFirstNameSecond
