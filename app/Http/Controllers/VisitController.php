@@ -82,7 +82,6 @@ class VisitController extends Controller
      */
     public function store(StoreVisitRequest $request): RedirectResponse
     {
-
         // Verify if user exists
         $exist = Customer::whereDni($request->get('dni'))->first();
 
@@ -129,7 +128,8 @@ class VisitController extends Controller
             'exchange_id' => $exchange === null ? null : $exchange->id
         ]);
 
-        ProjectApartment::findOrFail($request->get('project_id'))->update([
+        /** @noinspection NullPointerExceptionInspection */
+        ProjectApartment::find($request->get('project_apartment_id'))->update([
             'availability' => 'Reservado'
         ]);
 
@@ -161,7 +161,7 @@ class VisitController extends Controller
             }
         }
 
-        return redirect()->route('visits.index');
+        return response()->redirectToRoute('visits.index');
     }
 
     /**
