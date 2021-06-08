@@ -190,9 +190,9 @@ class Create extends Component
     public string $customerLastName;
 
     /**
-     * @var string $customerDocument
+     * @var mixed $customerDocument
      */
-    public string $customerDocument;
+    public $customerDocument;
 
     /**
      * @var mixed $customerAddress
