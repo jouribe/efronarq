@@ -617,7 +617,7 @@ class Create extends Component
     {
         $this->discountType = $this->pullApart->discount_type;
         $this->discountAmount = $this->pullApart->discount;
-        $this->priceTotal = $this->pullApart->final_price * $this->exchangeRate;
+        $this->priceTotal = $this->pullApart->final_price;
         $this->priceTotalText = $this->currencyPrefix . number_format($this->priceTotal, 2);
         $this->balance = $this->currencyPrefix . number_format($this->priceTotal - $this->amount, 2);
     }
@@ -747,10 +747,10 @@ class Create extends Component
         if (!is_null($this->discountType)) {
             switch ($this->discountType) {
                 case 1:
-                    $this->priceApartment -= $discount;
+                    $this->priceApartment = $this->priceApartment * $this->exchangeRate - $discount;
                     break;
                 case 2:
-                    $this->priceApartment -= ($this->priceApartment * ($discount / 100));
+                    $this->priceApartment = ($this->priceApartment * $this->exchangeRate) - ($this->priceApartment * $this->exchangeRate * ($discount / 100));
                     break;
             }
         }

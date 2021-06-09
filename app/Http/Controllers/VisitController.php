@@ -241,12 +241,19 @@ class VisitController extends Controller
             'bathroom' => $request->get('bathroom')
         ]);
 
+        $exchange = null;
+
+        if ($request->has('exchange') && $request->get('exchange') === '1') {
+            $exchange = Exchange::orderByDesc('created_at')->first(['id']);
+        }
+
         $visit->update([
             'type_financing' => $request->get('type_financing'),
             'origin_id' => $request->get('origin_id'),
             'project_apartment_id' => $request->get('project_apartment_id'),
             'interested' => $request->get('interested'),
-            'promotion_id' => $request->get('discount')
+            'promotion_id' => $request->get('discount'),
+            'exchange_id' => $exchange === null ? null : $exchange->id
         ]);
 
         return response()->redirectToRoute('visits.index');
