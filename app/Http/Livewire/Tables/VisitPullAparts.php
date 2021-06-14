@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Models\Visit;
+use App\Models\VisitCloset;
+use App\Models\VisitParkingLot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Mediconesystems\LivewireDatatables\Column;
@@ -69,12 +71,13 @@ class VisitPullAparts extends LivewireDatatable
                 ->label(__('Apartment')),
 
             Column::callback([
+                'visits.id',
                 'project_apartments.price',
                 'visits.exchange_id',
                 'projects.currency',
                 'exchanges.sale',
                 'exchanges.buy'
-            ], function ($apartmentPrice, $exchange, $currency, $sale, $buy) {
+            ], function ($id, $apartmentPrice, $exchange, $currency, $sale, $buy) {
                 $prefix = $currency === 'PEN ' ? 'S/.' : 'US$. ';
 
                 $exchangeRate = 1;
@@ -92,7 +95,25 @@ class VisitPullAparts extends LivewireDatatable
                     }
                 }
 
-                return '<code>' . $prefix . number_format((float)$apartmentPrice * $exchangeRate, 2) . '</code>';
+                $visitParkingLots = VisitParkingLot::with('parkingLot')->whereVisitId($id)->get();
+                $parkingLotPrice = 0;
+
+                foreach ($visitParkingLots as $parkingLot) {
+                    $parkingLotPrice += $parkingLot->parkingLot->price;
+                }
+
+                $visitClosets = VisitCloset::with('closet')->whereVisitId($id)->get();
+                $closetPrice = 0;
+
+                foreach ($visitClosets as $closet) {
+                    $closetPrice += $closet->closet->price;
+                }
+
+                $apartmentPriceTotal = (float)$apartmentPrice * $exchangeRate;
+                $parkingLotPriceTotal = $parkingLotPrice * $exchangeRate;
+                $closetPriceTotal = $closetPrice * $exchangeRate;
+
+                return '<code>' . $prefix . number_format($apartmentPriceTotal + $parkingLotPriceTotal + $closetPriceTotal, 2) . '</code>';
             })
                 ->label(__('Total')),
 
