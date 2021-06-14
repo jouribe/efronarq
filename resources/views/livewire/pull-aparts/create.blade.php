@@ -21,6 +21,25 @@
                         </div>
                     </div>
 
+                    @php
+                        $prefix = $visit->project->currency === 'PEN' ? 'S/.' : 'US$.';
+
+                        $exchangeRate = 1;
+
+                        if (!is_null($visit->exchange)) {
+                            switch ($prefix) {
+                                case 'S/.':
+                                    $prefix = 'US$.';
+                                    $exchangeRate /= $visit->exchange->sale;
+                                    break;
+                                case 'US$.':
+                                    $prefix = 'S/.';
+                                     $exchangeRate *= $visit->exchange->buy;
+                                    break;
+                            }
+                        }
+                    @endphp
+
                     @if(!is_null($visit->parkingLots))
                         @foreach($visit->parkingLots as $key => $value)
                             <div class="flex">
@@ -31,7 +50,7 @@
 
                                 <div class="p-4 w-1/2">
                                     <label>{{ __('Price') }}</label>
-                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->parkingLot->price, 2) }}" readonly>
+                                    <input type="text" class="form-input w-full" value="{{ $prefix }} {{ number_format($value->parkingLot->price * $exchangeRate, 2) }}" readonly>
                                 </div>
                             </div>
                         @endforeach
@@ -47,7 +66,7 @@
 
                                 <div class="p-4 w-1/2">
                                     <label>{{ __('Price') }}</label>
-                                    <input type="text" class="form-input w-full" value="US$ {{ number_format($value->closet->price, 2) }}"
+                                    <input type="text" class="form-input w-full" value="{{ $prefix }} {{ number_format($value->closet->price * $exchangeRate, 2) }}"
                                            readonly>
                                 </div>
                             </div>
