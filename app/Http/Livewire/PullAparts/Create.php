@@ -491,7 +491,6 @@ class Create extends Component
         $this->updateBalance();
 
         if (!is_null($this->pullApart)) {
-
             $this->resetPaymentFees();
         }
 
@@ -739,7 +738,7 @@ class Create extends Component
     public function setTotalPriceOfSale($discount): float
     {
         if (!is_null($this->pullApart)) {
-            $this->priceApartment = $this->pullApart->visit->apartment->price;
+            $this->priceApartment = $this->pullApart->visit->apartment->price * $this->exchangeRate;
         } else {
             $this->setApartmentPrice();
         }
@@ -747,10 +746,10 @@ class Create extends Component
         if (!is_null($this->discountType)) {
             switch ($this->discountType) {
                 case 1:
-                    $this->priceApartment = $this->priceApartment * $this->exchangeRate - $discount;
+                    $this->priceApartment -= $discount;
                     break;
                 case 2:
-                    $this->priceApartment = ($this->priceApartment * $this->exchangeRate) - ($this->priceApartment * $this->exchangeRate * ($discount / 100));
+                    $this->priceApartment -= ($this->priceApartment * ($discount / 100));
                     break;
             }
         }
@@ -776,7 +775,9 @@ class Create extends Component
 
         $this->pullApart = PullApart::findOrFail($recent->id);
 
-        session()->flash('message', !is_null($this->pullApart) ? __('Pull apart updated successfully!') : __('Pull apart created successfully!'));
+        session()->flash('message', !is_null($this->pullApart)
+            ? __('Pull apart updated successfully!')
+            : __('Pull apart created successfully!'));
 
         redirect()->to($this->page);
     }
