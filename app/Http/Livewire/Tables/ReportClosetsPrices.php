@@ -18,10 +18,18 @@ class ReportClosetsPrices extends LivewireDatatable
      */
     public $customExport = true;
 
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
+
+    protected $listeners = ['setProjectId'];
+
     public function builder()
     {
         return ProjectCloset::query()
-            ->leftJoin('projects', 'project_closets.project_id', 'projects.id');
+            ->leftJoin('projects', 'project_closets.project_id', 'projects.id')
+            ->where('projects.id', $this->projectId);
     }
 
     public function columns()
@@ -79,6 +87,11 @@ class ReportClosetsPrices extends LivewireDatatable
      */
     public function export(): BinaryFileResponse
     {
-        return Excel::download(new ClosetPricesExport, 'precios-depositos.xlsx');
+        return Excel::download(new ClosetPricesExport($this->projectId), 'precios-departamento.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function setProjectId($id): void
+    {
+        $this->projectId = $id;
     }
 }

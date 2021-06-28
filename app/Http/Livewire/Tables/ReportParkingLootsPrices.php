@@ -18,10 +18,23 @@ class ReportParkingLootsPrices extends LivewireDatatable
      */
     public $customExport = true;
 
+    /**
+     * @var mixed $projectId
+     */
+    public $projectId;
+
+    /**
+     * @var mixed $typeText
+     */
+    public $typeText;
+
+    protected $listeners = ['setProjectId'];
+
     public function builder()
     {
         return ProjectParkingLot::query()
-            ->leftJoin('projects', 'project_parking_lots.project_id', 'projects.id');
+            ->leftJoin('projects', 'project_parking_lots.project_id', 'projects.id')
+            ->where('projects.id', $this->projectId);
     }
 
     public function columns()
@@ -91,6 +104,11 @@ class ReportParkingLootsPrices extends LivewireDatatable
      */
     public function export(): BinaryFileResponse
     {
-        return Excel::download(new ParkingLotPricesExport, 'precios-estacionamiento.xlsx');
+        return Excel::download(new ParkingLotPricesExport($this->projectId), 'precios-estacionamientos.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function setProjectId($id): void
+    {
+        $this->projectId = $id;
     }
 }
