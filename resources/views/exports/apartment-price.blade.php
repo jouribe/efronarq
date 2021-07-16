@@ -4,7 +4,9 @@
         <th colspan="3" style="border: 2px solid #999999;border-right: 0 solid transparent;text-align: left;padding-left: 30px;">
             <img src="{{ public_path('images/atomikal-logo-blanco.png') }}" style="" alt="EfronArq">
         </th>
-        <th colspan="6" style="font-size: 14px;border: 2px solid #999999;border-left: 0 solid transparent;text-align: right;padding-right: 30px;">Proyecto: {{ $apartment->project->name }}</th>
+        <th colspan="6" style="font-size: 14px;border: 2px solid #999999;border-left: 0 solid transparent;text-align: right;padding-right: 30px;">
+            Proyecto: {{ $apartments->first()->project->name }}
+        </th>
     </tr>
     <tr>
         <th colspan="8">&nbsp;</th>
