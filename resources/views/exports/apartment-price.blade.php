@@ -16,7 +16,6 @@
         <th colspan="3" style="border: 2px solid #999999;text-align: center;padding-left: 30px;font-size: 14px;background: #dee2e6;">PRECIOS DE VENTA</th>
     </tr>
     <tr style="background-color: #dee2e6;vertical-align: middle;height: 20px;">
-        <th style="border: 1px solid #999999;border-top: 0 solid transparent;border-left: 2px solid #999999;border-bottom: 2px solid #999999;">PROYECTO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">DPTO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">TIPO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">#DORM</th>
@@ -30,7 +29,6 @@
     <tbody style="border: 2px solid #999999;">
     @foreach($apartments as $apartment)
         <tr>
-            <td style="border: 1px solid #999999;border-top: 0 solid transparent;">{{ $apartment->project->name }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $apartment->name }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $apartment->apartmentType->type_name }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $apartment->apartmentType->bedroom }}</td>

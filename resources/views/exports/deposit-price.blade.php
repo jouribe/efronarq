@@ -16,7 +16,6 @@
         <th colspan="2" style="border: 2px solid #999999;text-align: center;padding-left: 30px;font-size: 14px;background: #dee2e6;">PRECIOS DE VENTA</th>
     </tr>
     <tr style="background-color: #dee2e6;vertical-align: middle;height: 20px;">
-        <th style="border: 1px solid #999999;border-top: 0 solid transparent;border-left: 2px solid #999999;border-bottom: 2px solid #999999;">PROEYCTO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">PISO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">DEPÓSITO</th>
         <th style="border-top: 0 solid transparent;border-bottom: 2px solid #999999;border-right: 1px solid #999999;">ÁREA (M2)</th>
@@ -26,7 +25,6 @@
     <tbody style="border: 2px solid #999999;">
     @foreach($closets as $closet)
         <tr>
-            <td style="border: 1px solid #999999;border-top: 0 solid transparent;">{{ $closet->project->name }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $closet->floor }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $closet->closet }}</td>
             <td style="border-top: 0 solid transparent;border-bottom: 1px solid #999999;border-right: 1px solid #999999;">{{ $closet->roofed_area }}</td>
