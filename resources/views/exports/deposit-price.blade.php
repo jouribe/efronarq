@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" width="100%" style="font-family: Calibri;font-size: 11px;text-align: center;color: #000;" border="0">
+<table cellpadding="0" cellspacing="0" width="100%" style="font-family: Calibri,sans-serif;font-size: 11px;text-align: center;color: #000;" border="0">
     <thead>
     <tr style="vertical-align: middle;height: 60px;">
         <th colspan="2" style="border: 2px solid #999999;border-right: 0 solid transparent;text-align: left;padding-left: 30px;">
