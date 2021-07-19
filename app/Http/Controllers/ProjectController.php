@@ -179,7 +179,7 @@ class ProjectController extends Controller
 
         if ($request->has('logo')) {
             /** @noinspection NullPointerExceptionInspection */
-            ProjectAddress::whereId($id)->update([
+            Project::whereId($id)->update([
                 'logo' => $request->file('logo')->store('project-logos', 'public')
             ]);
         }
