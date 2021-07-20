@@ -77,7 +77,7 @@ class PullApartController extends Controller
         }
 
         //$agreementText = $this->getModeloAgreement();
-        $agreementText = Str::replace('{AGREEMENT_MODEL}', $this->getModel('model'), $agreementFromDb);
+        $agreementText = Str::replace('{AGREEMENT_MODEL}', $this->getModel($pullApart->agreement_model), $agreementFromDb);
 
         $data = [
             'data' => [
